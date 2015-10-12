@@ -1,0 +1,6 @@
+/notes.txt
+/buildcb
+/docs/logo.xcf
+/docs/html
+/lib/*
+!/lib/folder.txt
