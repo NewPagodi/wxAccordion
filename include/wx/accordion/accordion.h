@@ -50,10 +50,47 @@ static const int wxACCORDION_HITTEST_INPAGEPADDING   = 1 << 8;
 
 class wxAccordionFold;
 
+class WXDLLIMPEXP_ACCORDION wxAccordionStyle
+{
+    friend class wxAccordion;
+    friend class wxAccordionFold;
+
+    public:
+        wxAccordionStyle();
+
+        wxColour GetColour1() const;
+        wxGraphicsGradientStops GetGradientStops() const;
+        wxColour GetColour2() const;
+        wxBitmap GetBGBitmap() const;
+        wxColour GetBorderColour() const;
+        wxColour GetTextColour() const;
+        wxFont GetFont() const;
+
+        void SetColour1(const wxColour& col);
+        void ClearGradientStops();
+        void AddGradientStop(const wxColour& col,float pos);
+        void SetColour2(const wxColour& col);
+        void SetBGBitmap(const wxBitmap& b);
+        void SetBorderColour(const wxColour& col);
+        void SetTextColour(const wxColour& col);
+        void SetFont(const wxFont& f);
+
+    private:
+        wxGraphicsGradientStops m_stops;
+        wxColour m_borderColour;
+        wxBitmap m_background;
+        wxColour m_textColour;
+        wxFont m_font;
+        wxAccordion* m_accordion;
+        bool m_isPageStyle;
+};
+
+
 class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
 {
     wxDECLARE_CLASS(wxAccordion);
     friend class wxAccordionFold;
+    friend class wxAccordionStyle;
 
     public:
         //house keeping
@@ -62,8 +99,8 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
         virtual ~wxAccordion();
         bool Create(wxWindow* parent,wxWindowID id = wxID_ANY,const wxPoint& pos = wxDefaultPosition,const wxSize& size = wxDefaultSize,long style = wxTAB_TRAVERSAL,const wxString &name="accordion");
 
-        //There is no need to document these
         #ifndef _DOXYGEN_
+            //There is no need to document this stuff
             //abstract wxBookCtrlBase methods that MUST be implimented:
             virtual bool     SetPageText(size_t n, const wxString& strText);
             virtual wxString GetPageText(size_t n) const;
@@ -83,16 +120,17 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
 
 
         ///@{ \name Accordion management functions
-            //Accordion methods
             void Expand(size_t n);
             void Collapse(size_t n);
             void Toggle(size_t n);
-            bool IsExpanded(size_t n) const;
-            bool IsCollapsed(size_t n) const;
             void Enable(size_t n);
             void Disable(size_t n);
+
+            bool IsExpanded(size_t n) const;
+            bool IsCollapsed(size_t n) const;
             bool IsEnabled(size_t n) const;
             bool IsDisabled(size_t n) const;
+
             void SetFixedSize(size_t n);
             void SetFixedWidth(size_t n);
             void SetFixedHeight(size_t n);
@@ -116,27 +154,6 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
             void     SetOnlyToggleWithButton(bool b);
         ///@}
 
-
-        ///@{ \name Page style get/set functions
-            double   GetPageRadius()              const;
-            int      GetPagePadding()             const;
-            wxBitmap GetPageBGBitmap()            const;
-            wxGraphicsGradientStops GetPageGradientStops() const;
-            wxColour GetPageColour1()             const;
-            wxColour GetPageColour2()             const;
-            wxColour GetPageBorderColour()        const;
-
-            void     SetPageRadius(double d);
-            void     SetPagePadding(int m);
-            void     SetPageBGBitmap(const wxBitmap& b);
-            void     AddPageGradientStop(const wxColour& col,float pos);
-            void     ClearPageGradientStops();
-            void     SetPageColour1(const wxColour& col);
-            void     SetPageColour2(const wxColour& col);
-            void     SetPageBorderColour(const wxColour& col);
-        ///@}
-
-
         ///@{ \name Caption bar style get/set functions
             double   GetCaptionRadius()           const;
             double   GetCaptionGradientAngle()    const;
@@ -150,6 +167,11 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
             bool     GetUseHighlighting()         const;
             bool     GetCustomDisabledState()     const;
             int      GetDisabledBrightness()      const;
+            wxAccordionStyle& GetCollapsedStyle();
+            wxAccordionStyle& GetExpandedStyle();
+            wxAccordionStyle& GetCollapsedHLStyle();
+            wxAccordionStyle& GetExpandedHLStyle();
+            wxAccordionStyle& GetDisabledStyle();
 
             void SetCaptionRadius(double d);
             void SetCaptionGradientAngle(double a);
@@ -163,106 +185,21 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
             void SetUseHighlighting(bool b);
             void SetCustomDisabledState(bool b);
             void SetDisabledBrightness(int b);
+            void SetCollapsedStyle(const wxAccordionStyle&);
+            void SetExpandedStyle(const wxAccordionStyle&);
+            void SetCollapsedHLStyle(const wxAccordionStyle&);
+            void SetExpandedHLStyle(const wxAccordionStyle&);
+            void SetDisabledStyle(const wxAccordionStyle&);
         ///@}
 
+        ///@{ \name Page style get/set functions
+            double GetPageRadius() const;
+            int GetPagePadding() const;
+            wxAccordionStyle& GetPageStyle();
 
-        ///@{ \name Caption bar collapsed state style get/set functions
-            wxGraphicsGradientStops GetCollapsedGradientStops() const;
-            wxBitmap GetCollapsedBGBitmap()       const;
-            wxColour GetCollapsedColour1()        const;
-            wxColour GetCollapsedColour2()        const;
-            wxColour GetCollapsedBorderColour()   const;
-            wxColour GetCollapsedTextColour()     const;
-            wxFont   GetCollapsedFont()           const;
-
-            void     ClearCollapsedGradientStops();
-            void     AddCollapsedGradientStop (const wxColour& col,float pos);
-            void     SetCollapsedBGBitmap     (const wxBitmap& b);
-            void     SetCollapsedColour1      (const wxColour& col);
-            void     SetCollapsedColour2      (const wxColour& col);
-            void     SetCollapsedBorderColour (const wxColour& col);
-            void     SetCollapsedTextColour   (const wxColour& col);
-            void     SetCollapsedFont         (const wxFont& f);
-        ///@}
-
-
-        ///@{ \name Caption bar expanded state style get/set functions
-            wxGraphicsGradientStops GetExpandedGradientStops() const;
-            wxBitmap GetExpandedBGBitmap()        const;
-            wxColour GetExpandedColour1()         const;
-            wxColour GetExpandedColour2()         const;
-            wxColour GetExpandedBorderColour()    const;
-            wxColour GetExpandedTextColour()      const;
-            wxFont   GetExpandedFont()            const;
-
-            void     ClearExpandedGradientStops();
-            void     AddExpandedGradientStop (const wxColour& col,float pos);
-            void     SetExpandedBGBitmap     (const wxBitmap& b);
-            void     SetExpandedColour1      (const wxColour& col);
-            void     SetExpandedColour2      (const wxColour& col);
-            void     SetExpandedBorderColour (const wxColour& col);
-            void     SetExpandedTextColour   (const wxColour& col);
-            void     SetExpandedFont         (const wxFont& f);
-        ///@}
-
-
-        ///@{ \name Caption bar collapsed highlighted state style get/set functions
-            wxGraphicsGradientStops GetCollapsedHLGradientStops() const;
-            wxBitmap GetCollapsedHLBGBitmap()     const;
-            wxColour GetCollapsedHLColour1()      const;
-            wxColour GetCollapsedHLColour2()      const;
-            wxColour GetCollapsedHLBorderColour() const;
-            wxColour GetCollapsedHLTextColour()   const;
-            wxFont   GetCollapsedHLFont()         const;
-
-            void     ClearCollapsedHLGradientStops();
-            void     AddCollapsedHLGradientStop (const wxColour& col,float pos);
-            void     SetCollapsedHLBGBitmap     (const wxBitmap& b);
-            void     SetCollapsedHLColour1      (const wxColour& col);
-            void     SetCollapsedHLColour2      (const wxColour& col);
-            void     SetCollapsedHLBorderColour (const wxColour& col);
-            void     SetCollapsedHLTextColour   (const wxColour& col);
-            void     SetCollapsedHLFont         (const wxFont& f);
-        ///@}
-
-
-        ///@{ \name Caption bar expanded highlighted state style get/set functions
-            wxGraphicsGradientStops GetExpandedHLGradientStops() const;
-            wxBitmap GetExpandedHLBGBitmap()      const;
-            wxColour GetExpandedHLColour1()       const;
-            wxColour GetExpandedHLColour2()       const;
-            wxColour GetExpandedHLBorderColour()  const;
-            wxColour GetExpandedHLTextColour()    const;
-            wxFont   GetExpandedHLFont()          const;
-
-            void ClearExpandedHLGradientStops();
-            void   AddExpandedHLGradientStop (const wxColour& col,float pos);
-            void   SetExpandedHLBGBitmap     (const wxBitmap& b);
-            void   SetExpandedHLColour1      (const wxColour& col);
-            void   SetExpandedHLColour2      (const wxColour& col);
-            void   SetExpandedHLBorderColour (const wxColour& col);
-            void   SetExpandedHLTextColour   (const wxColour& col);
-            void   SetExpandedHLFont         (const wxFont& f);
-        ///@}
-
-
-        ///@{ \name Caption bar disabled state style get/set functions
-            wxGraphicsGradientStops GetDisabledGradientStops() const;
-            wxBitmap GetDisabledBGBitmap()        const;
-            wxColour GetDisabledColour1()         const;
-            wxColour GetDisabledColour2()         const;
-            wxColour GetDisabledBorderColour()    const;
-            wxColour GetDisabledTextColour()      const;
-            wxFont   GetDisabledFont()            const;
-
-            void ClearDisabledGradientStops();
-            void   AddDisabledGradientStop (const wxColour& col,float pos);
-            void   SetDisabledBGBitmap     (const wxBitmap& b);
-            void   SetDisabledColour1      (const wxColour& col);
-            void   SetDisabledColour2      (const wxColour& col);
-            void   SetDisabledBorderColour (const wxColour& col);
-            void   SetDisabledTextColour   (const wxColour& col);
-            void   SetDisabledFont         (const wxFont& f);
+            void SetPageRadius(double d);
+            void SetPagePadding(int m);
+            void SetPageStyle(const wxAccordionStyle&);
         ///@}
 
     protected:
@@ -285,14 +222,15 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
         void setFirstSpacerHeight(int h);
         void rebuildFloats();
         bool changesWereMade();
-        void buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, int width,int height, double x1,double y1,double x2,double y2, double radius, const wxColour& collapsedBorderColour,const wxBitmap& collapsedBG,const wxGraphicsGradientStops& collapsedStops);
+        void setPageBorderColourHelper(const wxColour& col);
+        void buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, int width,int height, double x1,double y1,double x2,double y2, double radius, const wxAccordionStyle& style);
         void adjustForStyle( long style );
 
         //private data
         //helper data:
-        bool changesMade;
-        wxImageList* trackedImageList;
-        wxPanel* lastBorder;
+        bool m_changesMade;
+        wxImageList* m_trackedImageList;
+        wxPanel* m_lastBorder;
 
         //computed:
         int captionBarHeight;
@@ -304,72 +242,41 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
         wxPoint expandedHLTextPoint;
         wxPoint disabledTextPoint;
         int textWidth;
-        wxBitmap captionBarCollapsedHL;
-        wxBitmap captionBarExpandedHL;
         wxBitmap captionBarCollapsed;
         wxBitmap captionBarExpanded;
+        wxBitmap captionBarCollapsedHL;
+        wxBitmap captionBarExpandedHL;
         wxBitmap captionBarDisabled;
 
         //style items:
-        int accordionPadding;
-        bool onlyToggleWithButton;
+        int m_accordionPadding;
+        bool m_onlyToggleWithButton;
 
-        double captionBarRadius;
-        double gradientAngle;
-        bool hasBottomBorderWhenExpanded;
-        int minCaptionHeight;
-        wxSize iconMargin;
-        wxSize textMargin;
-        wxSize buttonMargin;
-        wxBitmap collapseButton;
-        wxBitmap expandButton;
-        bool customDisabledState;
-        bool useHighlighting;
-        int  disabledBrightness;
+        double m_captionBarRadius;
+        double m_gradientAngle;
+        bool m_hasBottomBorderWhenExpanded;
+        int m_minCaptionHeight;
+        wxSize m_iconMargin;
+        wxSize m_textMargin;
+        wxSize m_buttonMargin;
+        wxBitmap m_collapseButton;
+        wxBitmap m_expandButton;
+        bool m_customDisabledState;
+        bool m_useHighlighting;
+        int  m_disabledBrightness;
 
-        int pagePadding;
-        double pageRadius;
+        int m_pagePadding;
+        double m_pageRadius;
 
-        wxBitmap accordionBG;
-        wxBitmap collapsedBG;
-        wxBitmap expandedBG;
-        wxBitmap collapsedHLBG;
-        wxBitmap expandedHLBG;
-        wxBitmap disabledBG;
-        wxBitmap pageBG;
+        wxBitmap m_accordionBG;
 
-        wxGraphicsGradientStops expandedStops;
-        wxColour expandedBorderColour;
-        wxColour expandedTextColour;
-        wxFont expandedFont;
-
-        wxGraphicsGradientStops collapsedStops;
-        wxColour collapsedBorderColour;
-        wxColour collapsedTextColour;
-        wxFont collapsedFont;
-
-        wxGraphicsGradientStops expandedHLStops;
-        wxColour expandedHLBorderColour;
-        wxColour expandedHLTextColour;
-        wxFont expandedHLFont;
-
-        wxGraphicsGradientStops collapsedHLStops;
-        wxColour collapsedHLBorderColour;
-        wxColour collapsedHLTextColour;
-        wxFont collapsedHLFont;
-
-        wxGraphicsGradientStops disabledStops;
-        wxColour disabledBorderColour;
-        wxColour disabledTextColour;
-        wxFont disabledFont;
-
-        wxGraphicsGradientStops pageStops;
-        wxColour pageBorderColour;
+        wxAccordionStyle m_collapsedStyle;
+        wxAccordionStyle m_expandedStyle;
+        wxAccordionStyle m_collapsedHLStyle;
+        wxAccordionStyle m_expandedHLStyle;
+        wxAccordionStyle m_disabledStyle;
+        wxAccordionStyle m_pageStyle;
 };
-
-
-
-
 
 //Event IDs
 

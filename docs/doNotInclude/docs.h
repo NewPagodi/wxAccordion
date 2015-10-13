@@ -42,3 +42,9 @@ The original idea for this control and some of the names for the style options c
 /// \li <span class="event">wxEVT_ACCORDION_EXPANDED(id,  func)</span>:<div class="eventDesc">The page selection was expanded. Processes a <code>wxEVT_ACCORDION_EXPANDED</code> event. </div></li>
 /// \li <span class="event">wxEVT_ACCORDION_EXPANDING(id,  func)</span>:<div class="eventDesc">The page selection is about to be expanded. Processes a <code>wxEVT_ACCORDION_EXPANDING</code> event. This event can be vetoed. </div></li>
  
+ 
+/// \class wxAccordionStyle accordion.h <wx/accordion/accordion.h>
+/// This class encapsulates the colours, bitmap, and font used for drawing a  wxAccordion's caption bars and pages.
+/// 
+/// \sa wxAccordion
+ 

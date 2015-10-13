@@ -44,26 +44,26 @@ class wxAccordionFold:public wxPanel
 		void onMouseLeave( wxMouseEvent& event );
 		void onPaint( wxPaintEvent& event );
 
-        wxAccordion* accordion;
-        wxRect curTextRect;
-        wxString caption;
-        int image;
+        wxAccordion* m_accordion;
+        wxRect m_curTextRect;
+        wxString m_caption;
+        int m_image;
 
-        bool isCollapsed;
-        bool isFixedWidth;
-        bool isFixedHeight;
-        bool isEnabled;
-        bool isHighlighted;
-        bool useHighlighting;
+        bool m_isCollapsed;
+        bool m_isFixedWidth;
+        bool m_isFixedHeight;
+        bool m_isEnabled;
+        bool m_isHighlighted;
+        bool m_useHighlighting;
 };
 
 wxIMPLEMENT_ABSTRACT_CLASS(wxAccordionFold, wxPanel)
 
 wxAccordionFold::wxAccordionFold(wxAccordion *parent, const wxString & s,int im,bool  b)
     :wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE),
-    accordion(parent),caption(s),image(im),isCollapsed(b),curTextRect(),
-    isFixedWidth(false),isFixedHeight(false),isEnabled(true),//isFirstFold(false),isLastFold(false),
-    isHighlighted(false),useHighlighting(false)
+    m_accordion(parent),m_caption(s),m_image(im),m_isCollapsed(b),m_curTextRect(),
+    m_isFixedWidth(false),m_isFixedHeight(false),m_isEnabled(true),
+    m_isHighlighted(false),m_useHighlighting(false)
 {
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 
@@ -90,15 +90,15 @@ wxAccordionFold::wxAccordionFold(wxAccordion *parent, const wxString & s,int im,
 
 void wxAccordionFold::Expand()
 {
-    isCollapsed=false;
+    m_isCollapsed=false;
     GetSizer()->GetItem(1)->Show(true);
     GetSizer()->GetItem(2)->Show(true);
-    GetContainingSizer()->GetItem(this)->SetProportion(isFixedHeight?0:1);
+    GetContainingSizer()->GetItem(this)->SetProportion(m_isFixedHeight?0:1);
 }
 
 void wxAccordionFold::Collapse()
 {
-    isCollapsed=true;
+    m_isCollapsed=true;
     GetSizer()->GetItem(1)->Show(false);
     GetSizer()->GetItem(2)->Show(false);
     GetContainingSizer()->GetItem(this)->SetProportion(0);
@@ -106,14 +106,14 @@ void wxAccordionFold::Collapse()
 
 void wxAccordionFold::SetFixedWidth()
 {
-    isFixedWidth=true;
+    m_isFixedWidth=true;
     GetSizer()->GetItem(2)->SetFlag(GetSizer()->GetItem(2)->GetFlag()&~wxEXPAND);
 }
 
 void wxAccordionFold::SetFixedHeight()
 {
     GetContainingSizer()->GetItem(this)->SetProportion(0);
-    isFixedHeight=true;
+    m_isFixedHeight=true;
     GetSizer()->GetItem(2)->SetProportion(0);
 }
 
@@ -151,7 +151,7 @@ void wxAccordionFold::SetWindowSpacer(int newheight)
 
 void wxAccordionFold::SetHighlighting(bool b)
 {
-    useHighlighting=b;
+    m_useHighlighting=b;
 }
 
 void wxAccordionFold::onMouse( wxMouseEvent& event )
@@ -159,17 +159,17 @@ void wxAccordionFold::onMouse( wxMouseEvent& event )
     //repackage the event and forward it to the accordion
     event.SetX(event.GetX()+GetRect().x);
     event.SetY(event.GetY()+GetRect().y);
-    event.SetEventObject(accordion);
-    event.SetId(accordion->GetId());
-    accordion->ProcessWindowEvent(event);
+    event.SetEventObject(m_accordion);
+    event.SetId(m_accordion->GetId());
+    m_accordion->ProcessWindowEvent(event);
 }
 
 void wxAccordionFold::onMouseLeave( wxMouseEvent& event )
 {
-    if(useHighlighting)
+    if(m_useHighlighting)
     {
-        bool b = isHighlighted;
-        isHighlighted=false;
+        bool b = m_isHighlighted;
+        m_isHighlighted=false;
 
         if(b)
         {
@@ -180,13 +180,13 @@ void wxAccordionFold::onMouseLeave( wxMouseEvent& event )
 
 void wxAccordionFold::onMouseMotion( wxMouseEvent& event )
 {
-    if(useHighlighting)
+    if(m_useHighlighting)
     {
-        bool b = isHighlighted;
+        bool b = m_isHighlighted;
 
-        if(event.GetY() < accordion->captionBarHeight)
+        if(event.GetY() < m_accordion->captionBarHeight)
         {
-            isHighlighted=true;
+            m_isHighlighted=true;
 
             if(!b)
             {
@@ -195,7 +195,7 @@ void wxAccordionFold::onMouseMotion( wxMouseEvent& event )
         }
         else
         {
-            isHighlighted=false;
+            m_isHighlighted=false;
 
             if(b)
             {
@@ -207,16 +207,16 @@ void wxAccordionFold::onMouseMotion( wxMouseEvent& event )
     //repackage the event and forward it to the accordion
     event.SetX(event.GetX()+GetRect().x);
     event.SetY(event.GetY()+GetRect().y);
-    event.SetEventObject(accordion);
-    event.SetId(accordion->GetId());
-    accordion->ProcessWindowEvent(event);
+    event.SetEventObject(m_accordion);
+    event.SetId(m_accordion->GetId());
+    m_accordion->ProcessWindowEvent(event);
 }
 
 void wxAccordionFold::onPaint( wxPaintEvent& event )
 {
-    if( accordion->changesWereMade() )
+    if( m_accordion->changesWereMade() )
     {
-        accordion->computeCaptionInfo();
+        m_accordion->computeCaptionInfo();
     }
 
     wxAutoBufferedPaintDC myDC(this);
@@ -224,46 +224,46 @@ void wxAccordionFold::onPaint( wxPaintEvent& event )
     wxPoint textPoint;
     wxColour borderColour;
 
-    if(isCollapsed)
+    if(m_isCollapsed)
     {
-        if(isEnabled)
+        if(m_isEnabled)
         {
-            if(isHighlighted)
+            if(m_isHighlighted)
             {
-                myDC.DrawBitmap(accordion->captionBarCollapsedHL,0,0 ,true);
-                myDC.SetFont(accordion->collapsedHLFont);
-                myDC.SetTextForeground(accordion->collapsedHLTextColour);
+                myDC.DrawBitmap(m_accordion->captionBarCollapsedHL,0,0 ,true);
+                myDC.SetFont(m_accordion->m_collapsedHLStyle.m_font);
+                myDC.SetTextForeground(m_accordion->m_collapsedHLStyle.m_textColour);
 
-                borderColour = accordion->collapsedHLBorderColour;
-                textPoint = accordion->collapsedHLTextPoint;
+                borderColour = m_accordion->m_collapsedHLStyle.m_borderColour;
+                textPoint = m_accordion->collapsedHLTextPoint;
             }
             else
             {
-                myDC.DrawBitmap(accordion->captionBarCollapsed,0,0 ,true);
-                myDC.SetFont(accordion->collapsedFont);
-                myDC.SetTextForeground(accordion->collapsedTextColour);
+                myDC.DrawBitmap(m_accordion->captionBarCollapsed,0,0 ,true);
+                myDC.SetFont( m_accordion->m_collapsedStyle.m_font );
+                myDC.SetTextForeground( m_accordion->m_collapsedStyle.m_textColour );
 
-                borderColour = accordion->collapsedBorderColour;
-                textPoint = accordion->collapsedTextPoint;
+                borderColour = m_accordion->m_collapsedStyle.m_borderColour;
+                textPoint = m_accordion->collapsedTextPoint;
             }
         }
         else
         {
-            myDC.DrawBitmap(accordion->captionBarDisabled,0,0 ,true);
-            myDC.SetFont(accordion->disabledFont);
-            myDC.SetTextForeground(accordion->disabledTextColour);
+            myDC.DrawBitmap(m_accordion->captionBarDisabled,0,0 ,true);
+            myDC.SetFont(m_accordion->m_disabledStyle.m_font);
+            myDC.SetTextForeground(m_accordion->m_disabledStyle.m_textColour);
 
-            if(accordion->customDisabledState)
+            if(m_accordion->m_customDisabledState)
             {
-                borderColour = accordion->disabledBorderColour;
+                borderColour = m_accordion->m_disabledStyle.m_borderColour;
             }
             else
             {
-                borderColour = accordion->collapsedBorderColour;
-                borderColour.MakeDisabled(accordion->disabledBrightness);
+                borderColour = m_accordion->m_collapsedStyle.m_borderColour;
+                borderColour.MakeDisabled(m_accordion->m_disabledBrightness);
             }
 
-            textPoint = accordion->disabledTextPoint;
+            textPoint = m_accordion->disabledTextPoint;
         }
 
         //the collapsed versions don't have a bottom border since
@@ -272,56 +272,56 @@ void wxAccordionFold::onPaint( wxPaintEvent& event )
         //In all other situations, we want the bottom border, so
         //we need to add it back:
 
-        if( accordion->accordionPadding!=0 && borderColour != wxTransparentColour )
+        if( m_accordion->m_accordionPadding!=0 && borderColour != wxTransparentColour )
         {
-            int width = accordion->captionBarCollapsed.GetWidth();
-            int height  = accordion->captionBarCollapsed.GetHeight();
+            int width = m_accordion->captionBarCollapsed.GetWidth();
+            int height  = m_accordion->captionBarCollapsed.GetHeight();
             myDC.SetPen(borderColour);
 
-            myDC.DrawLine(accordion->captionBarRadius+1,height-1,width-(accordion->captionBarRadius)-1,height-1);
+            myDC.DrawLine(m_accordion->m_captionBarRadius+1,height-1,width-(m_accordion->m_captionBarRadius)-1,height-1);
         }
     }
     else
     {
-        if(isHighlighted)
+        if(m_isHighlighted)
         {
-            myDC.DrawBitmap(accordion->captionBarExpandedHL,0,0 ,true);
-            myDC.SetFont(accordion->expandedHLFont);
-            myDC.SetTextForeground(accordion->expandedHLTextColour);
+            myDC.DrawBitmap(m_accordion->captionBarExpandedHL,0,0 ,true);
+            myDC.SetFont(m_accordion->m_expandedHLStyle.m_font);
+            myDC.SetTextForeground(m_accordion->m_expandedHLStyle.m_textColour);
 
-            borderColour = accordion->expandedHLBorderColour;
-            textPoint = accordion->expandedHLTextPoint;
+            borderColour = m_accordion->m_expandedHLStyle.m_borderColour;
+            textPoint = m_accordion->expandedHLTextPoint;
         }
         else
         {
-            myDC.DrawBitmap(accordion->captionBarExpanded,0,0 ,true);
-            myDC.SetFont(accordion->expandedFont);
-            myDC.SetTextForeground(accordion->expandedTextColour);
+            myDC.DrawBitmap(m_accordion->captionBarExpanded,0,0 ,true);
+            myDC.SetFont(m_accordion->m_expandedStyle.m_font);
+            myDC.SetTextForeground(m_accordion->m_expandedStyle.m_textColour);
 
-            borderColour = accordion->expandedBorderColour;
-            textPoint = accordion->expandedTextPoint;
+            borderColour = m_accordion->m_expandedStyle.m_borderColour;
+            textPoint = m_accordion->expandedTextPoint;
         }
     }
 
-    if(image!=wxAccordion::NO_IMAGE)
+    if(m_image!=wxAccordion::NO_IMAGE)
     {
-        if( wxImageList* il = accordion->GetImageList() )
+        if( wxImageList* il = m_accordion->GetImageList() )
         {
-            il->Draw(image, myDC, accordion->iconRect.x, accordion->iconRect.y, wxIMAGELIST_DRAW_TRANSPARENT);
+            il->Draw(m_image, myDC, m_accordion->iconRect.x, m_accordion->iconRect.y, wxIMAGELIST_DRAW_TRANSPARENT);
         }
     }
 
-    wxString text=wxControl::Ellipsize(caption,myDC,wxELLIPSIZE_MIDDLE,accordion->textWidth,wxELLIPSIZE_FLAGS_NONE );
-    curTextRect = wxRect( textPoint, myDC.GetTextExtent(text) );
+    wxString text=wxControl::Ellipsize(m_caption,myDC,wxELLIPSIZE_MIDDLE,m_accordion->textWidth,wxELLIPSIZE_FLAGS_NONE );
+    m_curTextRect = wxRect( textPoint, myDC.GetTextExtent(text) );
     myDC.DrawText(text, textPoint);
 
-    if(isCollapsed)
+    if(m_isCollapsed)
     {
-        myDC.DrawBitmap(accordion->expandButton,accordion->buttonRect.GetTopLeft() ,true);
+        myDC.DrawBitmap(m_accordion->m_expandButton,m_accordion->buttonRect.GetTopLeft() ,true);
     }
     else
     {
-        myDC.DrawBitmap(accordion->collapseButton,accordion->buttonRect.GetTopLeft() ,true);
+        myDC.DrawBitmap(m_accordion->m_collapseButton,m_accordion->buttonRect.GetTopLeft() ,true);
 
         //Now we need to draw the page's background.
         //Unfortunately, we can't cache a bitmap like we did for the caption bar and so
@@ -329,12 +329,155 @@ void wxAccordionFold::onPaint( wxPaintEvent& event )
         //height ahead of time.
 
         wxBitmap temp;
-        int width(GetRect().GetWidth()),height(GetRect().GetHeight()-accordion->captionBarHeight);
-        accordion->buildBitmap(temp, true, 2,  width, height,  0, 0, 0, height,accordion->pageRadius,accordion->pageBorderColour, accordion->pageBG, accordion->pageStops);
-        myDC.DrawBitmap(temp,0,accordion->captionBarHeight,true);
+        int width(GetRect().GetWidth()),height(GetRect().GetHeight()-m_accordion->captionBarHeight);
+        m_accordion->buildBitmap(temp, true, 2,  width, height,  0, 0, 0, height,m_accordion->m_pageRadius,m_accordion->m_pageStyle);
+        myDC.DrawBitmap(temp,0,m_accordion->captionBarHeight,true);
     }
 }
 #endif
+
+
+/////////////////////////////////////////////////
+//// wxAccordionStyle
+//////////////////////////////////////////////////
+
+/// \brief Default constructor.
+///
+///
+wxAccordionStyle::wxAccordionStyle()
+:m_stops(*wxWHITE,*wxWHITE),m_borderColour(*wxBLACK),m_background(wxNullBitmap),
+ m_textColour(*wxBLACK),m_font(*wxNORMAL_FONT),m_accordion(NULL),m_isPageStyle(false)
+{
+}
+
+/// \brief Returns the first (top) colour.
+///
+///
+wxColour wxAccordionStyle::GetColour1() const{return m_stops.GetStartColour();}
+
+/// \brief 	Returns a copy of the gradient stops used for this style.
+///
+///
+wxGraphicsGradientStops wxAccordionStyle::GetGradientStops() const{return m_stops;}
+
+/// \brief Returns the second (bottom) colour.
+///
+///
+wxColour wxAccordionStyle::GetColour2() const{return m_stops.GetEndColour();}
+
+/// \brief Returns a copy of the background bitmap used for this style.
+///
+///
+wxBitmap wxAccordionStyle::GetBGBitmap() const{return m_background;}
+
+/// \brief Returns the border colour.
+///
+///
+wxColour wxAccordionStyle::GetBorderColour() const{return m_borderColour;}
+
+/// \brief Returns the text colour.
+///
+///
+wxColour wxAccordionStyle::GetTextColour() const{return m_textColour;}
+
+/// \brief Returns a copy of the font used for this style.
+///
+///
+wxFont   wxAccordionStyle::GetFont() const{return m_font;}
+
+/// \brief Sets the first (top) colour.
+///
+///
+void wxAccordionStyle::SetColour1(const wxColour& col)
+{
+    if( m_stops.GetStartColour() != col )
+    {
+        m_stops.SetStartColour(col);
+        if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+    }
+}
+
+/// \brief Clears any gradient stops that have been set.
+///
+///
+void wxAccordionStyle::ClearGradientStops()
+{
+    m_stops=wxGraphicsGradientStops(m_stops.GetStartColour(), m_stops.GetEndColour());
+    if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+}
+
+/// \brief Adds a gradient stop to the set of colours used for this style.
+///
+///
+void wxAccordionStyle::AddGradientStop(const wxColour& col,float pos)
+{
+    m_stops.Add( col, pos);
+    if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+}
+
+/// \brief Sets the second (bottom) colour.
+///
+///
+void wxAccordionStyle::SetColour2(const wxColour& col)
+{
+    if( m_stops.GetEndColour() != col )
+    {
+        m_stops.SetEndColour(col);
+        if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+    }
+
+}
+
+/// \brief Sets the background bitmap used for this style.
+///
+///
+void wxAccordionStyle::SetBGBitmap(const wxBitmap& b)
+{
+    m_background=b;
+    if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+}
+
+/// \brief Sets the border colour.
+///
+///
+void wxAccordionStyle::SetBorderColour(const wxColour& col)
+{
+    if(m_isPageStyle)
+    {
+        if(m_accordion!=NULL) m_accordion->setPageBorderColourHelper(col);
+    }
+    else if( m_borderColour != col )
+    {
+        m_borderColour=col;
+        if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+    }
+}
+
+/// \brief Sets the text colour.
+///
+///
+void wxAccordionStyle::SetTextColour(const wxColour& col)
+{
+    if( m_textColour != col )
+    {
+        m_textColour=col;
+        if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+    }
+}
+
+/// \brief Sets the font used for this style.
+///
+///
+void wxAccordionStyle::SetFont(const wxFont& f)
+{
+    if( m_font != f )
+    {
+        m_font=f;
+        if(m_accordion!=NULL) m_accordion->m_changesMade=true;
+    }
+
+    m_font=f;
+}
 
 /////////////////////////////////////////////////
 //// wxAccordion
@@ -346,43 +489,43 @@ wxDEFINE_EVENT(wxEVT_ACCORDION_COLLAPSING, wxBookCtrlEvent);
 wxDEFINE_EVENT(wxEVT_ACCORDION_EXPANDED, wxBookCtrlEvent);
 wxDEFINE_EVENT(wxEVT_ACCORDION_EXPANDING, wxBookCtrlEvent);
 
-/*! \brief Default constructor.
-*
-*/
+/// \brief Default constructor.
+///
+///
 wxAccordion::wxAccordion()
 {
     Init();
 }
 
-/*! \brief Constructor.
- *
- * \param parent	The parent window.
- * \param id	    An identifier for the panel. wxID_ANY is taken to mean a default.
- * \param pos	The panel position. The value wxDefaultPosition indicates a default position, chosen by either the windowing system or wxWidgets, depending on platform.
- * \param size	The panel size. The value wxDefaultSize indicates a default size, chosen by either the windowing system or wxWidgets, depending on platform.
- * \param style	The window style. See wxPanel.
- * \param name	Window name.
- * \sa Create
- */
+/// \brief Constructor.
+///
+/// \param parent	The parent window.
+/// \param id	    An identifier for the panel. wxID_ANY is taken to mean a default.
+/// \param pos	The panel position. The value wxDefaultPosition indicates a default position, chosen by either the windowing system or wxWidgets, depending on platform.
+/// \param size	The panel size. The value wxDefaultSize indicates a default size, chosen by either the windowing system or wxWidgets, depending on platform.
+/// \param style	The window style. See wxPanel.
+/// \param name	Window name.
+/// \sa Create
+///
 wxAccordion::wxAccordion( wxWindow* parent, wxWindowID id , const wxPoint& pos , const wxSize& size , long style, const wxString &name )
 {
     Init();
     Create(parent, id, pos, size, style);
 }
 
-/*! \brief Destructor.
-*
-* Deletes any child windows before deleting the physical window.
-*/
+/// \brief Destructor.
+///
+/// Deletes any child windows before deleting the physical window.
+///
 wxAccordion::~wxAccordion()
 {
     //?
 }
 
-/*! \brief Used for two-step accordion construction.
-*
-* See wxAccordion() for details.
-*/
+///! \brief Used for two-step accordion construction.
+///
+/// See wxAccordion() for details.
+///
 bool wxAccordion::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString &name)
 {
     if (!wxBookCtrlBase::Create(parent, id, pos, size, style,name))
@@ -396,63 +539,59 @@ bool wxAccordion::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 void wxAccordion::Init()
 {
     m_selection=wxNOT_FOUND;
+    m_trackedImageList=NULL;
 
-    trackedImageList=NULL;
-    //lastFold=NULL;
+    m_accordionPadding=5;
+    m_onlyToggleWithButton=true;
+    m_pagePadding=5;
+    m_minCaptionHeight=20;
+    m_iconMargin=wxSize(5,5);
+    m_textMargin=wxSize(5,5);
+    m_buttonMargin=wxSize(5,5);
+    m_customDisabledState=false;
+    m_useHighlighting=false;
+    m_disabledBrightness=60;
+    m_collapseButton=wxNullBitmap;
+    m_expandButton=wxNullBitmap;
+    m_accordionBG=wxNullBitmap;
+    m_captionBarRadius=0.0;
+    m_gradientAngle=0.0;
+    m_hasBottomBorderWhenExpanded=true;
+    m_pageRadius=0.0;
 
-    accordionPadding=5;
-    onlyToggleWithButton=true;
-    pagePadding=5;
-    minCaptionHeight=20;
-    iconMargin=wxSize(5,5);
-    textMargin=wxSize(5,5);
-    buttonMargin=wxSize(5,5);
-    customDisabledState=false;
-    useHighlighting=false;
-    disabledBrightness=60;
-    collapseButton=wxNullBitmap;
-    expandButton=wxNullBitmap;
+    m_collapsedStyle.m_accordion    = this;
+    m_collapsedStyle.m_stops        = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ),wxSystemSettings::GetColour( wxSYS_COLOUR_GRADIENTINACTIVECAPTION  ));
+    m_collapsedStyle.m_borderColour = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
+    m_collapsedStyle.m_background   = wxNullBitmap;
+    m_collapsedStyle.m_textColour   = wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTIONTEXT );
+    m_collapsedStyle.m_font         = GetFont();
 
-    accordionBG=wxNullBitmap;
-    collapsedBG=wxNullBitmap;
-    expandedBG=wxNullBitmap;
-    pageBG=wxNullBitmap;
-    collapsedHLBG=wxNullBitmap;
-    expandedHLBG=wxNullBitmap;
-    disabledBG=wxNullBitmap;
+    m_expandedStyle.m_accordion    = this;
+    m_expandedStyle.m_stops        = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ),wxSystemSettings::GetColour( wxSYS_COLOUR_GRADIENTACTIVECAPTION  ));
+    m_expandedStyle.m_borderColour = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
+    m_expandedStyle.m_background   = wxNullBitmap;
+    m_expandedStyle.m_textColour   = wxSystemSettings::GetColour( wxSYS_COLOUR_CAPTIONTEXT );
+    m_expandedStyle.m_font         = GetFont();
 
-    captionBarRadius=0.0;
-    gradientAngle=0.0;
-    hasBottomBorderWhenExpanded=true;
+    m_collapsedHLStyle.m_accordion    = this;
+    m_collapsedHLStyle.m_stops        = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ),wxSystemSettings::GetColour( wxSYS_COLOUR_GRADIENTINACTIVECAPTION  ));
+    m_collapsedHLStyle.m_borderColour = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
+    m_collapsedHLStyle.m_background   = wxNullBitmap;
+    m_collapsedHLStyle.m_textColour   = wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTIONTEXT );
+    m_collapsedHLStyle.m_font         = GetFont();
 
-    expandedStops = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ),wxSystemSettings::GetColour( wxSYS_COLOUR_GRADIENTACTIVECAPTION ));
-    expandedBorderColour=wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
-    expandedTextColour=wxSystemSettings::GetColour( wxSYS_COLOUR_CAPTIONTEXT );
-    expandedFont = GetFont();
+    m_disabledStyle.m_accordion    = this;
+    m_disabledStyle.m_stops        = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK  ),wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK   ));
+    m_disabledStyle.m_borderColour = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
+    m_disabledStyle.m_background   = wxNullBitmap;
+    m_disabledStyle.m_textColour   = wxSystemSettings::GetColour( wxSYS_COLOUR_GRAYTEXT );
+    m_disabledStyle.m_font         = GetFont();
 
-    collapsedStops = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ),wxSystemSettings::GetColour( wxSYS_COLOUR_GRADIENTINACTIVECAPTION  ));
-    collapsedBorderColour=wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
-    collapsedTextColour=wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTIONTEXT );
-    collapsedFont = GetFont();
-
-    expandedHLStops = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ),wxSystemSettings::GetColour( wxSYS_COLOUR_GRADIENTACTIVECAPTION  ));
-    expandedHLBorderColour=wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
-    expandedHLTextColour=wxSystemSettings::GetColour( wxSYS_COLOUR_CAPTIONTEXT );
-    expandedHLFont = GetFont();
-
-    collapsedHLStops = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ),wxSystemSettings::GetColour( wxSYS_COLOUR_GRADIENTINACTIVECAPTION  ));
-    collapsedHLBorderColour=wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
-    collapsedHLTextColour=wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTIONTEXT );
-    collapsedHLFont = GetFont();
-
-    disabledStops = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK  ),wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK   ));
-    disabledBorderColour=wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME );
-    disabledTextColour=wxSystemSettings::GetColour( wxSYS_COLOUR_GRAYTEXT );
-    disabledFont = GetFont();
-
-    pageRadius=0.0;
-    pageStops=wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK ),wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK ));
-    pageBorderColour=wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER );
+    m_pageStyle.m_accordion    = this;
+    m_pageStyle.m_stops        = wxGraphicsGradientStops(wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK ),wxSystemSettings::GetColour( wxSYS_COLOUR_FRAMEBK ));
+    m_pageStyle.m_borderColour = wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER );
+    m_pageStyle.m_background   = wxNullBitmap;
+    m_pageStyle.m_isPageStyle  = true;
 
     computeCaptionInfo();
 }
@@ -481,7 +620,7 @@ void wxAccordion::InitAccordion(long style)
 
     wxBoxSizer* b_sizer = new wxBoxSizer( wxVERTICAL );
 
-    b_sizer->Add( 0, accordionPadding, 0, 0, 0 );
+    b_sizer->Add( 0, m_accordionPadding, 0, 0, 0 );
 
     if(style&wxACCORDION_COLLAPSE_TO_BOTTOM)
     {
@@ -492,17 +631,15 @@ void wxAccordion::InitAccordion(long style)
         b_sizer->Add( 0, 0, 0, 0, 0 );
     }
 
-    lastBorder = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize(-1,1), wxFULL_REPAINT_ON_RESIZE );
-    lastBorder->SetBackgroundStyle(wxBG_STYLE_PAINT);
-    wxColour c = collapsedBorderColour;
-    lastBorder->SetForegroundColour(c.MakeDisabled(disabledBrightness));
-
-    lastBorder->Hide();
-    b_sizer->Add( lastBorder,0, wxEXPAND, 0 );
+    m_lastBorder = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize(-1,1), wxFULL_REPAINT_ON_RESIZE );
+    m_lastBorder->SetBackgroundStyle(wxBG_STYLE_PAINT);
+    m_lastBorder->SetForegroundColour( m_collapsedStyle.m_borderColour );
+    m_lastBorder->Hide();
+    b_sizer->Add( m_lastBorder,0, wxEXPAND, 0 );
 
     SetSizer( b_sizer );
 
-    lastBorder->Bind( wxEVT_PAINT,   &wxAccordion::onPaintBorder  ,this );
+    m_lastBorder->Bind( wxEVT_PAINT,   &wxAccordion::onPaintBorder  ,this );
     Bind( wxEVT_SIZE,        &wxAccordion::onSize,       this );
     Bind( wxEVT_LEFT_UP,     &wxAccordion::onLeftUp,     this );
     Bind( wxEVT_LEFT_DCLICK, &wxAccordion::onLeftDClick, this );
@@ -510,12 +647,12 @@ void wxAccordion::InitAccordion(long style)
 
 void wxAccordion::onPaintBorder( wxPaintEvent& event )
 {
-    wxAutoBufferedPaintDC myDC(lastBorder);
+    wxAutoBufferedPaintDC myDC(m_lastBorder);
     myDC.Clear();
 
     int width = captionBarCollapsed.GetWidth();
-    myDC.SetPen( lastBorder->GetForegroundColour() );
-    myDC.DrawLine(captionBarRadius,0,width-captionBarRadius,0);
+    myDC.SetPen( m_lastBorder->GetForegroundColour() );
+    myDC.DrawLine(m_captionBarRadius,0,width-m_captionBarRadius,0);
 }
 
 void wxAccordion::onPaint( wxPaintEvent& event )
@@ -526,14 +663,14 @@ void wxAccordion::onPaint( wxPaintEvent& event )
 
     int width = GetSize().GetWidth();
     int height = GetSize().GetHeight();
-    int bmpwidth = accordionBG.GetWidth();
-    int bmpheight = accordionBG.GetHeight();
+    int bmpwidth = m_accordionBG.GetWidth();
+    int bmpheight = m_accordionBG.GetHeight();
 
     for(int i=0;i*bmpheight<height;i++)
     {
         for(int j=0;j*bmpwidth<width;j++)
         {
-            myDC.DrawBitmap(accordionBG,j*bmpwidth,i*bmpheight,true);
+            myDC.DrawBitmap(m_accordionBG,j*bmpwidth,i*bmpheight,true);
         }
     }
 }
@@ -591,11 +728,11 @@ void wxAccordion::onLeftDClick( wxMouseEvent& event )
     {
         return;
     }
-    else if( IsCollapsed(fold) && expandButton.IsOk() && !( !onlyToggleWithButton ||  (flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON)) )
+    else if( IsCollapsed(fold) && m_expandButton.IsOk() && !( !m_onlyToggleWithButton ||  (flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON)) )
     {
         SetSelection(fold);
     }
-    else if(flags&wxACCORDION_HITTEST_ONCAPTION && collapseButton.IsOk() && !( !onlyToggleWithButton ||  (flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON)) )
+    else if(flags&wxACCORDION_HITTEST_ONCAPTION && m_collapseButton.IsOk() && !( !m_onlyToggleWithButton ||  (flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON)) )
     {
         SetSelection(fold);
     }
@@ -619,9 +756,9 @@ void wxAccordion::onLeftUp( wxMouseEvent& event )
     }
     else if( IsCollapsed(fold) )
     {
-        if(expandButton.IsOk())
+        if(m_expandButton.IsOk())
         {
-            if(!onlyToggleWithButton ||  (flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON) )
+            if(!m_onlyToggleWithButton ||  (flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON) )
             {
                 SetSelection(fold);
             }
@@ -633,9 +770,9 @@ void wxAccordion::onLeftUp( wxMouseEvent& event )
     }
     else if( flags&wxACCORDION_HITTEST_ONCAPTION )
     {
-        if(collapseButton.IsOk())
+        if(m_collapseButton.IsOk())
         {
-            if( !onlyToggleWithButton || flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON )
+            if( !m_onlyToggleWithButton || flags&wxACCORDION_HITTEST_ONCAPTIONBUTTON )
             {
                 SetSelection(fold);
             }
@@ -646,9 +783,6 @@ void wxAccordion::onLeftUp( wxMouseEvent& event )
         }
     }
 }
-
-
-
 
 bool wxAccordion::SetBackgroundColour(const wxColour &colour)
 {
@@ -665,7 +799,7 @@ void wxAccordion::SetWindowStyleFlag(long style)
     //should layout be done here?
     if( style != GetWindowStyleFlag())
     {
-        changesMade=true;
+        m_changesMade=true;
     }
 
     adjustForStyle( style );
@@ -677,29 +811,29 @@ void wxAccordion::SetWindowStyleFlag(long style)
         //We need to sink the floated items, so first make a vector
         //copy of the folds:
         wxSizer* szr = GetSizer();
-        std::vector<wxAccordionFold*> m_folds;
+        std::vector<wxAccordionFold*> folds;
 
         for(size_t i=0;i<GetPageCount();i++)
         {
-            m_folds.push_back(getFold(i));
+            folds.push_back(getFold(i));
         }
 
         //now remove all the folds from the sizer:
-        for(std::vector<wxAccordionFold*>::iterator it = m_folds.begin();it!=m_folds.end();it++)
+        for(std::vector<wxAccordionFold*>::iterator it = folds.begin();it!=folds.end();it++)
         {
             szr->Detach(*it);
         }
-        szr->Detach(lastBorder);
+        szr->Detach(m_lastBorder);
 
 
         //add back all folds:
         int proportion;
-        wxAccordionFold* m_fold;
-        for(std::vector<wxAccordionFold*>::iterator it = m_folds.begin();it!=m_folds.end();it++)
+        wxAccordionFold* fold;
+        for(std::vector<wxAccordionFold*>::iterator it = folds.begin();it!=folds.end();it++)
         {
-            m_fold = *it;
+            fold = *it;
 
-            if( m_fold->isCollapsed || m_fold->isFixedHeight )
+            if( fold->m_isCollapsed || fold->m_isFixedHeight )
             {
                 proportion=0;
             }
@@ -708,10 +842,10 @@ void wxAccordion::SetWindowStyleFlag(long style)
                 proportion=1;
             }
 
-            szr->Add( m_fold, proportion, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, accordionPadding );
-            //lastFold=m_fold;
+            szr->Add( fold, proportion, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, m_accordionPadding );
+            //lastFold=fold;
         }
-        szr->Add( lastBorder, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 0 );
+        szr->Add( m_lastBorder, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 0 );
 
     }
 
@@ -726,17 +860,17 @@ void wxAccordion::SetWindowStyleFlag(long style)
 bool wxAccordion::changesWereMade()
 {
     //this is an ugly hackaround intended to help with the fact that
-    //AssignImageList isn't virtual, so I can't just set changesMade=true
+    //AssignImageList isn't virtual, so I can't just set m_changesMade=true
     //there.  Without this extra check, refresh and layout won't detect
     //changes made to the imagelist, and so won't call computeCaptionInfo()
     //when the imagelist was changed.
 
-    if( trackedImageList != GetImageList() )
+    if( m_trackedImageList != GetImageList() )
     {
-        trackedImageList=GetImageList();
+        m_trackedImageList=GetImageList();
         return true;
     }
-    else if(changesMade)
+    else if(m_changesMade)
     {
         return true;
     }
@@ -760,7 +894,7 @@ void wxAccordion::Refresh( bool eraseBackground, const wxRect *rect)
 
 void wxAccordion::onSize( wxSizeEvent& event )
 {
-    changesMade=true;
+    m_changesMade=true;
     event.Skip();
 }
 
@@ -785,8 +919,8 @@ int wxAccordion::HitTest( const wxPoint& pt, long* flags ) const
 
     for(size_t i=0;i<GetPageCount();i++)
     {
-        wxAccordionFold* m_fold = getFold(i);
-        wxRect r = m_fold->GetRect();
+        wxAccordionFold* fold = getFold(i);
+        wxRect r = fold->GetRect();
 
         if( !r.Contains(pt) )
         {
@@ -808,7 +942,7 @@ int wxAccordion::HitTest( const wxPoint& pt, long* flags ) const
 
             if(IsExpanded(i))
             {
-                if(expandedBorderColour!=wxTransparentColour)
+                if(m_expandedStyle.m_borderColour!=wxTransparentColour)
                 {
                     if(pt.y==r.y || pt.x ==r.x || pt.y==r.y +captionBarHeight-1 || pt.x ==r.GetRight()  )
                     {
@@ -818,7 +952,7 @@ int wxAccordion::HitTest( const wxPoint& pt, long* flags ) const
             }
             else
             {
-                if(collapsedBorderColour!=wxTransparentColour)
+                if(m_collapsedStyle.m_borderColour!=wxTransparentColour)
                 {
                     if(pt.y==r.y || pt.x ==r.x || pt.y==r.y +captionBarHeight-1 || pt.x ==r.GetRight()  )
                     {
@@ -837,7 +971,7 @@ int wxAccordion::HitTest( const wxPoint& pt, long* flags ) const
                 *flags = *flags | wxACCORDION_HITTEST_ONCAPTIONICON;
             }
 
-            if(  m_fold->curTextRect.Contains(wxPoint(pt.x-r.x,pt.y-r.y)))
+            if(  fold->m_curTextRect.Contains(wxPoint(pt.x-r.x,pt.y-r.y)))
             {
                 *flags = *flags | wxACCORDION_HITTEST_ONCAPTIONLABEL;
             }
@@ -846,12 +980,12 @@ int wxAccordion::HitTest( const wxPoint& pt, long* flags ) const
         {
             *flags = *flags | wxACCORDION_HITTEST_ONPAGE;
 
-            if(pagePadding>0)
+            if(m_pagePadding>0)
             {
                 if( pt.x==r.x || pt.y==r.GetBottom() ||pt.x==r.GetRight()   )
                 {
 
-                    if(pageBorderColour!=wxTransparentColour)
+                    if(m_pageStyle.m_borderColour!=wxTransparentColour)
                     {
                         *flags = *flags | wxACCORDION_HITTEST_ONPAGEBORDER;
                     }
@@ -867,10 +1001,10 @@ int wxAccordion::HitTest( const wxPoint& pt, long* flags ) const
                         //if the border is transparent, we can use assume there
                         //are pagePadding pixels on the top.
                         //Otherwise there are pagePadding-1 pixels.
-                        pt.x-r.x<pagePadding ||
-                        pt.y-(r.y+captionBarHeight)< (pageBorderColour==wxTransparentColour?pagePadding:pagePadding-1) ||
-                        r.GetBottom()-pt.y<pagePadding ||
-                        r.GetRight()-pt.x<pagePadding
+                        pt.x-r.x<m_pagePadding ||
+                        pt.y-(r.y+captionBarHeight)< (m_pageStyle.m_borderColour==wxTransparentColour?m_pagePadding:m_pagePadding-1) ||
+                        r.GetBottom()-pt.y<m_pagePadding ||
+                        r.GetRight()-pt.x<m_pagePadding
                     )
                     {
                         *flags = *flags | wxACCORDION_HITTEST_INPAGEPADDING;
@@ -898,7 +1032,7 @@ void wxAccordion::computeCaptionInfo()
     //3) build bitmaps that can be used for caption bar backgrounds
     //   when they need to be drawn.
 
-    changesMade=false;
+    m_changesMade=false;
     int oldHeight = captionBarHeight;
 
     //First find the needed captionBarHeight and the
@@ -906,15 +1040,15 @@ void wxAccordion::computeCaptionInfo()
     //so many possibilities, this is a slightly complicated process.
 
     wxMemoryDC memDC;
-    memDC.SetFont(expandedFont);
+    memDC.SetFont(m_expandedStyle.m_font);
     int expandedTextHeight = memDC.GetFontMetrics().height;
-    memDC.SetFont(collapsedFont);
+    memDC.SetFont(m_collapsedStyle.m_font);
     int collapsedTextHeight = memDC.GetFontMetrics().height;
-    memDC.SetFont(collapsedHLFont);
+    memDC.SetFont(m_collapsedHLStyle.m_font);
     int collapsedHLTextHeight = memDC.GetFontMetrics().height;
-    memDC.SetFont(expandedHLFont);
+    memDC.SetFont(m_expandedHLStyle.m_font);
     int expandedHLTextHeight = memDC.GetFontMetrics().height;
-    memDC.SetFont(disabledFont);
+    memDC.SetFont(m_disabledStyle.m_font);
     int disabledTextHeight = memDC.GetFontMetrics().height;
 
     int textHeight = expandedTextHeight;
@@ -935,26 +1069,26 @@ void wxAccordion::computeCaptionInfo()
         textHeight = disabledTextHeight;
     }
 
-    int totalTextHeight = textHeight + 2*textMargin.GetHeight();
+    int totalTextHeight = textHeight + 2*m_textMargin.GetHeight();
 
     int iconWidth(0),iconHeight(0),totalIconHeight(0);
     if(wxImageList* il=	GetImageList())
     {
         il->GetSize(0, iconWidth, iconHeight);
-        totalIconHeight = iconHeight + 2*iconMargin.GetHeight();
+        totalIconHeight = iconHeight + 2*m_iconMargin.GetHeight();
     }
 
-    int collapseButtonHeight = collapseButton.GetHeight();
-    int expandButtonHeight = expandButton.GetHeight();
+    int collapseButtonHeight = m_collapseButton.GetHeight();
+    int expandButtonHeight = m_expandButton.GetHeight();
     int buttonHeight = collapseButtonHeight>expandButtonHeight?collapseButtonHeight:expandButtonHeight;
 
-    int collapseButtonWidth = collapseButton.GetWidth();
-    int expandButtonWidth = expandButton.GetWidth();
+    int collapseButtonWidth = m_collapseButton.GetWidth();
+    int expandButtonWidth = m_expandButton.GetWidth();
     int buttonWidth  = collapseButtonWidth>expandButtonWidth?collapseButtonWidth:expandButtonWidth;
 
-    int totalButtonHeight = buttonHeight+ 2*buttonMargin.GetHeight();
+    int totalButtonHeight = buttonHeight+ 2*m_buttonMargin.GetHeight();
 
-    captionBarHeight=minCaptionHeight;
+    captionBarHeight=m_minCaptionHeight;
 
     if(totalTextHeight>captionBarHeight)
     {
@@ -973,28 +1107,28 @@ void wxAccordion::computeCaptionInfo()
 
     int butnLeftPos(0),iconLeftPos(0),textLeftPos(0);
     textWidth = r.GetWidth()
-                  - 2*textMargin.GetWidth()
-                  - 2*accordionPadding
+                  - 2*m_textMargin.GetWidth()
+                  - 2*m_accordionPadding
                   - buttonWidth
                   - iconWidth
-                  - (buttonWidth!=0?buttonMargin.GetWidth():0)
-                  - (iconWidth!=0?iconMargin.GetWidth():0)
+                  - (buttonWidth!=0?m_buttonMargin.GetWidth():0)
+                  - (iconWidth!=0?m_iconMargin.GetWidth():0)
                   ;
 
     if(GetWindowStyle() & wxACCORDION_BUTTON_LEFT)
     {
-        butnLeftPos = buttonMargin.GetWidth();
-        iconLeftPos = buttonWidth+(buttonWidth!=0?buttonMargin.GetWidth():0)
-                        + iconMargin.GetWidth();
-        textLeftPos = buttonWidth+(buttonWidth!=0?buttonMargin.GetWidth():0)
-                        + iconWidth  +(iconWidth!=0?iconMargin.GetWidth():0)
-                        + textMargin.GetWidth();
+        butnLeftPos = m_buttonMargin.GetWidth();
+        iconLeftPos = buttonWidth+(buttonWidth!=0?m_buttonMargin.GetWidth():0)
+                        + m_iconMargin.GetWidth();
+        textLeftPos = buttonWidth+(buttonWidth!=0?m_buttonMargin.GetWidth():0)
+                        + iconWidth  +(iconWidth!=0?m_iconMargin.GetWidth():0)
+                        + m_textMargin.GetWidth();
     }
     else
     {
-        butnLeftPos = r.GetWidth()-2*accordionPadding-buttonWidth-buttonMargin.GetWidth();
-        iconLeftPos = iconMargin.GetWidth();
-        textLeftPos = iconWidth+(iconWidth!=0?iconMargin.GetWidth():0) + textMargin.GetWidth();
+        butnLeftPos = r.GetWidth()-2*m_accordionPadding-buttonWidth-m_buttonMargin.GetWidth();
+        iconLeftPos = m_iconMargin.GetWidth();
+        textLeftPos = iconWidth+(iconWidth!=0?m_iconMargin.GetWidth():0) + m_textMargin.GetWidth();
     }
 
     buttonRect           = wxRect(butnLeftPos, (captionBarHeight-buttonHeight)/2,        buttonWidth, buttonHeight);
@@ -1016,10 +1150,10 @@ void wxAccordion::computeCaptionInfo()
     }
 
     //Part3: build bitmaps for the caption bar backgrounnds
-    int width(GetRect().GetWidth()-2*accordionPadding);
+    int width(GetRect().GetWidth()-2*m_accordionPadding);
     int height = captionBarHeight;
 
-    double alpha=gradientAngle;
+    double alpha=m_gradientAngle;
 
     //a bunch of rigamarole to make sure -180<alpha<=180
     if(alpha>0)
@@ -1149,13 +1283,12 @@ void wxAccordion::computeCaptionInfo()
     //We're finally ready to build the bitmaps
     //bitmap for a collapsed caption bar:
 
-    buildBitmap(   captionBarCollapsed, false, 0, width, height, x1, y1, x2, y2,captionBarRadius,collapsedBorderColour,   collapsedBG,   collapsedStops);
-    buildBitmap(    captionBarExpanded,  hasBottomBorderWhenExpanded, 1, width, height, x1, y1, x2, y2,captionBarRadius,expandedBorderColour,    expandedBG,    expandedStops);
-
-    if(useHighlighting)
+    buildBitmap(   captionBarCollapsed, false, 0, width, height, x1, y1, x2, y2,m_captionBarRadius,m_collapsedStyle);
+    buildBitmap(    captionBarExpanded,  m_hasBottomBorderWhenExpanded, 1, width, height, x1, y1, x2, y2,m_captionBarRadius,m_expandedStyle);
+    if(m_useHighlighting)
     {
-        buildBitmap( captionBarCollapsedHL, false, 0, width, height, x1, y1, x2, y2,captionBarRadius,collapsedHLBorderColour, collapsedHLBG, collapsedHLStops);
-        buildBitmap(  captionBarExpandedHL,  hasBottomBorderWhenExpanded, 1, width, height, x1, y1, x2, y2,captionBarRadius,expandedHLBorderColour,  expandedHLBG,  expandedHLStops);
+        buildBitmap( captionBarCollapsedHL, false, 0, width, height, x1, y1, x2, y2,m_captionBarRadius,m_collapsedHLStyle);
+        buildBitmap(  captionBarExpandedHL,  m_hasBottomBorderWhenExpanded, 1, width, height, x1, y1, x2, y2,m_captionBarRadius,m_expandedHLStyle);
     }
     else
     {
@@ -1163,9 +1296,9 @@ void wxAccordion::computeCaptionInfo()
         captionBarExpandedHL=captionBarExpanded;
     }
 
-    if(customDisabledState)
+    if(m_customDisabledState)
     {
-        buildBitmap(    captionBarDisabled, false, 0, width, height, x1, y1, x2, y2,captionBarRadius,disabledBorderColour,    disabledBG,    disabledStops);
+        buildBitmap(    captionBarDisabled, false, 0, width, height, x1, y1, x2, y2,m_captionBarRadius,m_disabledStyle);
     }
     else
     {
@@ -1175,28 +1308,32 @@ void wxAccordion::computeCaptionInfo()
         //I'll just convert all the colors to disabled and build a new bitmap with
         //those colors.
 
-        wxColour c1 = collapsedStops.GetStartColour().MakeDisabled(disabledBrightness);
-        wxColour c2 = collapsedStops.GetEndColour().MakeDisabled(disabledBrightness);
-        wxGraphicsGradientStops gs(c1, c2);
+        wxColour c1 = m_collapsedStyle.m_stops.GetStartColour().MakeDisabled(m_disabledBrightness);
+        wxColour c2 = m_collapsedStyle.m_stops.GetEndColour().MakeDisabled(m_disabledBrightness);
+
+        wxAccordionStyle adhocStyle;
+        adhocStyle.m_stops = wxGraphicsGradientStops(c1, c2);
 
         wxColor bc;
-        for(size_t i=1;i<collapsedStops.GetCount()-1;i++)
+        for(size_t i=1;i<m_collapsedStyle.m_stops.GetCount()-1;i++)
         {
-            bc=collapsedStops.Item(i).GetColour();
-            bc.MakeDisabled(disabledBrightness);
-            gs.Add( bc, collapsedStops.Item(i).GetPosition() );
+            bc=m_collapsedStyle.m_stops.Item(i).GetColour();
+            bc.MakeDisabled(m_disabledBrightness);
+            adhocStyle.m_stops.Add( bc, m_collapsedStyle.m_stops.Item(i).GetPosition() );
         }
 
-        bc = collapsedBorderColour;
-        bc.MakeDisabled(disabledBrightness);
-        wxBitmap b = collapsedBG.ConvertToDisabled(disabledBrightness);
+        adhocStyle.m_borderColour = m_collapsedStyle.m_borderColour;
+        adhocStyle.m_borderColour.MakeDisabled(m_disabledBrightness);
+        adhocStyle.m_background = m_collapsedStyle.m_background.ConvertToDisabled(m_disabledBrightness);
 
-        buildBitmap(    captionBarDisabled, false, 0, width, height, x1, y1, x2, y2,captionBarRadius,bc,    b,    gs);
+        buildBitmap(    captionBarDisabled, false, 0, width, height, x1, y1, x2, y2,m_captionBarRadius,adhocStyle);
     }
 }
 
-void wxAccordion::buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, int width,int height, double x1,double y1,double x2,double y2, double radius, const wxColour& borderColour,const wxBitmap& bgBitmap,const wxGraphicsGradientStops& stops)
+void wxAccordion::buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, int width,int height, double x1,double y1,double x2,double y2, double radius, const wxAccordionStyle& style)
 {
+    //buildBitmap(out, bottomBorder, drawtype, width ,height, x1, y1, x2, y2,  radius, style.m_borderColour,wxNullBitmap,style.m_stops );
+
     //todo: in certain situations, we can, take some steps to
     //speed things up:
     //  -if stops only has 2 entries and they're both transparent, do nothing
@@ -1205,6 +1342,12 @@ void wxAccordion::buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, in
     //  -in all cases, if radius==0, we can just use
     //     a regular rectangle instead of a rounded rectangle.
     //  -only if all of those fail should we go through the whole process.
+
+    const wxColour& borderColour = style.m_borderColour;
+    const wxBitmap& bgBitmap = style.m_background;
+    const wxGraphicsGradientStops& stops = style.m_stops;
+
+
 
     bool roundTopOnly(drawtype==1),roundBottomOnly(drawtype==2);
 
@@ -1317,19 +1460,18 @@ void wxAccordion::buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, in
     out.SetMask(new wxMask(b1,wxColour(255,255,255)));
 }
 
-
 /// \brief Sets the accordion page with index n to have the enabled state.
 ///
 /// \sa Disable, IsEnabled
 void wxAccordion::Enable(size_t n)
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        m_fold->isEnabled=true;
-        m_fold->Refresh();
+        fold->m_isEnabled=true;
+        fold->Refresh();
 
-        lastBorder->SetForegroundColour(collapsedBorderColour);
-        lastBorder->Refresh();
+        m_lastBorder->SetForegroundColour(m_collapsedStyle.m_borderColour);
+        m_lastBorder->Refresh();
     }
 }
 
@@ -1342,21 +1484,21 @@ void wxAccordion::Enable(size_t n)
 /// \sa Enable, IsDisabled, SetDisabledBrightness
 void wxAccordion::Disable(size_t n)
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        m_fold->isEnabled=false;
-        m_fold->Refresh();
+        fold->m_isEnabled=false;
+        fold->Refresh();
 
-        if(customDisabledState)
+        if(m_customDisabledState)
         {
-            lastBorder->SetForegroundColour(disabledBorderColour);
+            m_lastBorder->SetForegroundColour(m_disabledStyle.m_borderColour);
         }
         else
         {
-            wxColour c = collapsedBorderColour;
-            lastBorder->SetForegroundColour( c.MakeDisabled(disabledBrightness) );
+            wxColour c = m_collapsedStyle.m_borderColour;
+            m_lastBorder->SetForegroundColour( c.MakeDisabled(m_disabledBrightness) );
         }
-        lastBorder->Refresh();
+        m_lastBorder->Refresh();
     }
     Collapse(n);
 
@@ -1368,9 +1510,9 @@ void wxAccordion::Disable(size_t n)
 /// \sa IsDisabled
 bool wxAccordion::IsEnabled(size_t n) const
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        return m_fold->isEnabled;
+        return fold->m_isEnabled;
     }
     else
     {
@@ -1384,9 +1526,9 @@ bool wxAccordion::IsEnabled(size_t n) const
 /// \sa IsEnabled
 bool wxAccordion::IsDisabled(size_t n) const
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        return !m_fold->isEnabled;
+        return !fold->m_isEnabled;
     }
     else
     {
@@ -1401,9 +1543,9 @@ bool wxAccordion::IsDisabled(size_t n) const
 /// \sa IsCollapsed
 bool wxAccordion::IsExpanded(size_t n) const
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        return !(m_fold->isCollapsed);
+        return !(fold->m_isCollapsed);
     }
     else
     {
@@ -1418,9 +1560,9 @@ bool wxAccordion::IsExpanded(size_t n) const
 /// \sa IsExpanded
 bool wxAccordion::IsCollapsed(size_t n) const
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        return m_fold->isCollapsed;
+        return fold->m_isCollapsed;
     }
     else
     {
@@ -1434,11 +1576,11 @@ bool wxAccordion::IsCollapsed(size_t n) const
 /// \sa IsExpanded, Collapse, Toggle
 void wxAccordion::Expand(size_t n)
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        if( m_fold->isCollapsed )
+        if( fold->m_isCollapsed )
         {
-            toggle(m_fold,n,false);
+            toggle(fold,n,false);
         }
     }
 }
@@ -1449,11 +1591,11 @@ void wxAccordion::Expand(size_t n)
 /// \sa IsCollapsed, Expand, Toggle
 void wxAccordion::Collapse(size_t n)
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        if( !m_fold->isCollapsed )
+        if( !fold->m_isCollapsed )
         {
-            toggle( m_fold, n,false);
+            toggle( fold, n,false);
         }
     }
 }
@@ -1464,9 +1606,9 @@ void wxAccordion::Collapse(size_t n)
 /// \sa Collapse, Expand
 void wxAccordion::Toggle(size_t n)
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        toggle(m_fold,n,false);
+        toggle(fold,n,false);
     }
 }
 
@@ -1481,9 +1623,9 @@ void wxAccordion::Toggle(size_t n)
 /// \sa SetFixedHeight, SetFixedSize
 void wxAccordion::SetFixedWidth(size_t n)
 {
-    if(wxAccordionFold* m_fold = getFold(n))
+    if(wxAccordionFold* fold = getFold(n))
     {
-        m_fold->SetFixedWidth();
+        fold->SetFixedWidth();
     }
 }
 
@@ -1498,9 +1640,9 @@ void wxAccordion::SetFixedWidth(size_t n)
 /// \sa SetFixedWidth, SetFixedSize
 void wxAccordion::SetFixedHeight(size_t n)
 {
-    if(wxAccordionFold* m_fold = getFold(n))
+    if(wxAccordionFold* fold = getFold(n))
     {
-        m_fold->SetFixedHeight();
+        fold->SetFixedHeight();
     }
 }
 
@@ -1515,10 +1657,10 @@ void wxAccordion::SetFixedHeight(size_t n)
 /// \sa SetFixedHeight, SetFixedWidth
 void wxAccordion::SetFixedSize(size_t n)
 {
-    if(wxAccordionFold* m_fold = getFold(n))
+    if(wxAccordionFold* fold = getFold(n))
     {
-        m_fold->SetFixedHeight();
-        m_fold->SetFixedWidth();
+        fold->SetFixedHeight();
+        fold->SetFixedWidth();
     }
 }
 
@@ -1533,11 +1675,11 @@ int wxAccordion::GetCaptionBarHeight() const
     return captionBarHeight;
 }
 
-void wxAccordion::toggle(wxAccordionFold* m_fold,size_t selection,bool useEvents)
+void wxAccordion::toggle(wxAccordionFold* fold,size_t selection,bool useEvents)
 {
     if(useEvents)
     {
-        wxBookCtrlEvent event2(m_fold->isCollapsed?wxEVT_ACCORDION_EXPANDING:wxEVT_ACCORDION_COLLAPSING, GetId(), selection, m_selection);
+        wxBookCtrlEvent event2(fold->m_isCollapsed?wxEVT_ACCORDION_EXPANDING:wxEVT_ACCORDION_COLLAPSING, GetId(), selection, m_selection);
         event2.SetEventObject(this);
         ProcessWindowEvent(event2);
 
@@ -1549,13 +1691,13 @@ void wxAccordion::toggle(wxAccordionFold* m_fold,size_t selection,bool useEvents
 
     Freeze();
 
-    if(m_fold->isCollapsed)
+    if(fold->m_isCollapsed)
     {
-        m_fold->Expand();
+        fold->Expand();
     }
     else
     {
-        m_fold->Collapse();
+        fold->Collapse();
     }
 
     int oldSelection = m_selection;
@@ -1563,17 +1705,17 @@ void wxAccordion::toggle(wxAccordionFold* m_fold,size_t selection,bool useEvents
 
     adjustForStyle( GetWindowStyleFlag() );
 
-    if( accordionPadding==0 )
+    if( m_accordionPadding==0 )
     {
-        if( m_fold == getFold(m_pages.size()-1) )
+        if( fold == getFold(m_pages.size()-1) )
         {
-            if(m_fold->isCollapsed && lastBorder->GetForegroundColour()!=wxTransparentColor)
+            if(fold->m_isCollapsed && m_lastBorder->GetForegroundColour()!=wxTransparentColor)
             {
-                lastBorder->Show();
+                m_lastBorder->Show();
             }
             else
             {
-                lastBorder->Hide();
+                m_lastBorder->Hide();
             }
         }
     }
@@ -1583,7 +1725,7 @@ void wxAccordion::toggle(wxAccordionFold* m_fold,size_t selection,bool useEvents
 
     if(useEvents)
     {
-        wxBookCtrlEvent event3(m_fold->isCollapsed?wxEVT_ACCORDION_COLLAPSED:wxEVT_ACCORDION_EXPANDED, GetId(), selection, oldSelection);
+        wxBookCtrlEvent event3(fold->m_isCollapsed?wxEVT_ACCORDION_COLLAPSED:wxEVT_ACCORDION_EXPANDED, GetId(), selection, oldSelection);
         event3.SetEventObject(this);
         ProcessWindowEvent(event3);
     }
@@ -1647,11 +1789,11 @@ wxAccordionFold* wxAccordion::getFold(size_t n) const
 
         for( size_t i = 2; i<szr->GetItemCount(); i++)
         {
-            if( wxAccordionFold* m_fold = wxDynamicCast(szr->GetItem(i)->GetWindow(),wxAccordionFold))
+            if( wxAccordionFold* fold = wxDynamicCast(szr->GetItem(i)->GetWindow(),wxAccordionFold))
             {
-                if( m_fold->GetPage()==m_pages[n] )
+                if( fold->GetPage()==m_pages[n] )
                 {
-                    found = m_fold;
+                    found = fold;
                     break;
                 }
             }
@@ -1665,9 +1807,9 @@ wxAccordionFold* wxAccordion::getFold(size_t n) const
         //item 0 is a spacer that servers as the top page margin
         //for the first item.  So the n-th fold, is the n+2th sizer item
 
-        if( wxAccordionFold* m_fold = wxDynamicCast(szr->GetItem(n+2)->GetWindow(),wxAccordionFold) )
+        if( wxAccordionFold* fold = wxDynamicCast(szr->GetItem(n+2)->GetWindow(),wxAccordionFold) )
         {
-            return m_fold;
+            return fold;
         }
         else
         {
@@ -1684,10 +1826,10 @@ wxAccordionFold* wxAccordion::getFold(size_t n) const
 
 bool wxAccordion::SetPageText(size_t n, const wxString& strText)
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        m_fold->caption = strText;
-        m_fold->Refresh();
+        fold->m_caption = strText;
+        fold->Refresh();
         return true;
     }
     else
@@ -1698,9 +1840,9 @@ bool wxAccordion::SetPageText(size_t n, const wxString& strText)
 
 wxString wxAccordion::GetPageText(size_t n) const
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        return m_fold->caption;
+        return fold->m_caption;
     }
     else
     {
@@ -1710,9 +1852,9 @@ wxString wxAccordion::GetPageText(size_t n) const
 
 int wxAccordion::GetPageImage(size_t n) const
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        return m_fold->image;
+        return fold->m_image;
     }
     else
     {
@@ -1722,10 +1864,10 @@ int wxAccordion::GetPageImage(size_t n) const
 
 bool wxAccordion::SetPageImage(size_t n, int imageId)
 {
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        m_fold->image=imageId;
-        m_fold->Refresh();
+        fold->m_image=imageId;
+        fold->Refresh();
         return true;
     }
     else
@@ -1738,9 +1880,9 @@ int wxAccordion::SetSelection(size_t n)
 {
     int old = m_selection;
 
-    if( wxAccordionFold* m_fold = getFold(n) )
+    if( wxAccordionFold* fold = getFold(n) )
     {
-        toggle(m_fold,n,true);
+        toggle(fold,n,true);
     }
 
     return old;
@@ -1757,16 +1899,16 @@ wxWindow* wxAccordion::DoRemovePage(size_t page)
 {
     wxWindow* win(NULL);
 
-    if(wxAccordionFold* m_fold = getFold(page) )
+    if(wxAccordionFold* fold = getFold(page) )
     {
         Freeze();
-        GetSizer()->Detach(m_fold);
-        wxWindow* win = m_fold->GetPage();
-        //somewhere we should check that m_pages[page]==m_fold->GetPage()
+        GetSizer()->Detach(fold);
+        wxWindow* win = fold->GetPage();
+        //somewhere we should check that m_pages[page]==fold->GetPage()
         //since if not, something has gone very wrong.
         //But then again, I'm not sure what could be done if they don't match.
         win->Reparent(this);
-        m_fold->Destroy();
+        fold->Destroy();
         if(page==m_selection)
         {
             m_selection=wxNOT_FOUND;
@@ -1797,50 +1939,93 @@ void wxAccordion::rebuildFloats()
 {
     //first make a vector copy of the folds:
     wxSizer* szr = GetSizer();
-    std::vector<wxAccordionFold*> m_folds;
+    std::vector<wxAccordionFold*> folds;
 
     for(size_t i=0;i<GetPageCount();i++)
     {
-        m_folds.push_back(getFold(i));
+        folds.push_back(getFold(i));
     }
 
     //now remove all the folds from the sizer:
-    for(std::vector<wxAccordionFold*>::iterator it = m_folds.begin();it!=m_folds.end();it++)
+    for(std::vector<wxAccordionFold*>::iterator it = folds.begin();it!=folds.end();it++)
     {
         szr->Detach(*it);
     }
-    szr->Detach(lastBorder);
+    szr->Detach(m_lastBorder);
 
     //add back all expanded folds:
     long flags( wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT );
     int proportion(0);
-    wxAccordionFold* m_fold;
+    wxAccordionFold* fold;
 
-    for(std::vector<wxAccordionFold*>::iterator it = m_folds.begin();it!=m_folds.end();it++)
+    for(std::vector<wxAccordionFold*>::iterator it = folds.begin();it!=folds.end();it++)
     {
-        m_fold = *it;
+        fold = *it;
 
-        if(!m_fold->isCollapsed)
+        if(!fold->m_isCollapsed)
         {
-            proportion = m_fold->isFixedHeight?0:1;
+            proportion = fold->m_isFixedHeight?0:1;
 
-            szr->Add( m_fold, proportion, flags, accordionPadding );
+            szr->Add( fold, proportion, flags, m_accordionPadding );
         }
     }
 
     //add add all the collapsed items back:
-    for(std::vector<wxAccordionFold*>::iterator it = m_folds.begin();it!=m_folds.end();it++)
+    for(std::vector<wxAccordionFold*>::iterator it = folds.begin();it!=folds.end();it++)
     {
-        m_fold = *it;
+        fold = *it;
 
-        if(m_fold->isCollapsed)
+        if(fold->m_isCollapsed)
         {
-            szr->Add( m_fold, 0, flags, accordionPadding );
+            szr->Add( fold, 0, flags, m_accordionPadding );
         }
     }
 
     //add the last border back
-    szr->Add( lastBorder, 0, flags, 0 );
+    szr->Add( m_lastBorder, 0, flags, 0 );
+}
+
+void wxAccordion::setPageBorderColourHelper(const wxColour& col)
+{
+    //Since the top border for the window isn't drawn, there is a spacer 1 pixel
+    //less than the margin when the border colour is not transparent and
+    //equal to the margin when the border colour is transparent.
+    //So if we're changing to or from a transparent colour, all of those spacers need
+    //to be adjusted.
+
+    if(col==m_pageStyle.m_borderColour)
+    {
+        return;
+    }
+
+    wxColour old = m_pageStyle.m_borderColour;
+    bool adjust(false);
+    int newheight(0);
+
+    m_pageStyle.m_borderColour=col;
+    m_changesMade=true;
+
+    if(m_pagePadding!=0)
+    {
+        if(old == wxTransparentColour && col != wxTransparentColour)
+        {
+            adjust=true;
+            newheight=m_pagePadding-1;
+        }
+        else if(old != wxTransparentColour && col == wxTransparentColour)
+        {
+            adjust=true;
+            newheight=m_pagePadding;
+        }
+    }
+
+    if(adjust)
+    {
+        for(size_t i=0;i<GetPageCount();i++)
+        {
+            getFold(i)->SetWindowSpacer(newheight);
+        }
+    }
 }
 
 bool wxAccordion::InsertPage(size_t n, wxWindow *page, const wxString& text, bool bSelect, int imageId )
@@ -1849,7 +2034,7 @@ bool wxAccordion::InsertPage(size_t n, wxWindow *page, const wxString& text, boo
     {
         Freeze();
 
-        wxAccordionFold* m_fold = new wxAccordionFold( this , text,imageId,!bSelect);
+        wxAccordionFold* fold = new wxAccordionFold( this , text,imageId,!bSelect);
         wxBoxSizer* bSizer3 = new wxBoxSizer( wxVERTICAL );
         long flags( wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT );
 
@@ -1864,10 +2049,10 @@ bool wxAccordion::InsertPage(size_t n, wxWindow *page, const wxString& text, boo
             m_pages.Insert(page, n);
         }
 
-        page->Reparent(m_fold);
+        page->Reparent(fold);
 
-        m_fold->SetBackgroundColour( GetBackgroundColour() );
-        m_fold->useHighlighting=useHighlighting;
+        fold->SetBackgroundColour( GetBackgroundColour() );
+        fold->m_useHighlighting=m_useHighlighting;
 
         bSizer3->Add( 0, captionBarHeight);
         //Since there is no drawn top border for the window, if
@@ -1875,16 +2060,16 @@ bool wxAccordion::InsertPage(size_t n, wxWindow *page, const wxString& text, boo
         //extra pixel on the top.  So I'll add a spacer of size
         //pagePadding-1 and use flags wxBOTTOM|wxLEFT|wxRIGHT
 
-        if(pagePadding>0)
+        if(m_pagePadding>0)
         {
-            bSizer3->Add( 0, (pageBorderColour==wxTransparentColour?pagePadding:pagePadding-1));
+            bSizer3->Add( 0, (m_pageStyle.m_borderColour==wxTransparentColour?m_pagePadding:m_pagePadding-1));
         }
         else
         {
             bSizer3->Add( 0, 0);
         }
 
-        bSizer3->Add( page, 1, wxEXPAND|wxBOTTOM|wxLEFT|wxRIGHT, pagePadding );
+        bSizer3->Add( page, 1, wxEXPAND|wxBOTTOM|wxLEFT|wxRIGHT, m_pagePadding );
 
         if(bSelect)
         {
@@ -1898,23 +2083,23 @@ bool wxAccordion::InsertPage(size_t n, wxWindow *page, const wxString& text, boo
             bSizer3->GetItem(1)->Show(false);
             bSizer3->GetItem(2)->Show(false);
         }
-        m_fold->SetSizer( bSizer3 );
+        fold->SetSizer( bSizer3 );
 
         if( GetWindowStyleFlag() & wxACCORDION_FLOAT_TO_TOP )
         {
             //rather than trying to figure out where to put it, just
             //dump it on the end and then call the rebuildFloats function
             //to place everything correctly.
-            szr->Add( m_fold, proportion, flags, accordionPadding );
+            szr->Add( fold, proportion, flags, m_accordionPadding );
             rebuildFloats();
         }
         else
         {
-            szr->Detach(lastBorder);
+            szr->Detach(m_lastBorder);
 
             if( n >= m_pages.GetCount()-1 )
             {
-                szr->Add( m_fold, proportion, flags, accordionPadding );
+                szr->Add( fold, proportion, flags, m_accordionPadding );
             }
             else
             {
@@ -1922,10 +2107,10 @@ bool wxAccordion::InsertPage(size_t n, wxWindow *page, const wxString& text, boo
                 //item 1 is a spacer that servers as the top page margin
                 //for the first item.  So to add the n-th fold, we have to
                 //add it at sizer position n+2
-                szr->Insert( n+2, m_fold, proportion, flags, accordionPadding );
+                szr->Insert( n+2, fold, proportion, flags, m_accordionPadding );
             }
 
-            szr->Add( lastBorder, 0, flags, 0 );
+            szr->Add( m_lastBorder, 0, flags, 0 );
         }
 
         Layout();
@@ -1950,19 +2135,19 @@ bool wxAccordion::InsertPage(size_t n, wxWindow *page, const wxString& text, boo
 /// The accordion padding is the gap between the edge of the accordion and
 /// the pages.  It's also the gap between 2 pages.
 /// \sa SetAccordionPadding
-int      wxAccordion::GetAccordionPadding()        const {return accordionPadding;}
+int      wxAccordion::GetAccordionPadding()        const {return m_accordionPadding;}
 
 
 /// \brief Returns a copy of the bitmap being used for the accordion background.
 ///
 /// \sa SetAccordionBGBitmap
-wxBitmap wxAccordion::GetAccordionBGBitmap()       const {return accordionBG;}
+wxBitmap wxAccordion::GetAccordionBGBitmap()       const {return m_accordionBG;}
 
 
 /// \brief Returns whether or not the accordion will toggle only in response to mouse clicks over the caption bar buttons.
 ///
 /// \sa SetOnlyToggleWithButton
-bool     wxAccordion::GetOnlyToggleWithButton()    const {return onlyToggleWithButton;}
+bool     wxAccordion::GetOnlyToggleWithButton()    const {return m_onlyToggleWithButton;}
 
 
 /// \brief Sets the accordion padding size (in pixels).
@@ -1972,21 +2157,21 @@ bool     wxAccordion::GetOnlyToggleWithButton()    const {return onlyToggleWithB
 /// \sa GetAccordionPadding
 void wxAccordion::SetAccordionPadding(int m)
 {
-    int old = accordionPadding;
-    accordionPadding=m>=0?m:0;
+    int old = m_accordionPadding;
+    m_accordionPadding=m>=0?m:0;
 
-    if(accordionPadding!=old)
+    if(m_accordionPadding!=old)
     {
-        if( accordionPadding==0 && m_pages.size()>0 && collapsedBorderColour!=wxTransparentColor )
+        if( m_accordionPadding==0 && m_pages.size()>0 && m_collapsedStyle.m_borderColour!=wxTransparentColor )
         {
-            lastBorder->Show();
+            m_lastBorder->Show();
         }
         else
         {
-            lastBorder->Hide();
+            m_lastBorder->Hide();
         }
 
-        changesMade = true;
+        m_changesMade = true;
 
         setFirstSpacerHeight(m);
 
@@ -2004,6 +2189,11 @@ void wxAccordion::SetAccordionPadding(int m)
 /// \sa GetAccordionBGBitmap
 void wxAccordion::SetAccordionBGBitmap(const wxBitmap& b)
 {
+    //I'm just going to assume that this is a different bitmap than
+    //what was already set.
+    m_changesMade=true;
+    m_accordionBG = b;
+
     if(b.IsOk())
     {
         SetBackgroundStyle(wxBG_STYLE_PAINT);
@@ -2014,15 +2204,13 @@ void wxAccordion::SetAccordionBGBitmap(const wxBitmap& b)
         SetBackgroundStyle(wxBG_STYLE_SYSTEM);
         Unbind(wxEVT_PAINT,&wxAccordion::onPaint,this);
     }
-
-    accordionBG = b;
 }
 
 
 /// \brief Sets whether or not the accordion will toggle only in response to mouse clicks over the caption bar buttons.
 ///
 /// \sa GetOnlyToggleWithButton
-void  wxAccordion::SetOnlyToggleWithButton(bool b){onlyToggleWithButton=b;}
+void  wxAccordion::SetOnlyToggleWithButton(bool b){m_onlyToggleWithButton=b;}
 
 
 
@@ -2034,43 +2222,18 @@ void  wxAccordion::SetOnlyToggleWithButton(bool b){onlyToggleWithButton=b;}
 /// \brief Returns the radius of the accordion's pages (in pixels).
 ///
 /// \sa SetPageRadius
-double   wxAccordion::GetPageRadius()              const {return pageRadius;}
+double   wxAccordion::GetPageRadius()              const {return m_pageRadius;}
 
 /// \brief Returns the padding (in pixels) of the accordion's pages.
 ///
 /// \sa SetPagePadding
-int      wxAccordion::GetPagePadding()             const {return pagePadding;}
-
-/// \brief Returns a copy of the bitmap used for drawing the background of the accordion's pages.
-///
-/// \sa SetPageBGBitmap
-wxBitmap wxAccordion::GetPageBGBitmap()            const {return pageBG;}
-
-/// \brief Returns a copy of the gradient stops used for drawing the background of the accordion's pages.
-///
-/// \sa AddPageGradientStop, ClearPageGradientStops
-wxGraphicsGradientStops wxAccordion::GetPageGradientStops() const {return pageStops;}
-
-/// \brief Returns the first (top) colour used for drawing the background of the accordion's pages.
-///
-/// \sa SetPageColour1
-wxColour wxAccordion::GetPageColour1()             const {return pageStops.GetStartColour();}
-
-/// \brief Returns the second (bottom) colour used for drawing the background of the accordion's pages.
-///
-/// \sa SetPageColour2
-wxColour wxAccordion::GetPageColour2()             const {return pageStops.GetEndColour();}
-
-/// \brief Returns the border colour used for drawing the background of the accordion's pages.
-///
-/// \sa SetPageBorderColour
-wxColour wxAccordion::GetPageBorderColour()        const {return pageBorderColour;}
+int      wxAccordion::GetPagePadding()             const {return m_pagePadding;}
 
 /// \brief Sets the radius of the accordion's pages (in pixels).
 ///
 /// This setting only determines the radius used for the bottom corners.  The radius of the top corners are set with SetCaptionRadius().
 /// \sa SetCaptionRadius, GetPageRadius
-void     wxAccordion::SetPageRadius(double d){pageRadius=d>=0?d:0;changesMade=true;}
+void     wxAccordion::SetPageRadius(double d){m_pageRadius=d>=0?d:0;m_changesMade=true;}
 
 /// \brief Sets the padding (in pixels) of the accordion's pages.
 ///
@@ -2078,103 +2241,31 @@ void     wxAccordion::SetPageRadius(double d){pageRadius=d>=0?d:0;changesMade=tr
 /// \sa GetPagePadding
 void wxAccordion::SetPagePadding(int m)
 {
-    int old = pagePadding;
-    pagePadding=m>=0?m:0;
+    int old = m_pagePadding;
+    m_pagePadding=m>=0?m:0;
 
-    if(pagePadding==old)
+    if(m_pagePadding==old)
     {
         return;
     }
 
-    changesMade = true;
+    m_changesMade = true;
 
     //See the notes for SetWindowBorderColour for an explanation of
     //why we're adjusting the spacer here:
 
     int newheight(0);
 
-    if(pagePadding!=0)
+    if(m_pagePadding!=0)
     {
-        newheight=pageBorderColour!=wxTransparentColour?pagePadding-1:pagePadding;
+        newheight=m_pageStyle.m_borderColour!=wxTransparentColour?m_pagePadding-1:m_pagePadding;
     }
 
     for(size_t i=0;i<GetPageCount();i++)
     {
         wxAccordionFold* m_fold=getFold(i);
         m_fold->SetWindowSpacer(newheight);
-        m_fold->SetWindowMargin(pagePadding);
-    }
-}
-
-/// \brief Sets the bitmap used for drawing the background of the accordion's pages.
-///
-/// To clear the bitmap, call this function with wxNullBitmap as the parameter.
-/// \sa GetPageBGBitmap
-void     wxAccordion::SetPageBGBitmap(const wxBitmap& b){pageBG=b;changesMade=true;}
-
-/// \brief Adds a gradient stop to the set of colours used for drawing the background of the accordion's pages.
-///
-/// \sa GetPageGradientStops, ClearPageGradientStops
-void     wxAccordion::AddPageGradientStop(const wxColour& col,float pos){pageStops.Add( col, pos);changesMade=true;}
-
-/// \brief Clears any gradient stops that have been set for drawing the background of the accordion's pages.
-///
-/// \sa GetPageGradientStops, AddPageGradientStop
-void     wxAccordion::ClearPageGradientStops(){pageStops=wxGraphicsGradientStops(pageStops.GetStartColour(), pageStops.GetEndColour());changesMade=true;}
-
-/// \brief Sets the first (top) colour used for drawing the background of the accordion's pages.
-///
-/// \sa GetPageColour1
-void     wxAccordion::SetPageColour1(const wxColour& col){pageStops.SetStartColour(col);changesMade=true;}
-
-/// \brief Sets the second (bottom) colour used for drawing the background of the accordion's pages.
-///
-/// \sa GetPageColour2
-void     wxAccordion::SetPageColour2(const wxColour& col){pageStops.SetEndColour(col);changesMade=true;}
-
-/// \brief Sets the border colour used for drawing the background of the accordion's pages.
-///
-/// \sa GetPageBorderColour
-void wxAccordion::SetPageBorderColour(const wxColour& col)
-{
-    //Since the top border for the window isn't drawn, there is a spacer 1 pixel
-    //less than the margin when the border colour is not transparent and
-    //equal to the margin when the border colour is transparent.
-    //So if we're changing to or from a transparent colour, all of those spacers need
-    //to be adjusted.
-
-    if(col==pageBorderColour)
-    {
-        return;
-    }
-
-    wxColour old = pageBorderColour;
-    bool adjust(false);
-    int newheight(0);
-
-    pageBorderColour=col;
-    changesMade=true;
-
-    if(pagePadding!=0)
-    {
-        if(old == wxTransparentColour && col != wxTransparentColour)
-        {
-            adjust=true;
-            newheight=pagePadding-1;
-        }
-        else if(old != wxTransparentColour && col == wxTransparentColour)
-        {
-            adjust=true;
-            newheight=pagePadding;
-        }
-    }
-
-    if(adjust)
-    {
-        for(size_t i=0;i<GetPageCount();i++)
-        {
-            getFold(i)->SetWindowSpacer(newheight);
-        }
+        m_fold->SetWindowMargin(m_pagePadding);
     }
 }
 
@@ -2185,108 +2276,108 @@ void wxAccordion::SetPageBorderColour(const wxColour& col)
 /// \brief Returns the radius of the accordion's caption bars corners (in pixels).
 ///
 /// \sa SetCaptionRadius
-double   wxAccordion::GetCaptionRadius()           const {return captionBarRadius;}
+double   wxAccordion::GetCaptionRadius()           const {return m_captionBarRadius;}
 
 /// \brief Returns the angle (in degrees) that the transition lines will take in the accordion's caption bars.
 ///
 /// \sa SetCaptionGradientAngle
-double   wxAccordion::GetCaptionGradientAngle()    const {return gradientAngle;}
+double   wxAccordion::GetCaptionGradientAngle()    const {return m_gradientAngle;}
 
 /// \brief Returns whether or not the bottom border of the caption bar will be drawn when a page is expanded.
 ///
 /// \sa SetExpandedBottomBorder
-bool     wxAccordion::GetExpandedBottomBorder()    const {return hasBottomBorderWhenExpanded;}
+bool     wxAccordion::GetExpandedBottomBorder()    const {return m_hasBottomBorderWhenExpanded;}
 
 /// \brief Returns the minimum height of the accordion's caption bars.
 ///
 /// \sa SetMinCaptionHeight
-int      wxAccordion::GetMinCaptionHeight()        const {return minCaptionHeight;}
+int      wxAccordion::GetMinCaptionHeight()        const {return m_minCaptionHeight;}
 
 /// \brief Returns the size of the margins (in pixels) that will be used for the icons when drawing the accordion's caption bars.
 ///
 /// \sa SetIconMargin
-wxSize   wxAccordion::GetIconMargin()              const {return iconMargin;}
+wxSize   wxAccordion::GetIconMargin()              const {return m_iconMargin;}
 
 /// \brief Returns the size of the margins (in pixels) that will be used for the label when drawing the accordion's caption bars.
 ///
 /// \sa SetTextMargin
-wxSize   wxAccordion::GetTextMargin()              const {return textMargin;}
+wxSize   wxAccordion::GetTextMargin()              const {return m_textMargin;}
 
 /// \brief Returns the size of the margins (in pixels) that will be used for the expand and collapse buttons when drawing the accordion's caption bars.
 ///
 /// \sa SetButtonMargin
-wxSize   wxAccordion::GetButtonMargin()            const {return buttonMargin;}
+wxSize   wxAccordion::GetButtonMargin()            const {return m_buttonMargin;}
 
 /// \brief Returns a copy of the bitmap used for the expand button of the accordion's caption bars.
 ///
 /// \sa SetCollapseButton
-wxBitmap wxAccordion::GetCollapseButton()          const {return collapseButton;}
+wxBitmap wxAccordion::GetCollapseButton()          const {return m_collapseButton;}
 
 /// \brief Returns a copy of the bitmap used for the collapse button of the accordion's caption bars.
 ///
 /// \sa SetExpandButton
-wxBitmap wxAccordion::GetExpandButton()            const {return expandButton;}
+wxBitmap wxAccordion::GetExpandButton()            const {return m_expandButton;}
 
 /// \brief Returns whether or not the accordion's caption bars will change to the highlighted style when the mouse cursor is over them.
 ///
 /// \sa SetUseHighlighting
-bool     wxAccordion::GetUseHighlighting()         const {return useHighlighting;}
+bool     wxAccordion::GetUseHighlighting()         const {return m_useHighlighting;}
 
 /// \brief Returns whether or not the accordion's caption bars will use a custom disables state.
 ///
 /// \sa SetCustomDisabledState
-bool     wxAccordion::GetCustomDisabledState()     const {return customDisabledState;}
+bool     wxAccordion::GetCustomDisabledState()     const {return m_customDisabledState;}
 
 /// \brief Returns the disabled brightness of the accordion's caption bars.
 ///
 /// \sa SetDisabledBrightness
-int      wxAccordion::GetDisabledBrightness()      const {return disabledBrightness;}
+int      wxAccordion::GetDisabledBrightness()      const {return m_disabledBrightness;}
 
 /// \brief Sets the radius of the accordion's caption bars corners (in pixels).
 ///
 /// \sa GetCaptionRadius
-void wxAccordion::SetCaptionRadius(double d){captionBarRadius=d>=0?d:0;changesMade=true;}
+void wxAccordion::SetCaptionRadius(double d){m_captionBarRadius=d>=0?d:0;m_changesMade=true;}
 
 /// \brief Sets the angle (in degrees) that the transition lines will take in the accordion's caption bars.
 ///
 /// With an angle of zero, the gradient will run from the top to the bottom.  With an angle of 45, the gradient will run from the top left to the bottom right.  With an angle of 90, the gradient will run from left to right.  And so on.
 /// \sa GetCaptionGradientAngle
-void wxAccordion::SetCaptionGradientAngle(double a){gradientAngle=a;changesMade=true;}
+void wxAccordion::SetCaptionGradientAngle(double a){m_gradientAngle=a;m_changesMade=true;}
 
 /// \brief Sets whether or not the bottom border of the caption bar will be drawn when a page is expanded.
 ///
 /// \sa GetExpandedBottomBorder
-void wxAccordion::SetExpandedBottomBorder(bool b){hasBottomBorderWhenExpanded=b;changesMade=true;}
+void wxAccordion::SetExpandedBottomBorder(bool b){m_hasBottomBorderWhenExpanded=b;m_changesMade=true;}
 
 /// \brief Sets the minimum height of the accordion's caption bars.
 ///
 /// \sa GetMinCaptionHeight
-void wxAccordion::SetMinCaptionHeight(int m){minCaptionHeight=m>=0?m:0;changesMade=true;}
+void wxAccordion::SetMinCaptionHeight(int m){m_minCaptionHeight=m>=0?m:0;m_changesMade=true;}
 
 /// \brief Sets the size of the margins (in pixels) that will be used for the icons when drawing the accordion's caption bars.
 ///
 /// \sa GetIconMargin
-void wxAccordion::SetIconMargin(const wxSize& p){iconMargin=p;changesMade=true;}
+void wxAccordion::SetIconMargin(const wxSize& p){m_iconMargin=p;m_changesMade=true;}
 
 /// \brief Sets the size of the margins (in pixels) that will be used for the label when drawing the accordion's caption bars.
 ///
 /// \sa GetTextMargin
-void wxAccordion::SetTextMargin(const wxSize& p){textMargin=p;changesMade=true;}
+void wxAccordion::SetTextMargin(const wxSize& p){m_textMargin=p;m_changesMade=true;}
 
 /// \brief Sets the size of the margins (in pixels) that will be used for the expand and collapse buttons when drawing the accordion's caption bars.
 ///
 /// \sa GetButtonMargin
-void wxAccordion::SetButtonMargin(const wxSize& p){buttonMargin=p;changesMade=true;}
+void wxAccordion::SetButtonMargin(const wxSize& p){m_buttonMargin=p;m_changesMade=true;}
 
 /// \brief Sets the bitmap used for the expand button of the accordion's caption bars.
 ///
 /// \sa GetCollapseButton
-void wxAccordion::SetCollapseButton(const wxBitmap& b){collapseButton=b;changesMade=true;}
+void wxAccordion::SetCollapseButton(const wxBitmap& b){m_collapseButton=b;m_changesMade=true;}
 
 /// \brief Sets the bitmap used for the collapse button of the accordion's caption bars.
 ///
 /// \sa GetExpandButton
-void wxAccordion::SetExpandButton(const wxBitmap& b){expandButton=b;changesMade=true;}
+void wxAccordion::SetExpandButton(const wxBitmap& b){m_expandButton=b;m_changesMade=true;}
 
 /// \brief Sets whether or not the accordion's caption bars will change to the highlighted style when the mouse cursor is over them.
 ///
@@ -2294,10 +2385,10 @@ void wxAccordion::SetExpandButton(const wxBitmap& b){expandButton=b;changesMade=
 /// \sa GetUseHighlighting
 void wxAccordion::SetUseHighlighting(bool b)
 {
-    if(useHighlighting!=b)
+    if(m_useHighlighting!=b)
     {
-        useHighlighting=b;
-        changesMade=true;
+        m_useHighlighting=b;
+        m_changesMade=true;
 
         for(size_t i=0;i<GetPageCount();i++)
         {
@@ -2310,7 +2401,7 @@ void wxAccordion::SetUseHighlighting(bool b)
 ///
 /// If this function is called with a value of true, the disabled state of the caption bars will be drawn with the style determined by the SetDisabledXXX functions.  Otherwise, the disabled state will be drawn as a grayed version of the collapsed state.
 /// \sa GetCustomDisabledState
-void wxAccordion::SetCustomDisabledState(bool b)      { customDisabledState=b;;changesMade=true;}
+void wxAccordion::SetCustomDisabledState(bool b)      { m_customDisabledState=b;;m_changesMade=true;}
 
 /// \brief Sets the disabled brightness of the accordion's caption bars.
 ///
@@ -2319,470 +2410,108 @@ void wxAccordion::SetCustomDisabledState(bool b)      { customDisabledState=b;;c
 /// \sa GetDisabledBrightness
 void wxAccordion::SetDisabledBrightness(int b)
 {
-    if(b<0)
-    {
-        b=0;
-    }
+    if(b<0) b=0;
+    else if(b>255) b=255;
 
-    if(b>255)
+    if(m_disabledBrightness!=b)
     {
-        b=255;
-    }
-
-    if(disabledBrightness!=b)
-    {
-        disabledBrightness=b;
-        changesMade=true;
+        m_disabledBrightness=b;
+        m_changesMade=true;
     }
 }
 
-
-/////////////////////////////////////////////////
-////  Caption bar collapsed state style get/set functions
-//////////////////////////////////////////////////
-
-/// \brief Returns a copy of the gradient stops used for drawing the caption bar in the collapsed state.
-///
-/// \sa AddCollapsedGradientStop, ClearCollapsedGradientStops
-wxGraphicsGradientStops wxAccordion::GetCollapsedGradientStops() const {return collapsedStops;}
-
-/// \brief Returns a copy of the bitmap used for drawing the caption bar in the collapsed state.
-///
-/// \sa SetCollapsedBGBitmap
-wxBitmap wxAccordion::GetCollapsedBGBitmap()       const {return collapsedBG;}
-
-/// \brief Returns the first (top) colour used for drawing the caption bar in the collapsed state.
-///
-/// \sa SetCollapsedColour1
-wxColour wxAccordion::GetCollapsedColour1()        const {return collapsedStops.GetStartColour();}
-
-/// \brief Returns the second (bottom) colour used for drawing the caption bar in the collapsed state.
-///
-/// \sa SetCollapsedColour2
-wxColour wxAccordion::GetCollapsedColour2()        const {return collapsedStops.GetEndColour();}
-
-/// \brief Returns the border colour used for drawing the caption bar in the collapsed state.
-///
-/// \sa SetCollapsedBorderColour
-wxColour wxAccordion::GetCollapsedBorderColour()   const {return collapsedBorderColour;}
-
-/// \brief Returns the text colour used for the caption bar in the collapsed state.
-///
-/// \sa SetCollapsedTextColour
-wxColour wxAccordion::GetCollapsedTextColour()     const {return collapsedTextColour;}
-
-/// \brief Returns a copy of the font used for the caption bar in the collapsed state.
-///
-/// \sa SetCollapsedFont
-wxFont   wxAccordion::GetCollapsedFont()           const {return collapsedFont;}
-
-/// \brief Clears any gradient stops that have been set for drawing the caption bar in the collapsed state.
-///
-/// \sa GetCollapsedGradientStops, AddCollapsedGradientStop
-void wxAccordion::ClearCollapsedGradientStops(){collapsedStops=wxGraphicsGradientStops(collapsedStops.GetStartColour(), collapsedStops.GetEndColour());changesMade=true;}
-
-/// \brief Adds a gradient stop to the set of colours used for drawing the caption bar in the collapsed state.
-///
-/// \sa GetCollapsedGradientStops, ClearCollapsedGradientStops
-void   wxAccordion::AddCollapsedGradientStop (const wxColour& col,float pos){collapsedStops.Add( col, pos);changesMade=true;}
-
-/// \brief Sets the bitmap used for drawing the caption bar in the collapsed state.
-///
-/// To clear the bitmap, call this function with wxNullBitmap as the parameter.
-/// \sa GetCollapsedBGBitmap
-void   wxAccordion::SetCollapsedBGBitmap     (const wxBitmap& b){collapsedBG=b;changesMade=true;}
-
-/// \brief Sets the first (top) colour used for drawing the caption bar in the collapsed state.
-///
-/// \sa GetCollapsedColour1
-void   wxAccordion::SetCollapsedColour1      (const wxColour& col){collapsedStops.SetStartColour(col);changesMade=true;}
-
-/// \brief Sets the second (bottom) colour used for drawing the caption bar in the collapsed state.
-///
-/// \sa GetCollapsedColour2
-void   wxAccordion::SetCollapsedColour2      (const wxColour& col){collapsedStops.SetEndColour(col);changesMade=true;}
-
-/// \brief Sets the border colour used for drawing the caption bar in the collapsed state.
-///
-/// \sa GetCollapsedBorderColour
-void   wxAccordion::SetCollapsedBorderColour (const wxColour& col){collapsedBorderColour=col;lastBorder->SetForegroundColour(col);changesMade=true;}
-
-/// \brief Sets the text colour used for the caption bar in the collapsed state.
-///
-/// \sa GetCollapsedTextColour
-void   wxAccordion::SetCollapsedTextColour   (const wxColour& col){collapsedTextColour=col;changesMade=true;}
-
-/// \brief Sets the font used for the caption bar in the collapsed state.
-///
-/// \sa GetCollapsedFont
-void   wxAccordion::SetCollapsedFont         (const wxFont& f){collapsedFont=f;changesMade=true;}
-
-
-/////////////////////////////////////////////////
-////  Caption bar expanded state style get/set functions
-//////////////////////////////////////////////////
-
-/// \brief Returns a copy of the gradient stops used for drawing the caption bar in the expanded state.
-///
-/// \sa AddExpandedGradientStop, ClearExpandedGradientStops
-wxGraphicsGradientStops wxAccordion::GetExpandedGradientStops() const {return expandedStops;}
-
-/// \brief Returns a copy of the bitmap used for drawing the caption bar in the expanded state.
-///
-/// \sa SetExpandedBGBitmap
-wxBitmap wxAccordion::GetExpandedBGBitmap()        const {return expandedBG;}
-
-/// \brief Returns the first (top) colour used for drawing the caption bar in the expanded state.
-///
-/// \sa SetExpandedColour1
-wxColour wxAccordion::GetExpandedColour1()         const {return expandedStops.GetStartColour();}
-
-/// \brief Returns the second (bottom) colour used for drawing the caption bar in the expanded state.
-///
-/// \sa SetExpandedColour2
-wxColour wxAccordion::GetExpandedColour2()         const {return expandedStops.GetEndColour();}
-
-/// \brief Returns the border colour used for drawing the caption bar in the expanded state.
-///
-/// \sa SetExpandedBorderColour
-wxColour wxAccordion::GetExpandedBorderColour()    const {return expandedBorderColour;}
-
-/// \brief Returns the text colour used for the caption bar in the expanded state.
-///
-/// \sa SetExpandedTextColour
-wxColour wxAccordion::GetExpandedTextColour()      const {return expandedTextColour;}
-
-/// \brief Returns a copy of the font used for the caption bar in the expanded state.
-///
-/// \sa SetExpandedFont
-wxFont   wxAccordion::GetExpandedFont()            const {return expandedFont;}
-
-/// \brief Clears any gradient stops that have been set for drawing the caption bar in the expanded state.
-///
-/// \sa GetExpandedGradientStops, AddExpandedGradientStop
-void wxAccordion::ClearExpandedGradientStops(){expandedStops=wxGraphicsGradientStops(expandedStops.GetStartColour(), expandedStops.GetEndColour());changesMade=true;}
-
-/// \brief Adds a gradient stop to the set of colours used for drawing the caption bar in the expanded state.
-///
-/// \sa GetExpandedGradientStops, ClearExpandedGradientStops
-void   wxAccordion::AddExpandedGradientStop (const wxColour& col,float pos){expandedStops.Add( col, pos);changesMade=true;}
-
-/// \brief Sets the bitmap used for drawing the caption bar in the expanded state.
-///
-/// To clear the bitmap, call this function with wxNullBitmap as the parameter.
-/// \sa GetExpandedBGBitmap
-void   wxAccordion::SetExpandedBGBitmap     (const wxBitmap& b) {expandedBG=b;changesMade=true;}
-
-/// \brief Sets the first (top) colour used for drawing the caption bar in the expanded state.
-///
-/// \sa GetExpandedColour1
-void   wxAccordion::SetExpandedColour1      (const wxColour& col){expandedStops.SetStartColour(col);changesMade=true;}
-
-/// \brief Sets the second (bottom) colour used for drawing the caption bar in the expanded state.
-///
-/// \sa GetExpandedColour2
-void   wxAccordion::SetExpandedColour2      (const wxColour& col){expandedStops.SetEndColour(col);changesMade=true;}
-
-/// \brief Sets the border colour used for drawing the caption bar in the expanded state.
-///
-/// \sa GetExpandedBorderColour
-void   wxAccordion::SetExpandedBorderColour (const wxColour& col){expandedBorderColour=col;changesMade=true;}
-
-/// \brief Sets the text colour used for the caption bar in the expanded state.
-///
-/// \sa GetExpandedTextColour
-void   wxAccordion::SetExpandedTextColour   (const wxColour& col){expandedTextColour=col;changesMade=true;}
-
-/// \brief Sets the font used for the caption bar in the expanded state.
-///
-/// \sa GetExpandedFont
-void   wxAccordion::SetExpandedFont         (const wxFont& f)   {expandedFont=f;changesMade=true;}
-
-
-/////////////////////////////////////////////////
-////  Caption bar collapsed highlighted state style get/set functions
-//////////////////////////////////////////////////
-
-/// \brief Returns a copy of the gradient stops used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, AddCollapsedHLGradientStop, ClearCollapsedHLGradientStops
-wxGraphicsGradientStops wxAccordion::GetCollapsedHLGradientStops() const {return collapsedHLStops;}
-
-/// \brief Returns a copy of the bitmap used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetCollapsedHLBGBitmap
-wxBitmap wxAccordion::GetCollapsedHLBGBitmap()     const {return collapsedHLBG;}
-
-/// \brief Returns the first (top) colour used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetCollapsedHLColour1
-wxColour wxAccordion::GetCollapsedHLColour1()      const {return collapsedHLStops.GetStartColour();}
-
-/// \brief Returns the second (bottom) colour used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetCollapsedHLColour2
-wxColour wxAccordion::GetCollapsedHLColour2()      const {return collapsedHLStops.GetEndColour();}
-
-/// \brief Returns the border colour used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetCollapsedHLBorderColour
-wxColour wxAccordion::GetCollapsedHLBorderColour() const {return collapsedHLBorderColour;}
-
-/// \brief Returns the text colour used for the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetCollapsedHLTextColour
-wxColour wxAccordion::GetCollapsedHLTextColour()   const {return collapsedHLTextColour;}
-
-/// \brief Returns a copy of the font used for the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetCollapsedHLFont
-wxFont   wxAccordion::GetCollapsedHLFont()         const {return collapsedHLFont;}
-
-/// \brief Clears any gradient stops that have been set for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetCollapsedHLGradientStops, AddCollapsedHLGradientStop
-void wxAccordion::ClearCollapsedHLGradientStops(){collapsedHLStops=wxGraphicsGradientStops(collapsedHLStops.GetStartColour(), collapsedHLStops.GetEndColour());changesMade=true;}
-
-/// \brief Adds a gradient stop to the set of colours used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetCollapsedHLGradientStops, ClearCollapsedHLGradientStops
-void   wxAccordion::AddCollapsedHLGradientStop (const wxColour& col,float pos){collapsedHLStops.Add( col, pos);changesMade=true;}
-
-/// \brief Sets the bitmap used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// To clear the bitmap, call this function with wxNullBitmap as the parameter.
-/// \sa SetUseHighlighting, GetCollapsedHLBGBitmap
-void   wxAccordion::SetCollapsedHLBGBitmap     (const wxBitmap& b){collapsedHLBG=b;changesMade=true;}
-
-/// \brief Sets the first (top) colour used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetCollapsedHLColour1
-void   wxAccordion::SetCollapsedHLColour1      (const wxColour& col){collapsedHLStops.SetStartColour(col);changesMade=true;}
-
-/// \brief Sets the second (bottom) colour used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetCollapsedColour2
-void   wxAccordion::SetCollapsedHLColour2      (const wxColour& col){collapsedHLStops.SetEndColour(col);changesMade=true;}
-
-/// \brief Sets the border colour used for drawing the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetCollapsedHLBorderColour
-void   wxAccordion::SetCollapsedHLBorderColour (const wxColour& col){collapsedHLBorderColour=col;changesMade=true;}
-
-/// \brief Sets the text colour used for the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetCollapsedHLTextColour
-void   wxAccordion::SetCollapsedHLTextColour   (const wxColour& col){collapsedHLTextColour=col;changesMade=true;}
-
-/// \brief Sets the font used for the caption bar in the collapsed highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetCollapsedHLFont
-void   wxAccordion::SetCollapsedHLFont         (const wxFont& f){collapsedHLFont=f;changesMade=true;}
-
-
-/////////////////////////////////////////////////
-////  Caption bar expanded highlighted state style get/set functions
-//////////////////////////////////////////////////
-
-/// \brief Returns a copy of the gradient stops used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, ClearExpandedHLGradientStops, AddExpandedHLGradientStop
-wxGraphicsGradientStops wxAccordion::GetExpandedHLGradientStops() const {return expandedHLStops;}
-
-/// \brief Returns a copy of the bitmap used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetExpandedHLBGBitmap
-wxBitmap wxAccordion::GetExpandedHLBGBitmap()      const {return expandedHLBG;}
-
-/// \brief Returns the first (top) colour used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetExpandedHLColour1
-wxColour wxAccordion::GetExpandedHLColour1()       const {return expandedHLStops.GetStartColour();}
-
-/// \brief Returns the second (bottom) colour used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetExpandedHLColour2
-wxColour wxAccordion::GetExpandedHLColour2()       const {return expandedHLStops.GetEndColour();}
-
-/// \brief Returns the border colour used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetExpandedHLBorderColour
-wxColour wxAccordion::GetExpandedHLBorderColour()  const {return expandedHLBorderColour;}
-
-/// \brief Returns the text colour used for the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetExpandedHLTextColour
-wxColour wxAccordion::GetExpandedHLTextColour()    const {return expandedHLTextColour;}
-
-/// \brief Returns a copy of the font used for the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, SetExpandedHLFont
-wxFont   wxAccordion::GetExpandedHLFont()          const {return expandedHLFont;}
-
-/// \brief Clears any gradient stops that have been set for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetExpandedHLGradientStops, AddExpandedHLGradientStop
-void wxAccordion::ClearExpandedHLGradientStops(){expandedHLStops=wxGraphicsGradientStops(expandedHLStops.GetStartColour(), expandedHLStops.GetEndColour());changesMade=true;}
-
-/// \brief Adds a gradient stop to the set of colours used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetExpandedHLGradientStops, ClearExpandedHLGradientStops
-void   wxAccordion::AddExpandedHLGradientStop (const wxColour& col,float pos){expandedHLStops.Add( col, pos);changesMade=true;}
-
-/// \brief Sets the bitmap used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// To clear the bitmap, call this function with wxNullBitmap as the parameter.
-/// \sa SetUseHighlighting, GetExpandedHLBGBitmap
-void   wxAccordion::SetExpandedHLBGBitmap     (const wxBitmap& b) {expandedHLBG=b;changesMade=true;}
-
-/// \brief Sets the first (top) colour used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetExpandedHLColour1
-void   wxAccordion::SetExpandedHLColour1      (const wxColour& col){expandedHLStops.SetStartColour(col);changesMade=true;}
-
-/// \brief Sets the second (bottom) colour used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetExpandedHLColour2
-void   wxAccordion::SetExpandedHLColour2      (const wxColour& col){expandedHLStops.SetEndColour(col);changesMade=true;}
-
-/// \brief Sets the border colour used for drawing the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetExpandedHLBorderColour
-void   wxAccordion::SetExpandedHLBorderColour (const wxColour& col){expandedHLBorderColour=col;changesMade=true;}
-
-/// \brief Sets the text colour used for the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetExpandedHLTextColour
-void   wxAccordion::SetExpandedHLTextColour   (const wxColour& col){expandedHLTextColour=col;changesMade=true;}
-
-/// \brief Sets the font used for the caption bar in the expanded highlighted state.
-///
-/// This setting will not be used unless SetUseHighlighting() has been called with a value of true.
-/// \sa SetUseHighlighting, GetExpandedHLFont
-void   wxAccordion::SetExpandedHLFont         (const wxFont& f)   {expandedHLFont=f;changesMade=true;}
-
-/////////////////////////////////////////////////
-////  Caption bar disabled state style get/set functions
-//////////////////////////////////////////////////
-
-/// \brief Returns a copy of the gradient stops used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, AddDisabledGradientStop, ClearDisabledGradientStops
-wxGraphicsGradientStops wxAccordion::GetDisabledGradientStops() const {return disabledStops;}
-
-/// \brief Returns a copy of the bitmap used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, SetDisabledBGBitmap
-wxBitmap wxAccordion::GetDisabledBGBitmap()        const {return disabledBG;}
-
-/// \brief Returns the first (top) colour used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, SetDisabledColour1
-wxColour wxAccordion::GetDisabledColour1()         const {return disabledStops.GetStartColour();}
-
-/// \brief Returns the second (bottom) colour used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, SetDisabledColour2
-wxColour wxAccordion::GetDisabledColour2()         const {return disabledStops.GetEndColour();}
-
-/// \brief Returns the border colour used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, SetDisabledBorderColour
-wxColour wxAccordion::GetDisabledBorderColour()    const {return disabledBorderColour;}
-
-/// \brief Returns the text colour used for the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, SetDisabledTextColour
-wxColour wxAccordion::GetDisabledTextColour()      const {return disabledTextColour;}
-
-/// \brief Returns a copy of the font used for the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, SetDisabledFont
-wxFont   wxAccordion::GetDisabledFont()            const {return disabledFont;}
-
-/// \brief Clears any gradient stops that have been set for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, GetDisabledGradientStops, AddDisabledGradientStop
-void wxAccordion::ClearDisabledGradientStops(){disabledStops=wxGraphicsGradientStops(disabledStops.GetStartColour(), disabledStops.GetEndColour());changesMade=true;}
-
-/// \brief Adds a gradient stop to the set of colours used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, GetDisabledGradientStops, ClearDisabledGradientStops
-void   wxAccordion::AddDisabledGradientStop (const wxColour& col,float pos){disabledStops.Add( col, pos);changesMade=true;}
-
-/// \brief Sets the bitmap used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// To clear the bitmap, call this function with wxNullBitmap as the parameter.
-/// \sa SetCustomDisabledState, GetDisabledBGBitmap
-void   wxAccordion::SetDisabledBGBitmap     (const wxBitmap& b) {disabledBG=b;changesMade=true;}
-
-/// \brief Sets the first (top) colour used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, GetDisabledColour1
-void   wxAccordion::SetDisabledColour1      (const wxColour& col){disabledStops.SetStartColour(col);changesMade=true;}
-
-/// \brief Sets the second (bottom) colour used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, GetDisabledColour2
-void   wxAccordion::SetDisabledColour2      (const wxColour& col){disabledStops.SetEndColour(col);changesMade=true;}
-
-/// \brief Sets the border colour used for drawing the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, GetDisabledBorderColour
-void   wxAccordion::SetDisabledBorderColour (const wxColour& col){disabledBorderColour=col;changesMade=true;}
-
-/// \brief Sets the text colour used for the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, GetDisabledTextColour
-void   wxAccordion::SetDisabledTextColour   (const wxColour& col){disabledTextColour=col;changesMade=true;}
-
-/// \brief Sets the font used for the caption bar in the disabled state.
-///
-/// This setting will not be used unless SetCustomDisabledState() has been called with a value of true.
-/// \sa SetCustomDisabledState, GetDisabledFont
-void   wxAccordion::SetDisabledFont         (const wxFont& f)   {disabledFont=f;changesMade=true;}
-
-
+/// \brief Returns the style used for drawing the caption bar in the collapsed state.
+///
+/// \sa SetCollapsedStyle
+wxAccordionStyle& wxAccordion::GetCollapsedStyle(){return m_collapsedStyle;}
+
+/// \brief Returns the style used for drawing the caption bar in the expanded state.
+///
+/// \sa SetExpandedStyle
+wxAccordionStyle& wxAccordion::GetExpandedStyle(){return m_expandedStyle;}
+
+/// \brief Returns the style used for drawing the caption bar in the collapsed hightlighted state.
+///
+/// Note: these settings are not be used unless SetUseHighlighting(true) has been called.
+/// \sa SetCollapsedHLStyle, SetUseHighlighting
+wxAccordionStyle& wxAccordion::GetCollapsedHLStyle(){return m_collapsedHLStyle;}
+
+/// \brief Returns the style used for drawing the caption bar in the expanded highlighted state.
+///
+/// Note: these settings are not be used unless SetUseHighlighting(true) has been called.
+/// \sa SetExpandedHLStyle, SetUseHighlighting
+wxAccordionStyle& wxAccordion::GetExpandedHLStyle(){return m_expandedHLStyle;}
+
+/// \brief Returns the style used for drawing the caption bar in the disabled state.
+///
+/// Note: these settings are not be used unless SetCustomDisabledState(true) has been called.
+/// \sa SetDisabledStyle, SetCustomDisabledState
+wxAccordionStyle& wxAccordion::GetDisabledStyle(){return m_disabledStyle;}
+
+/// \brief Returns the style used for drawing the accordion's pages.
+///
+/// \sa SetPageStyle
+wxAccordionStyle& wxAccordion::GetPageStyle(){return m_pageStyle;}
+
+/// \brief Sets the style used for drawing the caption bar in the collapsed state.
+///
+/// \sa GetCollapsedStyle
+void wxAccordion::SetCollapsedStyle(const wxAccordionStyle& style)
+{
+    m_collapsedStyle=style;
+    m_collapsedStyle.m_accordion=this;
+    m_collapsedStyle.m_isPageStyle=false;
+}
+
+/// \brief Sets the style used for drawing the caption bar in the expanded state.
+///
+/// \sa GetExpandedStyle
+void wxAccordion::SetExpandedStyle(const wxAccordionStyle& style)
+{
+    m_expandedStyle=style;
+    m_expandedStyle.m_accordion=this;
+    m_expandedStyle.m_isPageStyle=false;
+}
+
+/// \brief Sets the style used for drawing the caption bar in the collapsed hightlighted state.
+///
+/// Note: these settings are not be used unless SetUseHighlighting(true) has been called.
+/// \sa GetCollapsedHLStyle, SetUseHighlighting
+void wxAccordion::SetCollapsedHLStyle(const wxAccordionStyle& style)
+{
+    m_collapsedHLStyle=style;
+    m_collapsedHLStyle.m_accordion=this;
+    m_collapsedHLStyle.m_isPageStyle=false;
+}
+
+/// \brief Sets the style used for drawing the caption bar in the expanded highlighted state.
+///
+/// Note: these settings are not be used unless SetUseHighlighting(true) has been called.
+/// \sa GetExpandedHLStyle, SetUseHighlighting
+void wxAccordion::SetExpandedHLStyle(const wxAccordionStyle& style)
+{
+    m_expandedHLStyle=style;
+    m_expandedHLStyle.m_accordion=this;
+    m_expandedHLStyle.m_isPageStyle=false;
+}
+
+/// \brief Sets the style used for drawing the caption bar in the disabled state.
+///
+/// Note: these settings are not be used unless SetCustomDisabledState(true) has been called.
+/// \sa GetDisabledStyle, SetCustomDisabledState
+void wxAccordion::SetDisabledStyle(const wxAccordionStyle& style)
+{
+    m_disabledStyle=style;
+    m_disabledStyle.m_accordion=this;
+    m_disabledStyle.m_isPageStyle=false;
+}
+
+/// \brief Sets the style used for drawing the accordion's pages.
+///
+/// \sa GetPageStyle
+void wxAccordion::SetPageStyle(const wxAccordionStyle& style)
+{
+    m_pageStyle=style;
+    m_pageStyle.m_accordion=this;
+    m_pageStyle.m_isPageStyle=true;
+}

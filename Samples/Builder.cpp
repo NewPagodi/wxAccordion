@@ -352,7 +352,7 @@ void addFontString(wxString& s,const wxString& method, const wxFont& f)
     s << "\", wxFONTENCODING_DEFAULT ) );\n";
 }
 
-void setImageList(wxAccordion* m_accordion, const wxSize& sz, const wxColour& c )
+void setImageList(wxAccordion* accordion, const wxSize& sz, const wxColour& c )
 {
     wxImageList* il = new wxImageList(sz.GetWidth(), sz.GetHeight());
     wxBitmap b(sz);
@@ -364,11 +364,11 @@ void setImageList(wxAccordion* m_accordion, const wxSize& sz, const wxColour& c 
     myDC.SelectObject(wxNullBitmap);
 
     il->Add(b);
-    m_accordion->AssignImageList(il);
+    accordion->AssignImageList(il);
 
-    for(size_t i=0;i<m_accordion->GetPageCount();i++)
+    for(size_t i=0;i<accordion->GetPageCount();i++)
     {
-        m_accordion->SetPageImage(i,0);
+        accordion->SetPageImage(i,0);
     }
 }
 
@@ -617,8 +617,8 @@ BuilderFrame::BuilderFrame( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_listBox->SetSelection(0);
 	m_colourPicker = new wxColourPickerCtrl( m_panel1, wxID_ANY, wxColour( 255, 255, 255 ), wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
 	m_spinCtrl = new wxSpinCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 99, 50 );
-	wxButton* m_button1 = new wxButton( m_panel1, wxID_ANY, wxT("Clear Stops"), wxDefaultPosition, wxDefaultSize, 0 );
-	wxButton* m_button2 = new wxButton( m_panel1, wxID_ANY, wxT("Add Stop"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxButton* button1 = new wxButton( m_panel1, wxID_ANY, wxT("Clear Stops"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxButton* button2 = new wxButton( m_panel1, wxID_ANY, wxT("Add Stop"), wxDefaultPosition, wxDefaultSize, 0 );
 
 	wxFlexGridSizer* fgSizer = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer->Add( new wxStaticText( m_panel1, wxID_ANY, wxT("Stop")), 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxLEFT, 5 );
@@ -629,9 +629,9 @@ BuilderFrame::BuilderFrame( wxWindow* parent, wxWindowID id, const wxString& tit
 	fgSizer->Add( m_spinCtrl, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer1a = new wxBoxSizer( wxHORIZONTAL );
-	bSizer1a->Add( m_button1, 0, wxALL, 5 );
+	bSizer1a->Add( button1, 0, wxALL, 5 );
 	bSizer1a->Add( 0, 0, 1, wxEXPAND, 5 );
-	bSizer1a->Add( m_button2, 0, wxALL, 5 );
+	bSizer1a->Add( button2, 0, wxALL, 5 );
 
 	wxBoxSizer* bSizer1 = new wxBoxSizer( wxVERTICAL );
 	bSizer1->Add( fgSizer, 0, 0, 5 );
@@ -644,20 +644,20 @@ BuilderFrame::BuilderFrame( wxWindow* parent, wxWindowID id, const wxString& tit
 
     //create a panel for enabling/disabling pages and add it to the accordion
     m_panel2 = new wxPanel( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxCheckBox* m_checkBox1 = new wxCheckBox( m_panel2, wxID_CHECK1, wxT("Enable Page 1"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox1->SetValue(true);
-	wxCheckBox* m_checkBox2 = new wxCheckBox( m_panel2, wxID_CHECK2, wxT("Enable Page 2"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox2->SetValue(true);
-	wxCheckBox* m_checkBox3 = new wxCheckBox( m_panel2, wxID_CHECK3, wxT("Enable Page 4"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox3->SetValue(true);
-	wxCheckBox* m_checkBox4 = new wxCheckBox( m_panel2, wxID_CHECK4, wxT("Enable Page 5"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox4->SetValue(true);
+	wxCheckBox* checkBox1 = new wxCheckBox( m_panel2, wxID_CHECK1, wxT("Enable Page 1"), wxDefaultPosition, wxDefaultSize, 0 );
+	checkBox1->SetValue(true);
+	wxCheckBox* checkBox2 = new wxCheckBox( m_panel2, wxID_CHECK2, wxT("Enable Page 2"), wxDefaultPosition, wxDefaultSize, 0 );
+	checkBox2->SetValue(true);
+	wxCheckBox* checkBox3 = new wxCheckBox( m_panel2, wxID_CHECK3, wxT("Enable Page 4"), wxDefaultPosition, wxDefaultSize, 0 );
+	checkBox3->SetValue(true);
+	wxCheckBox* checkBox4 = new wxCheckBox( m_panel2, wxID_CHECK4, wxT("Enable Page 5"), wxDefaultPosition, wxDefaultSize, 0 );
+	checkBox4->SetValue(true);
 
 	wxBoxSizer* bSizer2 = new wxBoxSizer( wxVERTICAL );
-	bSizer2->Add( m_checkBox1, 0, wxALL, 5 );
-	bSizer2->Add( m_checkBox2, 0, wxALL, 5 );
-	bSizer2->Add( m_checkBox3, 0, wxALL, 5 );
-	bSizer2->Add( m_checkBox4, 0, wxALL, 5 );
+	bSizer2->Add( checkBox1, 0, wxALL, 5 );
+	bSizer2->Add( checkBox2, 0, wxALL, 5 );
+	bSizer2->Add( checkBox3, 0, wxALL, 5 );
+	bSizer2->Add( checkBox4, 0, wxALL, 5 );
 
 	m_panel2->SetSizer( bSizer2 );
 	m_panel2->Layout();
@@ -673,15 +673,12 @@ BuilderFrame::BuilderFrame( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_panel3 = new wxPanel( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_textCtrl = new wxTextCtrl( m_panel3, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_DONTWRAP|wxTE_MULTILINE );
 	m_textCtrl->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_TELETYPE , wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
-	wxButton* m_button3 = new wxButton( m_panel3, wxID_ANY, wxT("Generate Code"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxButton* button3 = new wxButton( m_panel3, wxID_ANY, wxT("Generate Code"), wxDefaultPosition, wxDefaultSize, 0 );
 
 	wxBoxSizer* bSizer3 = new wxBoxSizer( wxVERTICAL );
 	bSizer3->Add( m_textCtrl, 1, wxALL|wxEXPAND, 5 );
-	bSizer3->Add( m_button3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
+	bSizer3->Add( button3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	m_panel3->SetSizer( bSizer3 );
-	m_panel3->Layout();
-	bSizer3->Fit( m_panel3 );
     m_accordion->AddPage(m_panel3,"Generate Code",false);
 
     //create and build the property grid
@@ -703,14 +700,14 @@ BuilderFrame::BuilderFrame( wxWindow* parent, wxWindowID id, const wxString& tit
     Bind( wxEVT_COMMAND_MENU_SELECTED, &BuilderFrame::OnQuit, this, menuFileQuit->GetId() );
 	Bind( wxEVT_COMMAND_MENU_SELECTED, &BuilderFrame::OnAbout, this, menuHelpAbout->GetId() );
 	Bind( wxEVT_CLOSE_WINDOW, &BuilderFrame::OnClose, this );
-	m_button1->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &BuilderFrame::onClearStops, this );
-	m_button2->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &BuilderFrame::onAddStop, this );
-	m_checkBox1->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
-	m_checkBox2->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
-	m_checkBox3->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
-	m_checkBox4->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
+	button1->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &BuilderFrame::onClearStops, this );
+	button2->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &BuilderFrame::onAddStop, this );
+	checkBox1->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
+	checkBox2->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
+	checkBox3->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
+	checkBox4->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &BuilderFrame::onCheckBox, this );
 	m_resetButton->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &BuilderFrame::onReset, this );
-	m_button3->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &BuilderFrame::onGenerate, this );
+	button3->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &BuilderFrame::onGenerate, this );
 	m_propertyGrid->Bind( wxEVT_PG_CHANGED, &BuilderFrame::onPropertyGridChanged, this );
 
 	//center the form on the screen
@@ -732,37 +729,37 @@ void BuilderFrame::onAddStop(wxCommandEvent& event)
     {
         stopProp = m_pgColCapBarGradStops;
         pos = adjustStopPosition( stopProp, pos);
-        m_accordion->AddCollapsedGradientStop(c,static_cast<float>(pos)/100.0);
+        m_accordion->GetCollapsedStyle().AddGradientStop(c,static_cast<float>(pos)/100.0);
     }
     else if( listItem == 1 )
     {
         stopProp = m_pgColHLCapBarGradStops;
         pos = adjustStopPosition( stopProp, pos);
-        m_accordion->AddCollapsedHLGradientStop(c,static_cast<float>(pos)/100.0);
+        m_accordion->GetCollapsedHLStyle().AddGradientStop(c,static_cast<float>(pos)/100.0);
     }
     else if( listItem == 2 )
     {
         stopProp = m_pgExpCapBarGradStops;
         pos = adjustStopPosition( stopProp, pos);
-        m_accordion->AddExpandedGradientStop(c,static_cast<float>(pos)/100.0);
+        m_accordion->GetExpandedStyle().AddGradientStop(c,static_cast<float>(pos)/100.0);
     }
     else if( listItem == 3 )
     {
         stopProp = m_pgExpHLCapBarGradStops;
         pos = adjustStopPosition( stopProp, pos);
-        m_accordion->AddExpandedHLGradientStop(c,static_cast<float>(pos)/100.0);
+        m_accordion->GetExpandedHLStyle().AddGradientStop(c,static_cast<float>(pos)/100.0);
     }
     else if( listItem == 4 )
     {
         stopProp = m_pgDisCapBarGradStops;
         pos = adjustStopPosition( stopProp, pos);
-        m_accordion->AddDisabledGradientStop(c,static_cast<float>(pos)/100.0);
+        m_accordion->GetDisabledStyle().AddGradientStop(c,static_cast<float>(pos)/100.0);
     }
     else
     {
         stopProp = m_pgPagesGradStops;
         pos = adjustStopPosition( stopProp, pos);
-        m_accordion->AddPageGradientStop(c,static_cast<float>(pos)/100.0);
+        m_accordion->GetPageStyle().AddGradientStop(c,static_cast<float>(pos)/100.0);
     }
 
     stopProp->SetValue("");
@@ -784,32 +781,32 @@ void BuilderFrame::onClearStops(wxCommandEvent& event)
     if( listItem == 0 )
     {
         stopProp=m_pgColCapBarGradStops;
-        m_accordion->ClearCollapsedGradientStops();
+        m_accordion->GetCollapsedStyle().ClearGradientStops();
     }
     else if( listItem == 1 )
     {
         stopProp=m_pgColHLCapBarGradStops;
-        m_accordion->ClearCollapsedHLGradientStops();
+        m_accordion->GetCollapsedHLStyle().ClearGradientStops();
     }
     else if( listItem == 2 )
     {
         stopProp=m_pgExpCapBarGradStops;
-        m_accordion->ClearExpandedGradientStops();
+        m_accordion->GetExpandedStyle().ClearGradientStops();
     }
     else if( listItem == 3 )
     {
         stopProp=m_pgExpHLCapBarGradStops;
-        m_accordion->ClearExpandedHLGradientStops();
+        m_accordion->GetExpandedHLStyle().ClearGradientStops();
     }
     else if( listItem == 4 )
     {
         stopProp=m_pgDisCapBarGradStops;
-        m_accordion->ClearDisabledGradientStops();
+        m_accordion->GetDisabledStyle().ClearGradientStops();
     }
     else
     {
         stopProp=m_pgPagesGradStops;
-        m_accordion->ClearPageGradientStops();
+        m_accordion->GetPageStyle().ClearGradientStops();
     }
 
     for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
@@ -1040,14 +1037,14 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
         addSizeString( s, "SetIconMargin", m_accordion->GetIconMargin() );
     }
 
-    if( temp->GetCollapsedColour1() != m_accordion->GetCollapsedColour1() )
+    if( temp->GetCollapsedStyle().GetColour1() != m_accordion->GetCollapsedStyle().GetColour1() )
     {
-        addColourString(s, "SetCollapsedColour1", m_accordion->GetCollapsedColour1());
+        addColourString(s, "GetCollapsedStyle().SetColour1", m_accordion->GetCollapsedStyle().GetColour1());
     }
 
-    if( temp->GetCollapsedColour2() != m_accordion->GetCollapsedColour2() )
+    if( temp->GetCollapsedStyle().GetColour2() != m_accordion->GetCollapsedStyle().GetColour2() )
     {
-        addColourString(s, "SetCollapsedColour2", m_accordion->GetCollapsedColour2());
+        addColourString(s, "GetCollapsedStyle().SetColour2", m_accordion->GetCollapsedStyle().GetColour2());
     }
 
     wxPGProperty* stopProp = m_pgColCapBarGradStops;
@@ -1055,49 +1052,47 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
     {
         for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
         {
-            addGradientStopString( s, "AddCollapsedGradientStop", stopProp->Item(i) );
+            addGradientStopString( s, "GetCollapsedStyle().AddGradientStop", stopProp->Item(i) );
         }
     }
 
     if( m_pgColCapBarUseImage->GetValue().GetBool() )
     {
-        addBitmapString(s, "SetCollapsedBGBitmap", m_pgColCapBarImage );
+        addBitmapString(s, "GetCollapsedStyle().SetBGBitmap", m_pgColCapBarImage );
     }
 
     if( m_pgColCapBarBrdrTrans->GetValue().GetBool() )
     {
-        s << "m_accordion->SetCollapsedBorderColour(wxTransparentColour);\n";
+        s << "m_accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);\n";
     }
     else
     {
-        if( temp->GetCollapsedBorderColour() != m_accordion->GetCollapsedBorderColour() )
+        if( temp->GetCollapsedStyle().GetBorderColour() != m_accordion->GetCollapsedStyle().GetBorderColour() )
         {
-            addColourString(s, "SetCollapsedBorderColour", m_accordion->GetCollapsedBorderColour());
+            addColourString(s, "GetCollapsedStyle().SetBorderColour", m_accordion->GetCollapsedStyle().GetBorderColour());
         }
     }
 
-    if( temp->GetCollapsedTextColour() != m_accordion->GetCollapsedTextColour() )
+    if( temp->GetCollapsedStyle().GetTextColour() != m_accordion->GetCollapsedStyle().GetTextColour() )
     {
-        addColourString(s, "SetCollapsedTextColour", m_accordion->GetCollapsedTextColour());
+        addColourString(s, "GetCollapsedStyle().SetTextColour", m_accordion->GetCollapsedStyle().GetTextColour());
     }
 
-    wxFont f = m_accordion->GetCollapsedFont();
-
-    if( temp->GetCollapsedFont() != f )
+    if( temp->GetCollapsedStyle().GetFont() != m_accordion->GetCollapsedStyle().GetFont() )
     {
-        addFontString(s,"SetCollapsedFont",f);
+        addFontString(s,"GetCollapsedStyle().SetFont",m_accordion->GetCollapsedStyle().GetFont());
     }
 
 
 
-    if( temp->GetCollapsedHLColour1() != m_accordion->GetCollapsedHLColour1() )
+    if( temp->GetCollapsedHLStyle().GetColour1() != m_accordion->GetCollapsedHLStyle().GetColour1() )
     {
-        addColourString(s, "SetCollapsedHLColour1", m_accordion->GetCollapsedHLColour1());
+        addColourString(s, "GetCollapsedHLStyle().SetColour1", m_accordion->GetCollapsedHLStyle().GetColour1());
     }
 
-    if( temp->GetCollapsedHLColour2() != m_accordion->GetCollapsedHLColour2() )
+    if( temp->GetCollapsedHLStyle().GetColour2() != m_accordion->GetCollapsedHLStyle().GetColour2() )
     {
-        addColourString(s, "SetCollapsedHLColour2", m_accordion->GetCollapsedHLColour2());
+        addColourString(s, "GetCollapsedHLStyle().SetColour2", m_accordion->GetCollapsedHLStyle().GetColour2());
     }
 
     stopProp = m_pgColHLCapBarGradStops;
@@ -1105,48 +1100,47 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
     {
         for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
         {
-            addGradientStopString( s, "AddCollapsedHLGradientStop", stopProp->Item(i) );
+            addGradientStopString( s, "GetCollapsedHLStyle().AddGradientStop", stopProp->Item(i) );
         }
     }
 
     if( m_pgColHLCapBarUseImage->GetValue().GetBool() )
     {
-        addBitmapString(s, "SetCollapsedHLBGBitmap", m_pgColHLCapBarImage );
+        addBitmapString(s, "GetCollapsedHLStyle().SetBGBitmap", m_pgColHLCapBarImage );
     }
 
     if( m_pgColHLCapBarBrdrTrans->GetValue().GetBool() )
     {
-        s << "m_accordion->SetCollapsedHLBorderColour(wxTransparentColour);\n";
+        s << "m_accordion->GetCollapsedHLStyle().SetBorderColour(wxTransparentColour);\n";
     }
     else
     {
-        if( temp->GetCollapsedHLBorderColour() != m_accordion->GetCollapsedHLBorderColour() )
+        if( temp->GetCollapsedHLStyle().GetBorderColour() != m_accordion->GetCollapsedHLStyle().GetBorderColour() )
         {
-            addColourString(s, "SetCollapsedHLBorderColour", m_accordion->GetCollapsedHLBorderColour());
+            addColourString(s, "GetCollapsedHLStyle().SetBorderColour", m_accordion->GetCollapsedHLStyle().GetBorderColour());
         }
     }
 
-    if( temp->GetCollapsedHLTextColour() != m_accordion->GetCollapsedHLTextColour() )
+    if( temp->GetCollapsedHLStyle().GetTextColour() != m_accordion->GetCollapsedHLStyle().GetTextColour() )
     {
-        addColourString(s, "SetCollapsedHLTextColour", m_accordion->GetCollapsedHLTextColour());
+        addColourString(s, "GetCollapsedHLStyle().SetTextColour", m_accordion->GetCollapsedHLStyle().GetTextColour());
     }
 
-    f = m_accordion->GetCollapsedHLFont();
-    if( temp->GetCollapsedHLFont() != f )
+    if( temp->GetCollapsedHLStyle().GetFont() != m_accordion->GetCollapsedHLStyle().GetFont() )
     {
-        addFontString(s,"SetCollapsedHLFont",f);
+        addFontString( s, "GetCollapsedHLStyle().SetFont", m_accordion->GetCollapsedHLStyle().GetFont() );
     }
 
 
 
-    if( temp->GetExpandedColour1() != m_accordion->GetExpandedColour1() )
+    if( temp->GetExpandedStyle().GetColour1() != m_accordion->GetExpandedStyle().GetColour1() )
     {
-        addColourString(s, "SetExpandedColour1", m_accordion->GetExpandedColour1());
+        addColourString(s, "GetExpandedStyle().SetColour1", m_accordion->GetExpandedStyle().GetColour1());
     }
 
-    if( temp->GetExpandedColour2() != m_accordion->GetExpandedColour2() )
+    if( temp->GetExpandedStyle().GetColour2() != m_accordion->GetExpandedStyle().GetColour2() )
     {
-        addColourString(s, "SetExpandedColour2", m_accordion->GetExpandedColour2());
+        addColourString(s, "GetExpandedStyle().SetColour2", m_accordion->GetExpandedStyle().GetColour2());
     }
 
     stopProp = m_pgExpCapBarGradStops;
@@ -1154,48 +1148,47 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
     {
         for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
         {
-            addGradientStopString( s, "AddExpandedGradientStop", stopProp->Item(i) );
+            addGradientStopString( s, "GetExpandedStyle().AddGradientStop", stopProp->Item(i) );
         }
     }
 
     if( m_pgExpCapBarUseImage->GetValue().GetBool() )
     {
-        addBitmapString(s, "SetExpandedBGBitmap", m_pgExpCapBarImage );
+        addBitmapString(s, "GetExpandedStyle().SetBGBitmap", m_pgExpCapBarImage );
     }
 
     if( m_pgExpCapBarBrdrTrans->GetValue().GetBool() )
     {
-        s << "m_accordion->SetExpandedBorderColour(wxTransparentColour);\n";
+        s << "m_accordion->GetExpandedStyle().SetBorderColour(wxTransparentColour);\n";
     }
     else
     {
-        if( temp->GetExpandedBorderColour() != m_accordion->GetExpandedBorderColour() )
+        if( temp->GetExpandedStyle().GetBorderColour() != m_accordion->GetExpandedStyle().GetBorderColour() )
         {
-            addColourString(s, "SetExpandedBorderColour", m_accordion->GetExpandedBorderColour());
+            addColourString(s, "GetExpandedStyle().SetBorderColour", m_accordion->GetExpandedStyle().GetBorderColour());
         }
     }
 
-    if( temp->GetExpandedTextColour() != m_accordion->GetExpandedTextColour() )
+    if( temp->GetExpandedStyle().GetTextColour() != m_accordion->GetExpandedStyle().GetTextColour() )
     {
-        addColourString(s, "SetExpandedTextColour", m_accordion->GetExpandedTextColour());
+        addColourString(s, "GetExpandedStyle().SetTextColour", m_accordion->GetExpandedStyle().GetTextColour());
     }
 
-    f = m_accordion->GetExpandedFont();
-    if( temp->GetExpandedFont() != f )
+    if( temp->GetExpandedStyle().GetFont() != m_accordion->GetExpandedStyle().GetFont() )
     {
-        addFontString(s,"SetExpandedFont",f);
+        addFontString(s,"GetExpandedStyle().SetFont",m_accordion->GetExpandedStyle().GetFont());
     }
 
 
 
-    if( temp->GetExpandedHLColour1() != m_accordion->GetExpandedHLColour1() )
+    if( temp->GetExpandedHLStyle().GetColour1() != m_accordion->GetExpandedHLStyle().GetColour1() )
     {
-        addColourString(s, "SetExpandedHLColour1", m_accordion->GetExpandedHLColour1());
+        addColourString(s, "GetExpandedHLStyle().SetColour1", m_accordion->GetExpandedHLStyle().GetColour1());
     }
 
-    if( temp->GetExpandedHLColour2() != m_accordion->GetExpandedHLColour2() )
+    if( temp->GetExpandedHLStyle().GetColour2() != m_accordion->GetExpandedHLStyle().GetColour2() )
     {
-        addColourString(s, "SetExpandedHLColour2", m_accordion->GetExpandedHLColour2());
+        addColourString(s, "GetExpandedHLStyle().SetColour2", m_accordion->GetExpandedHLStyle().GetColour2());
     }
 
     stopProp = m_pgExpHLCapBarGradStops;
@@ -1203,47 +1196,47 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
     {
         for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
         {
-            addGradientStopString( s, "AddExpandedHLGradientStop", stopProp->Item(i) );
+            addGradientStopString( s, "GetExpandedHLStyle().AddGradientStop", stopProp->Item(i) );
         }
     }
 
     if( m_pgExpHLCapBarUseImage->GetValue().GetBool() )
     {
-        addBitmapString(s, "SetExpandedHLBGBitmap", m_pgExpHLCapBarImage );
+        addBitmapString(s, "GetExpandedHLStyle().SetBGBitmap", m_pgExpHLCapBarImage );
     }
 
     if( m_pgExpHLCapBarBrdrTrans->GetValue().GetBool() )
     {
-        s << "m_accordion->SetExpandedHLBorderColour(wxTransparentColour);\n";
+        s << "m_accordion->GetExpandedHLStyle().SetBorderColour(wxTransparentColour);\n";
     }
     else
     {
-        if( temp->GetExpandedHLBorderColour() != m_accordion->GetExpandedHLBorderColour() )
+        if( temp->GetExpandedHLStyle().GetBorderColour() != m_accordion->GetExpandedHLStyle().GetBorderColour() )
         {
-            addColourString(s, "SetExpandedHLBorderColour", m_accordion->GetExpandedHLBorderColour());
+            addColourString(s, "GetExpandedHLStyle().SetBorderColour", m_accordion->GetExpandedHLStyle().GetBorderColour());
         }
     }
 
-    if( temp->GetExpandedHLTextColour() != m_accordion->GetExpandedHLTextColour() )
+    if( temp->GetExpandedHLStyle().GetTextColour() != m_accordion->GetExpandedHLStyle().GetTextColour() )
     {
-        addColourString(s, "SetExpandedHLTextColour", m_accordion->GetExpandedHLTextColour());
+        addColourString(s, "GetExpandedHLStyle().SetTextColour", m_accordion->GetExpandedHLStyle().GetTextColour());
     }
 
-    if( temp->GetExpandedHLFont() != m_accordion->GetExpandedHLFont() )
+    if( temp->GetExpandedHLStyle().GetFont() != m_accordion->GetExpandedHLStyle().GetFont() )
     {
-        addFontString(s,"SetExpandedHLFont",m_accordion->GetExpandedHLFont());
+        addFontString(s,"GetExpandedHLStyle().SetFont",m_accordion->GetExpandedHLStyle().GetFont());
     }
 
 
 
-    if( temp->GetDisabledColour1() != m_accordion->GetDisabledColour1() )
+    if( temp->GetDisabledStyle().GetColour1() != m_accordion->GetDisabledStyle().GetColour1() )
     {
-        addColourString(s, "SetDisabledColour1", m_accordion->GetDisabledColour1());
+        addColourString(s, "GetDisabledStyle().SetColour1", m_accordion->GetDisabledStyle().GetColour1());
     }
 
-    if( temp->GetDisabledColour2() != m_accordion->GetDisabledColour2() )
+    if( temp->GetDisabledStyle().GetColour2() != m_accordion->GetDisabledStyle().GetColour2() )
     {
-        addColourString(s, "SetDisabledColour2", m_accordion->GetDisabledColour2());
+        addColourString(s, "GetDisabledStyle().SetColour2", m_accordion->GetDisabledStyle().GetColour2());
     }
 
     stopProp = m_pgDisCapBarGradStops;
@@ -1251,35 +1244,35 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
     {
         for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
         {
-            addGradientStopString( s, "AddDisabledGradientStop", stopProp->Item(i) );
+            addGradientStopString( s, "GetDisabledStyle().AddGradientStop", stopProp->Item(i) );
         }
     }
 
     if( m_pgDisCapBarUseImage->GetValue().GetBool() )
     {
-        addBitmapString(s, "SetDisabledBGBitmap", m_pgDisCapBarImage );
+        addBitmapString(s, "GetDisabledStyle().SetBGBitmap", m_pgDisCapBarImage );
     }
 
     if( m_pgDisCapBarBrdrTrans->GetValue().GetBool() )
     {
-        s << "m_accordion->SetDisabledBorderColour(wxTransparentColour);\n";
+        s << "m_accordion->GetDisabledStyle().SetBorderColour(wxTransparentColour);\n";
     }
     else
     {
-        if( temp->GetDisabledBorderColour() != m_accordion->GetDisabledBorderColour() )
+        if( temp->GetDisabledStyle().GetBorderColour() != m_accordion->GetDisabledStyle().GetBorderColour() )
         {
-            addColourString(s, "SetDisabledBorderColour", m_accordion->GetDisabledBorderColour());
+            addColourString(s, "GetDisabledStyle().SetBorderColour", m_accordion->GetDisabledStyle().GetBorderColour());
         }
     }
 
-    if( temp->GetDisabledTextColour() != m_accordion->GetDisabledTextColour() )
+    if( temp->GetDisabledStyle().GetTextColour() != m_accordion->GetDisabledStyle().GetTextColour() )
     {
-        addColourString(s, "SetDisabledTextColour", m_accordion->GetDisabledTextColour());
+        addColourString(s, "GetDisabledStyle().SetTextColour", m_accordion->GetDisabledStyle().GetTextColour());
     }
 
-    if( temp->GetDisabledFont() != m_accordion->GetDisabledFont() )
+    if( temp->GetDisabledStyle().GetFont() != m_accordion->GetDisabledStyle().GetFont() )
     {
-        addFontString(s,"SetDisabledFont",m_accordion->GetDisabledFont());
+        addFontString(s,"GetDisabledStyle().SetFont",m_accordion->GetDisabledStyle().GetFont());
     }
 
 
@@ -1295,14 +1288,14 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
         addIntString( s, "SetPageRadius", m_accordion->GetPageRadius() );
     }
 
-    if( temp->GetPageColour1() != m_accordion->GetPageColour1() )
+    if( temp->GetPageStyle().GetColour1() != m_accordion->GetPageStyle().GetColour1() )
     {
-        addColourString(s, "SetPageColour1", m_accordion->GetPageColour1());
+        addColourString(s, "GetPageStyle().SetColour1", m_accordion->GetPageStyle().GetColour1());
     }
 
-    if( temp->GetPageColour2() != m_accordion->GetPageColour2() )
+    if( temp->GetPageStyle().GetColour2() != m_accordion->GetPageStyle().GetColour2() )
     {
-        addColourString(s, "SetPageColour2", m_accordion->GetPageColour2());
+        addColourString(s, "GetPageStyle().SetColour2", m_accordion->GetPageStyle().GetColour2());
     }
 
     stopProp = m_pgPagesGradStops;
@@ -1310,24 +1303,24 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
     {
         for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
         {
-            addGradientStopString( s, "AddPageGradientStop", stopProp->Item(i) );
+            addGradientStopString( s, "GetPageStyle().AddGradientStop", stopProp->Item(i) );
         }
     }
 
     if( m_pgPagesUseImage->GetValue().GetBool() )
     {
-        addBitmapString(s, "SetPageBGBitmap", m_pgPagesImage );
+        addBitmapString(s, "GetPageStyle().SetBGBitmap", m_pgPagesImage );
     }
 
     if( m_pgPagesBrdrTrans->GetValue().GetBool() )
     {
-        s << "m_accordion->SetPageBorderColour(wxTransparentColour);\n";
+        s << "m_accordion->GetPageStyle().SetBorderColour(wxTransparentColour);\n";
     }
     else
     {
-        if( temp->GetPageBorderColour() != m_accordion->GetPageBorderColour() )
+        if( temp->GetPageStyle().GetBorderColour() != m_accordion->GetPageStyle().GetBorderColour() )
         {
-            addColourString(s, "SetPageBorderColour", m_accordion->GetPageBorderColour());
+            addColourString(s, "GetPageStyle().SetBorderColour", m_accordion->GetPageStyle().GetBorderColour());
         }
     }
 
@@ -1526,12 +1519,12 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
     }
     else if( p == m_pgColCapBarCol1 )
     {
-        m_accordion->SetCollapsedColour1( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedStyle().SetColour1( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColCapBarCol2 )
     {
-        m_accordion->SetCollapsedColour2( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedStyle().SetColour2( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColCapBarUseImage )
@@ -1543,19 +1536,19 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         {
             if(!m_pgColCapBarImage->GetValue().GetString().IsEmpty())
             {
-                m_accordion->SetCollapsedBGBitmap(wxBitmap(m_pgColCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+                m_accordion->GetCollapsedStyle().SetBGBitmap(wxBitmap(m_pgColCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
             }
         }
         else
         {
-            m_accordion->SetCollapsedBGBitmap(wxNullBitmap);
+            m_accordion->GetCollapsedStyle().SetBGBitmap(wxNullBitmap);
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgColCapBarImage )
     {
-        m_accordion->SetCollapsedBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+        m_accordion->GetCollapsedStyle().SetBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
         m_accordion->Refresh();
     }
     else if( p == m_pgColCapBarBrdrTrans )
@@ -1565,39 +1558,39 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgColCapBarBrdrCol->Enable(!b);
         if(b)
         {
-            m_accordion->SetCollapsedBorderColour(wxTransparentColour);
+            m_accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
         }
         else
         {
-            m_accordion->SetCollapsedBorderColour(m_pgColCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
+            m_accordion->GetCollapsedStyle().SetBorderColour(m_pgColCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
         }
         m_accordion->Refresh();
     }
     else if( p == m_pgColCapBarBrdrCol )
     {
-        m_accordion->SetCollapsedBorderColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedStyle().SetBorderColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColCapBarTextCol )
     {
-        m_accordion->SetCollapsedTextColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedStyle().SetTextColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColCapBarFont )
     {
-        m_accordion->SetCollapsedFont( p->GetValue().GetAny().As<wxFont>() );
+        m_accordion->GetCollapsedStyle().SetFont( p->GetValue().GetAny().As<wxFont>() );
         m_accordion->Layout();
         m_accordion->Refresh();
     }
 
     else if( p == m_pgExpCapBarCol1 )
     {
-        m_accordion->SetExpandedColour1( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedStyle().SetColour1( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpCapBarCol2 )
     {
-        m_accordion->SetExpandedColour2( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedStyle().SetColour2( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpCapBarUseImage )
@@ -1609,19 +1602,19 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         {
             if(!m_pgExpCapBarImage->GetValue().GetString().IsEmpty())
             {
-                m_accordion->SetExpandedBGBitmap(wxBitmap(m_pgExpCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+                m_accordion->GetExpandedStyle().SetBGBitmap(wxBitmap(m_pgExpCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
             }
         }
         else
         {
-            m_accordion->SetExpandedBGBitmap(wxNullBitmap);
+            m_accordion->GetExpandedStyle().SetBGBitmap(wxNullBitmap);
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgExpCapBarImage )
     {
-        m_accordion->SetExpandedBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+        m_accordion->GetExpandedStyle().SetBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
         m_accordion->Refresh();
     }
     else if( p == m_pgExpCapBarBrdrTrans )
@@ -1631,40 +1624,40 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgExpCapBarBrdrCol->Enable(!b);
         if(b)
         {
-            m_accordion->SetExpandedBorderColour(wxTransparentColour);
+            m_accordion->GetExpandedStyle().SetBorderColour(wxTransparentColour);
         }
         else
         {
-            m_accordion->SetExpandedBorderColour(m_pgExpCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
+            m_accordion->GetExpandedStyle().SetBorderColour(m_pgExpCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgExpCapBarBrdrCol )
     {
-        m_accordion->SetExpandedBorderColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedStyle().SetBorderColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpCapBarTextCol )
     {
-        m_accordion->SetExpandedTextColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedStyle().SetTextColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpCapBarFont )
     {
-        m_accordion->SetExpandedFont( p->GetValue().GetAny().As<wxFont>() );
+        m_accordion->GetExpandedStyle().SetFont( p->GetValue().GetAny().As<wxFont>() );
         m_accordion->Layout();
         m_accordion->Refresh();
     }
 
     else if( p == m_pgColHLCapBarCol1 )
     {
-        m_accordion->SetCollapsedHLColour1( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedHLStyle().SetColour1( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColHLCapBarCol2 )
     {
-        m_accordion->SetCollapsedHLColour2( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedHLStyle().SetColour2( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColHLCapBarUseImage )
@@ -1676,19 +1669,19 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         {
             if(!m_pgColHLCapBarImage->GetValue().GetString().IsEmpty())
             {
-                m_accordion->SetCollapsedHLBGBitmap(wxBitmap(m_pgColHLCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+                m_accordion->GetCollapsedHLStyle().SetBGBitmap(wxBitmap(m_pgColHLCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
             }
         }
         else
         {
-            m_accordion->SetCollapsedHLBGBitmap(wxNullBitmap);
+            m_accordion->GetCollapsedHLStyle().SetBGBitmap(wxNullBitmap);
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgColHLCapBarImage )
     {
-        m_accordion->SetCollapsedHLBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+        m_accordion->GetCollapsedHLStyle().SetBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
         m_accordion->Refresh();
     }
     else if( p == m_pgColHLCapBarBrdrTrans )
@@ -1698,39 +1691,39 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgColHLCapBarBrdrCol->Enable(!b);
         if(b)
         {
-            m_accordion->SetCollapsedHLBorderColour(wxTransparentColour);
+            m_accordion->GetCollapsedHLStyle().SetBorderColour(wxTransparentColour);
         }
         else
         {
-            m_accordion->SetCollapsedHLBorderColour(m_pgColHLCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
+            m_accordion->GetCollapsedHLStyle().SetBorderColour(m_pgColHLCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgColHLCapBarBrdrCol )
     {
-        m_accordion->SetCollapsedHLBorderColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedHLStyle().SetBorderColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColHLCapBarTextCol )
     {
-        m_accordion->SetCollapsedHLTextColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetCollapsedHLStyle().SetTextColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgColHLCapBarFont )
     {
-        m_accordion->SetCollapsedHLFont( p->GetValue().GetAny().As<wxFont>() );
+        m_accordion->GetCollapsedHLStyle().SetFont( p->GetValue().GetAny().As<wxFont>() );
         m_accordion->Layout();
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarCol1 )
     {
-        m_accordion->SetExpandedHLColour1( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedHLStyle().SetColour1( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarCol2 )
     {
-        m_accordion->SetExpandedHLColour2( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedHLStyle().SetColour2( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarUseImage )
@@ -1742,19 +1735,19 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         {
             if(!m_pgExpHLCapBarImage->GetValue().GetString().IsEmpty())
             {
-                m_accordion->SetExpandedHLBGBitmap(wxBitmap(m_pgExpHLCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+                m_accordion->GetExpandedHLStyle().SetBGBitmap(wxBitmap(m_pgExpHLCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
             }
         }
         else
         {
-            m_accordion->SetExpandedHLBGBitmap(wxNullBitmap);
+            m_accordion->GetExpandedHLStyle().SetBGBitmap(wxNullBitmap);
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarImage )
     {
-        m_accordion->SetExpandedHLBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+        m_accordion->GetExpandedHLStyle().SetBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarBrdrTrans )
@@ -1764,40 +1757,40 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgExpHLCapBarBrdrCol->Enable(!b);
         if(b)
         {
-            m_accordion->SetExpandedHLBorderColour(wxTransparentColour);
+            m_accordion->GetExpandedHLStyle().SetBorderColour(wxTransparentColour);
         }
         else
         {
-            m_accordion->SetExpandedHLBorderColour(m_pgExpHLCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
+            m_accordion->GetExpandedHLStyle().SetBorderColour(m_pgExpHLCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarBrdrCol )
     {
-        m_accordion->SetExpandedHLBorderColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedHLStyle().SetBorderColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarTextCol )
     {
-        m_accordion->SetExpandedHLTextColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetExpandedHLStyle().SetTextColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgExpHLCapBarFont )
     {
-        m_accordion->SetExpandedHLFont( p->GetValue().GetAny().As<wxFont>() );
+        m_accordion->GetExpandedHLStyle().SetFont( p->GetValue().GetAny().As<wxFont>() );
         m_accordion->Layout();
         m_accordion->Refresh();
     }
 
     else if( p == m_pgDisCapBarCol1 )
     {
-        m_accordion->SetDisabledColour1( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetDisabledStyle().SetColour1( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgDisCapBarCol2 )
     {
-        m_accordion->SetDisabledColour2( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetDisabledStyle().SetColour2( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgDisCapBarUseImage )
@@ -1809,19 +1802,19 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         {
             if(!m_pgDisCapBarImage->GetValue().GetString().IsEmpty())
             {
-                m_accordion->SetDisabledBGBitmap(wxBitmap(m_pgDisCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+                m_accordion->GetDisabledStyle().SetBGBitmap(wxBitmap(m_pgDisCapBarImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
             }
         }
         else
         {
-            m_accordion->SetDisabledBGBitmap(wxNullBitmap);
+            m_accordion->GetDisabledStyle().SetBGBitmap(wxNullBitmap);
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgDisCapBarImage )
     {
-        m_accordion->SetDisabledBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+        m_accordion->GetDisabledStyle().SetBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
         m_accordion->Refresh();
     }
     else if( p == m_pgDisCapBarBrdrTrans )
@@ -1831,28 +1824,28 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgDisCapBarBrdrCol->Enable(!b);
         if(b)
         {
-            m_accordion->SetDisabledBorderColour(wxTransparentColour);
+            m_accordion->GetDisabledStyle().SetBorderColour(wxTransparentColour);
         }
         else
         {
-            m_accordion->SetDisabledBorderColour(m_pgDisCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
+            m_accordion->GetDisabledStyle().SetBorderColour(m_pgDisCapBarBrdrCol->GetValue().GetAny().As<wxColour>());
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgDisCapBarBrdrCol )
     {
-        m_accordion->SetDisabledBorderColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetDisabledStyle().SetBorderColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgDisCapBarTextCol )
     {
-        m_accordion->SetDisabledTextColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetDisabledStyle().SetTextColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgDisCapBarFont )
     {
-        m_accordion->SetDisabledFont( p->GetValue().GetAny().As<wxFont>() );
+        m_accordion->GetDisabledStyle().SetFont( p->GetValue().GetAny().As<wxFont>() );
         m_accordion->Layout();
         m_accordion->Refresh();
     }
@@ -1869,12 +1862,12 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
     }
     else if( p == m_pgPagesCol1)
     {
-        m_accordion->SetPageColour1( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetPageStyle().SetColour1( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgPagesCol2)
     {
-        m_accordion->SetPageColour2( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetPageStyle().SetColour2( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Refresh();
     }
     else if( p == m_pgPagesUseImage)
@@ -1886,19 +1879,19 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         {
             if(!m_pgPagesImage->GetValue().GetString().IsEmpty())
             {
-                m_accordion->SetPageBGBitmap(wxBitmap(m_pgPagesImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+                m_accordion->GetPageStyle().SetBGBitmap(wxBitmap(m_pgPagesImage->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
             }
         }
         else
         {
-            m_accordion->SetPageBGBitmap(wxNullBitmap);
+            m_accordion->GetPageStyle().SetBGBitmap(wxNullBitmap);
         }
 
         m_accordion->Refresh();
     }
     else if( p == m_pgPagesImage)
     {
-        m_accordion->SetPageBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
+        m_accordion->GetPageStyle().SetBGBitmap(wxBitmap(p->GetValue().GetString(),wxBITMAP_TYPE_ANY ));
         m_accordion->Refresh();
     }
     else if( p == m_pgPagesBrdrTrans )
@@ -1908,11 +1901,11 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgPagesBrdrCol->Enable(!b);
         if(b)
         {
-            m_accordion->SetPageBorderColour(wxTransparentColour);
+            m_accordion->GetPageStyle().SetBorderColour(wxTransparentColour);
         }
         else
         {
-            m_accordion->SetPageBorderColour(m_pgPagesBrdrCol->GetValue().GetAny().As<wxColour>());
+            m_accordion->GetPageStyle().SetBorderColour(m_pgPagesBrdrCol->GetValue().GetAny().As<wxColour>());
         }
 
         m_accordion->Layout();
@@ -1920,7 +1913,7 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
     }
     else if( p == m_pgPagesBrdrCol )
     {
-        m_accordion->SetPageBorderColour( p->GetValue().GetAny().As<wxColour>() );
+        m_accordion->GetPageStyle().SetBorderColour( p->GetValue().GetAny().As<wxColour>() );
         m_accordion->Layout();
         m_accordion->Refresh();
     }
@@ -1936,68 +1929,68 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
 
         if( stopProp == m_pgColCapBarGradStops )
         {
-            m_accordion->ClearCollapsedGradientStops();
+            m_accordion->GetCollapsedStyle().ClearGradientStops();
 
             for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
             {
                 c = stopProp->Item(i)->Item(0)->GetValue().GetAny().As<wxColour>();
                 pos = static_cast<float>(stopProp->Item(i)->Item(1)->GetValue().GetLong())/100.0;
-                m_accordion->AddCollapsedGradientStop(c,pos);
+                m_accordion->GetCollapsedStyle().AddGradientStop(c,pos);
             }
         }
         else if( stopProp == m_pgColHLCapBarGradStops )
         {
-            m_accordion->ClearCollapsedHLGradientStops();
+            m_accordion->GetCollapsedHLStyle().ClearGradientStops();
 
             for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
             {
                 c = stopProp->Item(i)->Item(0)->GetValue().GetAny().As<wxColour>();
                 pos = static_cast<float>(stopProp->Item(i)->Item(1)->GetValue().GetLong())/100.0;
-                m_accordion->AddCollapsedHLGradientStop(c,pos);
+                m_accordion->GetCollapsedHLStyle().AddGradientStop(c,pos);
             }
         }
         else if( stopProp == m_pgExpCapBarGradStops )
         {
-            m_accordion->ClearExpandedGradientStops();
+            m_accordion->GetExpandedStyle().ClearGradientStops();
 
             for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
             {
                 c = stopProp->Item(i)->Item(0)->GetValue().GetAny().As<wxColour>();
                 pos = static_cast<float>(stopProp->Item(i)->Item(1)->GetValue().GetLong())/100.0;
-                m_accordion->AddExpandedGradientStop(c,pos);
+                m_accordion->GetExpandedStyle().AddGradientStop(c,pos);
             }
         }
         else if( stopProp == m_pgExpHLCapBarGradStops )
         {
-            m_accordion->ClearExpandedHLGradientStops();
+            m_accordion->GetExpandedHLStyle().ClearGradientStops();
 
             for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
             {
                 c = stopProp->Item(i)->Item(0)->GetValue().GetAny().As<wxColour>();
                 pos = static_cast<float>(stopProp->Item(i)->Item(1)->GetValue().GetLong())/100.0;
-                m_accordion->AddExpandedHLGradientStop(c,pos);
+                m_accordion->GetExpandedHLStyle().AddGradientStop(c,pos);
             }
         }
         else if( stopProp == m_pgDisCapBarGradStops )
         {
-            m_accordion->ClearDisabledGradientStops();
+            m_accordion->GetDisabledStyle().ClearGradientStops();
 
             for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
             {
                 c = stopProp->Item(i)->Item(0)->GetValue().GetAny().As<wxColour>();
                 pos = static_cast<float>(stopProp->Item(i)->Item(1)->GetValue().GetLong())/100.0;
-                m_accordion->AddDisabledGradientStop(c,pos);
+                m_accordion->GetDisabledStyle().AddGradientStop(c,pos);
             }
         }
         else if( stopProp == m_pgPagesGradStops )
         {
-            m_accordion->ClearPageGradientStops();
+            m_accordion->GetPageStyle().ClearGradientStops();
 
             for(unsigned int i=0; i< stopProp->GetChildCount(); i++)
             {
                 c = stopProp->Item(i)->Item(0)->GetValue().GetAny().As<wxColour>();
                 pos = static_cast<float>(stopProp->Item(i)->Item(1)->GetValue().GetLong())/100.0;
-                m_accordion->AddPageGradientStop(c,pos);
+                m_accordion->GetPageStyle().AddGradientStop(c,pos);
             }
         }
 
@@ -2119,14 +2112,14 @@ void BuilderFrame::buildGrid()
     //m_pgColCapBarCat
 	m_pgColCapBarCat = m_propertyGrid->AppendIn( m_pgCaptionBarCat, new wxPropertyCategory( wxT("Collapsed State"), wxPG_LABEL ) );
 
-	m_pgColCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetCollapsedColour1() ) );
+	m_pgColCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetCollapsedStyle().GetColour1() ) );
 
 	m_pgColCapBarGradStops = m_propertyGrid->Append( new wxStringProperty( wxT("Gradient Stops"), wxPG_LABEL , "None"  ) );
     m_propertyGrid->SetPropertyReadOnly(m_pgColCapBarGradStops,true,wxPG_DONT_RECURSE);
 
-	m_pgColCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetCollapsedColour2() ) );
+	m_pgColCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetCollapsedStyle().GetColour2() ) );
 
-	m_pgColCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetCollapsedBGBitmap().IsOk() ) );
+	m_pgColCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetCollapsedStyle().GetBGBitmap().IsOk() ) );
 	m_pgColCapBarUseImage->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
 	m_pgColCapBarImage = m_propertyGrid->Append( new wxImageFileProperty( wxT("Image"), wxPG_LABEL ) );
@@ -2135,11 +2128,11 @@ void BuilderFrame::buildGrid()
 	m_pgColCapBarBrdrTrans = m_propertyGrid->Append( new wxBoolProperty( wxT("Transparent Border"), wxPG_LABEL,false ) );
 	m_pgColCapBarBrdrTrans->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-	m_pgColCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetCollapsedBorderColour() ) );
+	m_pgColCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetCollapsedStyle().GetBorderColour() ) );
 
-	m_pgColCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetCollapsedTextColour() ) );
+	m_pgColCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetCollapsedStyle().GetTextColour() ) );
 
-	m_pgColCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetCollapsedFont() ) );
+	m_pgColCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetCollapsedStyle().GetFont() ) );
     m_pgColCapBarFont->Item(0)->SetEditor( "SpinCtrl" );
     m_pgColCapBarFont->Item(0)->SetAttribute(  wxT("Step"), (long)1 );
     m_pgColCapBarFont->Item(0)->SetAttribute(  wxT("MotionSpin"), true );
@@ -2150,14 +2143,14 @@ void BuilderFrame::buildGrid()
     //m_pgColHLCapBarCat
 	m_pgColHLCapBarCat = m_propertyGrid->AppendIn( m_pgCaptionBarCat, new wxPropertyCategory( wxT("Collapsed Highlighted State"), wxPG_LABEL ) );
 
-	m_pgColHLCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetCollapsedHLColour1() ) );
+	m_pgColHLCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetCollapsedHLStyle().GetColour1() ) );
 
 	m_pgColHLCapBarGradStops = m_propertyGrid->Append( new wxStringProperty( wxT("Gradient Stops"), wxPG_LABEL , "None"  ) );
     m_propertyGrid->SetPropertyReadOnly(m_pgColHLCapBarGradStops,true,wxPG_DONT_RECURSE);
 
-	m_pgColHLCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetCollapsedHLColour2() ) );
+	m_pgColHLCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetCollapsedHLStyle().GetColour2() ) );
 
-	m_pgColHLCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetCollapsedHLBGBitmap().IsOk() ) );
+	m_pgColHLCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetCollapsedHLStyle().GetBGBitmap().IsOk() ) );
 	m_pgColHLCapBarUseImage->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
 	m_pgColHLCapBarImage = m_propertyGrid->Append( new wxImageFileProperty( wxT("Image"), wxPG_LABEL ) );
@@ -2166,11 +2159,11 @@ void BuilderFrame::buildGrid()
 	m_pgColHLCapBarBrdrTrans = m_propertyGrid->Append( new wxBoolProperty( wxT("Transparent Border"), wxPG_LABEL,false ) );
 	m_pgColHLCapBarBrdrTrans->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-	m_pgColHLCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetCollapsedHLBorderColour() ) );
+	m_pgColHLCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetCollapsedHLStyle().GetBorderColour() ) );
 
-	m_pgColHLCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetCollapsedHLTextColour() ) );
+	m_pgColHLCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetCollapsedHLStyle().GetTextColour() ) );
 
-	m_pgColHLCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetCollapsedHLFont() ) );
+	m_pgColHLCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetCollapsedHLStyle().GetFont() ) );
     m_pgColHLCapBarFont->Item(0)->SetEditor( "SpinCtrl" );
     m_pgColHLCapBarFont->Item(0)->SetAttribute(  wxT("Step"), (long)1 );
     m_pgColHLCapBarFont->Item(0)->SetAttribute(  wxT("MotionSpin"), true );
@@ -2187,14 +2180,14 @@ void BuilderFrame::buildGrid()
     //m_pgExpCapBarCat
 	m_pgExpCapBarCat = m_propertyGrid->AppendIn( m_pgCaptionBarCat, new wxPropertyCategory( wxT("Expanded State"), wxPG_LABEL ) );
 
-	m_pgExpCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetExpandedColour1() ) );
+	m_pgExpCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetExpandedStyle().GetColour1() ) );
 
 	m_pgExpCapBarGradStops = m_propertyGrid->Append( new wxStringProperty( wxT("Gradient Stops"), wxPG_LABEL, "None" ) );
 	m_propertyGrid->SetPropertyReadOnly(m_pgExpCapBarGradStops,true,wxPG_DONT_RECURSE);
 
-	m_pgExpCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetExpandedColour2() ) );
+	m_pgExpCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetExpandedStyle().GetColour2() ) );
 
-	m_pgExpCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetExpandedBGBitmap().IsOk() ) );
+	m_pgExpCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetExpandedStyle().GetBGBitmap().IsOk() ) );
 	m_pgExpCapBarUseImage->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
 	m_pgExpCapBarImage = m_propertyGrid->Append( new wxImageFileProperty( wxT("Image"), wxPG_LABEL ) );
@@ -2203,11 +2196,11 @@ void BuilderFrame::buildGrid()
 	m_pgExpCapBarBrdrTrans = m_propertyGrid->Append( new wxBoolProperty( wxT("Transparent Border"), wxPG_LABEL ) );
 	m_pgExpCapBarBrdrTrans->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-	m_pgExpCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetExpandedBorderColour() ) );
+	m_pgExpCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetExpandedStyle().GetBorderColour() ) );
 
-	m_pgExpCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetExpandedTextColour() ) );
+	m_pgExpCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetExpandedStyle().GetTextColour() ) );
 
-	m_pgExpCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetExpandedFont() ) );
+	m_pgExpCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetExpandedStyle().GetFont() ) );
     m_pgExpCapBarFont->Item(0)->SetEditor( "SpinCtrl" );
     m_pgExpCapBarFont->Item(0)->SetAttribute(  wxT("Step"), (long)1 );
     m_pgExpCapBarFont->Item(0)->SetAttribute(  wxT("MotionSpin"), true );
@@ -2219,14 +2212,14 @@ void BuilderFrame::buildGrid()
     //m_pgExpHLCapBarCat
 	m_pgExpHLCapBarCat = m_propertyGrid->AppendIn( m_pgCaptionBarCat, new wxPropertyCategory( wxT("Expanded Highlighted State"), wxPG_LABEL ) );
 
-	m_pgExpHLCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetExpandedHLColour1() ) );
+	m_pgExpHLCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetExpandedHLStyle().GetColour1() ) );
 
 	m_pgExpHLCapBarGradStops = m_propertyGrid->Append( new wxStringProperty( wxT("Gradient Stops"), wxPG_LABEL, "None" ) );
 	m_propertyGrid->SetPropertyReadOnly(m_pgExpHLCapBarGradStops,true,wxPG_DONT_RECURSE);
 
-	m_pgExpHLCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetExpandedHLColour2() ) );
+	m_pgExpHLCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetExpandedHLStyle().GetColour2() ) );
 
-	m_pgExpHLCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetExpandedHLBGBitmap().IsOk() ) );
+	m_pgExpHLCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetExpandedHLStyle().GetBGBitmap().IsOk() ) );
 	m_pgExpHLCapBarUseImage->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
 	m_pgExpHLCapBarImage = m_propertyGrid->Append( new wxImageFileProperty( wxT("Image"), wxPG_LABEL ) );
@@ -2235,11 +2228,11 @@ void BuilderFrame::buildGrid()
 	m_pgExpHLCapBarBrdrTrans = m_propertyGrid->Append( new wxBoolProperty( wxT("Transparent Border"), wxPG_LABEL ) );
 	m_pgExpHLCapBarBrdrTrans->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-	m_pgExpHLCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetExpandedHLBorderColour() ) );
+	m_pgExpHLCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetExpandedHLStyle().GetBorderColour() ) );
 
-	m_pgExpHLCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetExpandedHLTextColour() ) );
+	m_pgExpHLCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetExpandedHLStyle().GetTextColour() ) );
 
-	m_pgExpHLCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetExpandedHLFont() ) );
+	m_pgExpHLCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetExpandedHLStyle().GetFont() ) );
     m_pgExpHLCapBarFont->Item(0)->SetEditor( "SpinCtrl" );
     m_pgExpHLCapBarFont->Item(0)->SetAttribute(  wxT("Step"), (long)1 );
     m_pgExpHLCapBarFont->Item(0)->SetAttribute(  wxT("MotionSpin"), true );
@@ -2256,14 +2249,14 @@ void BuilderFrame::buildGrid()
     //m_pgDisCapBarCat
 	m_pgDisCapBarCat = m_propertyGrid->AppendIn( m_pgCaptionBarCat,new wxPropertyCategory( wxT("Disabled State"), wxPG_LABEL ) );
 
-	m_pgDisCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetDisabledColour1() ) );
+	m_pgDisCapBarCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL, m_accordion->GetDisabledStyle().GetColour1() ) );
 
 	m_pgDisCapBarGradStops = m_propertyGrid->Append( new wxStringProperty( wxT("Gradient Stops"), wxPG_LABEL, "None" ) );
 	m_propertyGrid->SetPropertyReadOnly(m_pgDisCapBarGradStops,true,wxPG_DONT_RECURSE);
 
-	m_pgDisCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetDisabledColour2() ) );
+	m_pgDisCapBarCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL, m_accordion->GetDisabledStyle().GetColour2() ) );
 
-	m_pgDisCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetDisabledBGBitmap().IsOk() ) );
+	m_pgDisCapBarUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetDisabledStyle().GetBGBitmap().IsOk() ) );
 	m_pgDisCapBarUseImage->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
 	m_pgDisCapBarImage = m_propertyGrid->Append( new wxImageFileProperty( wxT("Image"), wxPG_LABEL ) );
@@ -2272,11 +2265,11 @@ void BuilderFrame::buildGrid()
 	m_pgDisCapBarBrdrTrans = m_propertyGrid->Append( new wxBoolProperty( wxT("Transparent Border"), wxPG_LABEL ) );
 	m_pgDisCapBarBrdrTrans->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-	m_pgDisCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetDisabledBorderColour() ) );
+	m_pgDisCapBarBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL, m_accordion->GetDisabledStyle().GetBorderColour() ) );
 
-	m_pgDisCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetDisabledTextColour() ) );
+	m_pgDisCapBarTextCol = m_propertyGrid->Append( new wxColourProperty( wxT("Text Colour"), wxPG_LABEL, m_accordion->GetDisabledStyle().GetTextColour() ) );
 
-	m_pgDisCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetDisabledFont() ) );
+	m_pgDisCapBarFont = m_propertyGrid->Append( new wxFontProperty( wxT("Font"), wxPG_LABEL, m_accordion->GetDisabledStyle().GetFont() ) );
     m_pgDisCapBarFont->Item(0)->SetEditor( "SpinCtrl" );
     m_pgDisCapBarFont->Item(0)->SetAttribute(  wxT("Step"), (long)1 );
     m_pgDisCapBarFont->Item(0)->SetAttribute(  wxT("MotionSpin"), true );
@@ -2306,14 +2299,14 @@ void BuilderFrame::buildGrid()
 	m_pgPagesRadius->SetAttribute(  wxPG_ATTR_MIN, (long)0);
     m_pgPagesRadius->SetValue( static_cast<int>(m_accordion->GetPageRadius()) );
 
-	m_pgPagesCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL ,m_accordion->GetPageColour1()) );
+	m_pgPagesCol1 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 1"), wxPG_LABEL ,m_accordion->GetPageStyle().GetColour1()) );
 
 	m_pgPagesGradStops = m_propertyGrid->Append( new wxStringProperty( wxT("Gradient Stops"), wxPG_LABEL,"None" ) );
     m_propertyGrid->SetPropertyReadOnly(m_pgPagesGradStops,true,wxPG_DONT_RECURSE);
 
-	m_pgPagesCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL,m_accordion->GetPageColour2() ) );
+	m_pgPagesCol2 = m_propertyGrid->Append( new wxColourProperty( wxT("Colour 2"), wxPG_LABEL,m_accordion->GetPageStyle().GetColour2() ) );
 
-	m_pgPagesUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetPageBGBitmap().IsOk() ) );
+	m_pgPagesUseImage = m_propertyGrid->Append( new wxBoolProperty( wxT("Use Image"), wxPG_LABEL,m_accordion->GetPageStyle().GetBGBitmap().IsOk() ) );
 	m_pgPagesUseImage->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
 	m_pgPagesImage = m_propertyGrid->Append( new wxImageFileProperty( wxT("Image"), wxPG_LABEL ) );
@@ -2322,5 +2315,5 @@ void BuilderFrame::buildGrid()
 	m_pgPagesBrdrTrans = m_propertyGrid->Append( new wxBoolProperty( wxT("Transparent Border"), wxPG_LABEL,false ) );
     m_pgPagesBrdrTrans->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-	m_pgPagesBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL ,m_accordion->GetPageBorderColour()) );
+	m_pgPagesBrdrCol = m_propertyGrid->Append( new wxColourProperty( wxT("Border Colour"), wxPG_LABEL ,m_accordion->GetPageStyle().GetBorderColour()) );
 }

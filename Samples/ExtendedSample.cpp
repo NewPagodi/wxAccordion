@@ -123,18 +123,18 @@ class ExtendedSampleFrame : public wxFrame
 		wxSpinCtrl* m_spinCtrl;
 
 		wxTextCtrl* m_log2;
-		wxCheckBox* page1CheckBox;
-		wxCheckBox* page2CheckBox;
-		wxCheckBox* page3CheckBox;
+		wxCheckBox* m_page1CheckBox;
+		wxCheckBox* m_page2CheckBox;
+		wxCheckBox* m_page3CheckBox;
 
 		wxAccordion* m_accordion3;
-		wxCheckBox* blockMouseCheckBox;
+		wxCheckBox* m_blockMouseCheckBox;
 		wxTextCtrl* m_log3;
 
 		wxAccordion* m_accordion5;
-		int lastFound;
+		int m_lastFound;
 
-		wxPanel* sample8LeftPanel;
+		wxPanel* m_leftPanel8;
 		wxHtmlWindow* m_htmlWin8;
 };
 
@@ -194,7 +194,7 @@ ExtendedSampleFrame::~ExtendedSampleFrame()
 {
 }
 
-void setHTMLwin( wxHtmlWindow* m_htmlWin, const wxString& s, const wxColour& c ,const wxColour& c2 = *wxBLACK)
+void setHTMLwin( wxHtmlWindow* htmlWin, const wxString& s, const wxColour& c ,const wxColour& c2 = *wxBLACK)
 {
     wxString s2 = "<html><body bgcolor=\"";
     s2 << c.GetAsString();
@@ -204,55 +204,55 @@ void setHTMLwin( wxHtmlWindow* m_htmlWin, const wxString& s, const wxColour& c ,
     s2 << "\">";
     s2 << s;
     s2 << "</font></body></html>";
-    m_htmlWin->SetPage(s2);
+    htmlWin->SetPage(s2);
 }
 
-void paintSash( wxDC* myDC, wxSplitterWindow* m_splitter, const wxColor& col )
+void paintSash( wxDC* myDC, wxSplitterWindow* splitter, const wxColor& col )
 {
     myDC->SetBrush(col);
     myDC->SetPen(*wxTRANSPARENT_PEN);
 
     myDC->DrawRectangle
     (
-        m_splitter->GetSashPosition(),
+        splitter->GetSashPosition(),
         0,
-        m_splitter->GetSashSize(),
-        m_splitter->GetSize().GetHeight()
+        splitter->GetSashSize(),
+        splitter->GetSize().GetHeight()
     );
 }
 
 void ExtendedSampleFrame::onSplitterPaint( wxPaintEvent& event )
 {
-    if( wxSplitterWindow* m_split = wxDynamicCast(event.GetEventObject(),wxSplitterWindow) )
+    if( wxSplitterWindow* splitter = wxDynamicCast(event.GetEventObject(),wxSplitterWindow) )
     {
-        wxPaintDC myDC(m_split);
-        paintSash(&myDC, m_split, m_split->GetWindow1()->GetBackgroundColour() );
+        wxPaintDC myDC(splitter);
+        paintSash(&myDC, splitter, splitter->GetWindow1()->GetBackgroundColour() );
     }
 }
 
 void ExtendedSampleFrame::onSplitterSash( wxSplitterEvent& event )
 {
-    if( wxSplitterWindow* m_split = wxDynamicCast(event.GetEventObject(),wxSplitterWindow))
+    if( wxSplitterWindow* splitter = wxDynamicCast(event.GetEventObject(),wxSplitterWindow))
     {
-        m_split->Refresh();
+        splitter->Refresh();
     }
 }
 
 void ExtendedSampleFrame::addSample1()
 {
-    wxPanel* m_panel = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    wxPanel* panel = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
     wxBoxSizer* bSizer = new wxBoxSizer( wxVERTICAL );
 
-    wxSplitterWindow* m_splitter = new wxSplitterWindow( m_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+    wxSplitterWindow* splitter = new wxSplitterWindow( panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-    m_accordion1 = new wxAccordion(m_splitter);
+    m_accordion1 = new wxAccordion(splitter);
     m_accordion1->AddPage( new wxTextCtrl(m_accordion1,wxID_ANY), "Page 1", true );
     m_accordion1->AddPage( new wxTextCtrl(m_accordion1,wxID_ANY), "Page 2", false );
     m_accordion1->AddPage( new wxTextCtrl(m_accordion1,wxID_ANY), "Page 3", false );
     m_accordion1->AddPage( new wxTextCtrl(m_accordion1,wxID_ANY), "Page 4", false );
 
-    wxHtmlWindow* m_htmlWin = new wxHtmlWindow( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
-    m_htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
+    wxHtmlWindow* htmlWin = new wxHtmlWindow( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
     wxString s = ""
         "<p>This sample shows an unmodified accordion. "
         "You can open or close the pages by clicking on the page’s caption bar.</p>"
@@ -261,48 +261,48 @@ void ExtendedSampleFrame::addSample1()
         "<p>You can also use the buttons below to expand, collapse, toggle, enable, "
         "or disable any of the pages in the accordion.</p>"
         ;
-    setHTMLwin( m_htmlWin, s, m_accordion1->GetBackgroundColour() );
+    setHTMLwin( htmlWin, s, m_accordion1->GetBackgroundColour() );
 
-    m_splitter->SplitVertically( m_accordion1, m_htmlWin, GetSize().GetWidth()*.25 );
-    bSizer->Add( m_splitter, 1, wxEXPAND, 5 );
+    splitter->SplitVertically( m_accordion1, htmlWin, GetSize().GetWidth()*.25 );
+    bSizer->Add( splitter, 1, wxEXPAND, 5 );
 
-	bSizer->Add( new wxStaticLine(m_panel), 0, wxEXPAND, 5 );
+	bSizer->Add( new wxStaticLine(panel), 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer2 = new wxBoxSizer( wxHORIZONTAL );
-	bSizer2->Add( new wxStaticText( m_panel, wxID_ANY, wxT("Page") ), 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	bSizer2->Add( new wxStaticText( panel, wxID_ANY, wxT("Page") ), 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-	m_spinCtrl = new wxSpinCtrl( m_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT|wxSP_ARROW_KEYS, 1, 4, 1 );
+	m_spinCtrl = new wxSpinCtrl( panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT|wxSP_ARROW_KEYS, 1, 4, 1 );
 	bSizer2->Add( m_spinCtrl, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
-	wxButton* m_button1 = new wxButton( m_panel, id_EXPANDBUTTON, wxT("Expand"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-	bSizer2->Add( m_button1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	wxButton* button1 = new wxButton( panel, id_EXPANDBUTTON, wxT("Expand"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	bSizer2->Add( button1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-	wxButton* m_button2 = new wxButton( m_panel, id_COLLAPSEBUTTON, wxT("Collapse"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-	bSizer2->Add( m_button2, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	wxButton* button2 = new wxButton( panel, id_COLLAPSEBUTTON, wxT("Collapse"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	bSizer2->Add( button2, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
-	wxButton* m_button3 = new wxButton( m_panel, id_TOGGLEBUTTON, wxT("Toggle"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-	bSizer2->Add( m_button3, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	wxButton* button3 = new wxButton( panel, id_TOGGLEBUTTON, wxT("Toggle"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	bSizer2->Add( button3, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
-	wxButton* m_button4 = new wxButton( m_panel, id_ENABLEBUTTON, wxT("Enable"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-	bSizer2->Add( m_button4, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	wxButton* button4 = new wxButton( panel, id_ENABLEBUTTON, wxT("Enable"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	bSizer2->Add( button4, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
-	wxButton* m_button5 = new wxButton( m_panel, id_DISABLEBUTTON, wxT("Disable"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-	bSizer2->Add( m_button5, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	wxButton* button5 = new wxButton( panel, id_DISABLEBUTTON, wxT("Disable"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	bSizer2->Add( button5, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5 );
 
 	bSizer->Add( bSizer2, 0, wxEXPAND, 5 );
-    m_panel->SetBackgroundColour( m_accordion1->GetBackgroundColour() );
+    panel->SetBackgroundColour( m_accordion1->GetBackgroundColour() );
 
-    m_panel->SetSizer( bSizer );
-	m_panel->Layout();
-	bSizer->Fit( m_panel );
+    panel->SetSizer( bSizer );
+	panel->Layout();
+	bSizer->Fit( panel );
 
-    m_notebook->AddPage( m_panel, wxT("Sample 1"), true );
+    m_notebook->AddPage( panel, wxT("Sample 1"), true );
 
-	m_button1->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
-	m_button2->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
-	m_button3->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
-	m_button4->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
-	m_button5->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
+	button1->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
+	button2->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
+	button3->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
+	button4->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
+	button5->Bind( wxEVT_COMMAND_BUTTON_CLICKED, &ExtendedSampleFrame::onButton, this );
 }
 
 void ExtendedSampleFrame::onButton(wxCommandEvent& event)
@@ -333,118 +333,117 @@ void ExtendedSampleFrame::onButton(wxCommandEvent& event)
 
 void ExtendedSampleFrame::addSample2()
 {
-	wxSplitterWindow* m_splitter1 = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_splitter1->SetSashGravity( 1 );
+	wxSplitterWindow* splitter1 = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	splitter1->SetSashGravity( 1 );
 
-	wxSplitterWindow* m_splitter2 = new wxSplitterWindow( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	wxSplitterWindow* splitter2 = new wxSplitterWindow( splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-    wxAccordion* m_accordion = new wxAccordion(m_splitter2);
-    m_accordion->SetAccordionPadding(3);
-    m_accordion->SetCollapsedColour1( wxColour(46,77,123) );
-    m_accordion->SetCollapsedColour2( wxColour(46,77,123) );
-    m_accordion->SetCollapsedBorderColour( wxColour(47,79,79) );
-    m_accordion->SetCollapsedTextColour( wxColour(255,255,255) );
-    m_accordion->SetExpandedColour1( wxColour(80,120,179) );
-    m_accordion->SetExpandedColour2( wxColour(80,120,179) );
-    m_accordion->SetExpandedBorderColour( wxColour(47,79,79) );
-    m_accordion->SetExpandButton( wxBitmap(expand02_xpm) );
-    m_accordion->SetCollapseButton( wxBitmap(collapse02_xpm) );
-    m_accordion->SetButtonMargin( wxSize(0,0) );
+    wxAccordion* accordion = new wxAccordion(splitter2);
+    accordion->SetAccordionPadding(3);
+    accordion->GetCollapsedStyle().SetColour1( wxColour(46,77,123) );
+    accordion->GetCollapsedStyle().SetColour2( wxColour(46,77,123) );
+    accordion->GetCollapsedStyle().SetBorderColour( wxColour(47,79,79) );
+    accordion->GetCollapsedStyle().SetTextColour( wxColour(255,255,255) );
+    accordion->GetExpandedStyle().SetColour1( wxColour(80,120,179) );
+    accordion->GetExpandedStyle().SetColour2( wxColour(80,120,179) );
+    accordion->GetExpandedStyle().SetBorderColour( wxColour(47,79,79) );
+    accordion->SetExpandButton( wxBitmap(expand02_xpm) );
+    accordion->SetCollapseButton( wxBitmap(collapse02_xpm) );
+    accordion->SetButtonMargin( wxSize(0,0) );
 
-	wxPanel* m_panel1 = new wxPanel( m_accordion, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxPanel* panel1 = new wxPanel( accordion, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1 = new wxBoxSizer( wxHORIZONTAL );
-	bSizer1->Add( new wxColourPickerCtrl( m_panel1, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE ), 0, wxALL, 5 );
-	bSizer1->Add( new wxFontPickerCtrl( m_panel1, wxID_ANY, wxNullFont, wxDefaultPosition, wxDefaultSize, wxFNTP_DEFAULT_STYLE ), 0, wxALL, 5 );
-	m_panel1->SetSizer( bSizer1 );
-	m_panel1->Layout();
-	m_accordion->AddPage(m_panel1,"Page 1",false);
-	m_accordion->SetFixedHeight(0);
+	bSizer1->Add( new wxColourPickerCtrl( panel1, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE ), 0, wxALL, 5 );
+	bSizer1->Add( new wxFontPickerCtrl( panel1, wxID_ANY, wxNullFont, wxDefaultPosition, wxDefaultSize, wxFNTP_DEFAULT_STYLE ), 0, wxALL, 5 );
+	panel1->SetSizer( bSizer1 );
+	panel1->Layout();
+	accordion->AddPage(panel1,"Page 1",false);
+	accordion->SetFixedHeight(0);
 
-    wxPanel* m_panel2 = new wxPanel( m_accordion, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    wxPanel* panel2 = new wxPanel( accordion, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer2 = new wxBoxSizer( wxVERTICAL );
 	wxString m_choice1Choices[] = { wxT("Choice 1"), wxT("Choice 2"), wxT("Choice 3") };
-	wxChoice* m_choice = new wxChoice( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, 3, m_choice1Choices, 0 );
+	wxChoice* m_choice = new wxChoice( panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, 3, m_choice1Choices, 0 );
 	m_choice->SetSelection( 0 );
 	bSizer2->Add( m_choice, 0, wxALL|wxEXPAND, 5 );
-	bSizer2->Add( new wxSlider( m_panel2, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL ), 0, wxALL|wxEXPAND, 5 );
-	bSizer2->Add( new wxButton( m_panel2, wxID_ANY, wxT("A Button"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-	m_panel2->SetSizer( bSizer2 );
-	m_panel2->Layout();
-	m_accordion->AddPage(m_panel2,"Page 2",false);
-	m_accordion->SetFixedHeight(1);
+	bSizer2->Add( new wxSlider( panel2, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL ), 0, wxALL|wxEXPAND, 5 );
+	bSizer2->Add( new wxButton( panel2, wxID_ANY, wxT("A Button"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	panel2->SetSizer( bSizer2 );
+	panel2->Layout();
+	accordion->AddPage(panel2,"Page 2",false);
+	accordion->SetFixedHeight(1);
 
-	wxPanel* m_panel3 = new wxPanel( m_accordion, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxPanel* panel3 = new wxPanel( accordion, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer = new wxFlexGridSizer( 0, 2, 0, 0 );
-	wxRadioButton* m_radioBtn1 = new wxRadioButton( m_panel3, wxID_ANY, wxT("Option 1"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+	wxRadioButton* m_radioBtn1 = new wxRadioButton( panel3, wxID_ANY, wxT("Option 1"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
 	m_radioBtn1->SetValue( true );
 	fgSizer->Add( m_radioBtn1, 0, wxALL, 5 );
-	fgSizer->Add( new wxRadioButton( m_panel3, wxID_ANY, wxT("Option 2"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
-	fgSizer->Add( new wxRadioButton( m_panel3, wxID_ANY, wxT("Option 3"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
-	fgSizer->Add( new wxRadioButton( m_panel3, wxID_ANY, wxT("Option 4"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
-	fgSizer->Add( new wxRadioButton( m_panel3, wxID_ANY, wxT("Option 5"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
-	fgSizer->Add( new wxRadioButton( m_panel3, wxID_ANY, wxT("Option 6"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
-	m_panel3->SetSizer( fgSizer );
-	m_panel3->Layout();
-	m_accordion->AddPage(m_panel3,"Page 3",false);
-	m_accordion->SetFixedHeight(2);
+	fgSizer->Add( new wxRadioButton( panel3, wxID_ANY, wxT("Option 2"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
+	fgSizer->Add( new wxRadioButton( panel3, wxID_ANY, wxT("Option 3"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
+	fgSizer->Add( new wxRadioButton( panel3, wxID_ANY, wxT("Option 4"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
+	fgSizer->Add( new wxRadioButton( panel3, wxID_ANY, wxT("Option 5"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
+	fgSizer->Add( new wxRadioButton( panel3, wxID_ANY, wxT("Option 6"), wxDefaultPosition, wxDefaultSize, 0 ), 0, wxALL, 5 );
+	panel3->SetSizer( fgSizer );
+	panel3->Layout();
+	accordion->AddPage(panel3,"Page 3",false);
+	accordion->SetFixedHeight(2);
 
-    wxHtmlWindow* m_htmlWin = new wxHtmlWindow( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
-    m_htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
+    wxHtmlWindow* htmlWin = new wxHtmlWindow( splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
     wxString s = ""
         "<p>In this accordion, a whole panel of controls has been added to each fold.  Those controls are, however, just for demonstration purposes; none of them do anything.</p>"
         "<p>This accordion is also set up with a simpler, flatter style.  This type of style might be more desirable in some situations.</p>"
         "<p>Simple expand and collapse buttons have been added on the right side of the caption bars.  When those buttons are present, it is necessary to click on the buttons to open or close a page.  You can however change that behavior so that any click on the caption bar will toggle even when the button is present by changing the accordion’s settings if you want.  A double click at any place on the caption bar will also open or close the page.</p>"
         "<p>The events generated by opening and closing this accordion's pages are logged in the text control below.  You can prevent certain pages from opening or closing with the check boxes in the lower left of this page.</p>"
         ;
-    setHTMLwin( m_htmlWin, s, m_accordion->GetBackgroundColour() );
+    setHTMLwin( htmlWin, s, accordion->GetBackgroundColour() );
 
-	m_splitter2->SplitVertically( m_accordion, m_htmlWin, GetSize().GetWidth()*.25 );
+	splitter2->SplitVertically( accordion, htmlWin, GetSize().GetWidth()*.25 );
 
-    wxPanel* m_panel4 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    wxPanel* panel4 = new wxPanel( splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer4 = new wxBoxSizer( wxVERTICAL );
 
-	wxStaticLine* m_staticline = new wxStaticLine( m_panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer4->Add( m_staticline, 0, wxEXPAND, 5 );
+	bSizer4->Add( new wxStaticLine( panel4), 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer5 = new wxBoxSizer( wxHORIZONTAL );
 	wxBoxSizer* bSizer6 = new wxBoxSizer( wxVERTICAL );
 
-	page1CheckBox = new wxCheckBox( m_panel4, wxID_ANY, wxT("Page 1 can be opened"), wxDefaultPosition, wxDefaultSize, 0 );
-	page1CheckBox->SetValue(true);
-	bSizer6->Add( page1CheckBox, 0, wxALL, 5 );
+	m_page1CheckBox = new wxCheckBox( panel4, wxID_ANY, wxT("Page 1 can be opened"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_page1CheckBox->SetValue(true);
+	bSizer6->Add( m_page1CheckBox, 0, wxALL, 5 );
 
-	page2CheckBox = new wxCheckBox( m_panel4, wxID_ANY, wxT("Page 2 can be closed"), wxDefaultPosition, wxDefaultSize, 0 );
-	page2CheckBox->SetValue(true);
-	bSizer6->Add( page2CheckBox, 0, wxALL, 5 );
+	m_page2CheckBox = new wxCheckBox( panel4, wxID_ANY, wxT("Page 2 can be closed"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_page2CheckBox->SetValue(true);
+	bSizer6->Add( m_page2CheckBox, 0, wxALL, 5 );
 
-	page3CheckBox = new wxCheckBox( m_panel4, wxID_ANY, wxT("Page 3 can be closed"), wxDefaultPosition, wxDefaultSize, 0 );
-	page3CheckBox->SetValue(true);
-	bSizer6->Add( page3CheckBox, 0, wxALL, 5 );
+	m_page3CheckBox = new wxCheckBox( panel4, wxID_ANY, wxT("Page 3 can be closed"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_page3CheckBox->SetValue(true);
+	bSizer6->Add( m_page3CheckBox, 0, wxALL, 5 );
 
 	bSizer5->Add( bSizer6, 0, wxRIGHT, 5 );
 
-	m_log2 = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxNO_BORDER );
+	m_log2 = new wxTextCtrl( panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxNO_BORDER );
 	bSizer5->Add( m_log2, 1, wxEXPAND, 5 );
 
     bSizer4->Add( bSizer5, 1, wxEXPAND, 5 );
 
-	m_panel4->SetSizer( bSizer4 );
-	m_panel4->Layout();
+	panel4->SetSizer( bSizer4 );
+	panel4->Layout();
 
     int splitPos =
         m_notebook->GetPage(0)->GetSize().GetHeight()
         - bSizer4->GetMinSize().GetHeight()
-        - m_splitter1->GetSashSize()
+        - splitter1->GetSashSize()
         + 1;
 
-	m_splitter1->SplitHorizontally( m_splitter2, m_panel4, splitPos );
-	m_splitter1->SetMinimumPaneSize( bSizer4->GetMinSize().GetHeight() );
-	m_notebook->AddPage( m_splitter1, wxT("Sample 2"), false );
+	splitter1->SplitHorizontally( splitter2, panel4, splitPos );
+	splitter1->SetMinimumPaneSize( bSizer4->GetMinSize().GetHeight() );
+	m_notebook->AddPage( splitter1, wxT("Sample 2"), false );
 
-    m_accordion->Bind( wxEVT_ACCORDION_COLLAPSED,  &ExtendedSampleFrame::onAccordion2Collapsed,  this );
-    m_accordion->Bind( wxEVT_ACCORDION_COLLAPSING, &ExtendedSampleFrame::onAccordion2Collapsing, this );
-    m_accordion->Bind( wxEVT_ACCORDION_EXPANDED,   &ExtendedSampleFrame::onAccordion2Expanded,   this );
-    m_accordion->Bind( wxEVT_ACCORDION_EXPANDING,  &ExtendedSampleFrame::onAccordion2Expanding,  this );
+    accordion->Bind( wxEVT_ACCORDION_COLLAPSED,  &ExtendedSampleFrame::onAccordion2Collapsed,  this );
+    accordion->Bind( wxEVT_ACCORDION_COLLAPSING, &ExtendedSampleFrame::onAccordion2Collapsing, this );
+    accordion->Bind( wxEVT_ACCORDION_EXPANDED,   &ExtendedSampleFrame::onAccordion2Expanded,   this );
+    accordion->Bind( wxEVT_ACCORDION_EXPANDING,  &ExtendedSampleFrame::onAccordion2Expanding,  this );
 }
 
 void ExtendedSampleFrame::onAccordion2Expanding(wxBookCtrlEvent& event)
@@ -454,7 +453,7 @@ void ExtendedSampleFrame::onAccordion2Expanding(wxBookCtrlEvent& event)
     (*m_log2) << "Selection:" << event.GetSelection() << "\t";
     (*m_log2) << "Old Selection:" << event.GetOldSelection() << "\n";
 
-    if(event.GetSelection()==0 && !page1CheckBox->IsChecked())
+    if(event.GetSelection()==0 && !m_page1CheckBox->IsChecked())
     {
         event.Veto();
         (*m_log2) << wxDateTime::Now().Format("%H:%M:%S: ");
@@ -477,14 +476,14 @@ void ExtendedSampleFrame::onAccordion2Collapsing(wxBookCtrlEvent& event)
     (*m_log2) << "Selection:" << event.GetSelection() << "\t";
     (*m_log2) << "Old Selection:" << event.GetOldSelection() << "\n";
 
-    if(event.GetSelection()==1 && !page2CheckBox->IsChecked())
+    if(event.GetSelection()==1 && !m_page2CheckBox->IsChecked())
     {
         event.Veto();
         (*m_log2) << wxDateTime::Now().Format("%H:%M:%S: ");
         (*m_log2) << "wxEVT_ACCORDION_COLLAPSING event vetoed.\n";
     }
 
-    if(event.GetSelection()==2 && !page3CheckBox->IsChecked())
+    if(event.GetSelection()==2 && !m_page3CheckBox->IsChecked())
     {
         event.Veto();
         (*m_log2) << wxDateTime::Now().Format("%H:%M:%S: ");
@@ -502,93 +501,92 @@ void ExtendedSampleFrame::onAccordion2Collapsed(wxBookCtrlEvent& event)
 
 void ExtendedSampleFrame::addSample3()
 {
-	wxSplitterWindow* m_splitter1 = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_splitter1->SetSashGravity( 1 );
+	wxSplitterWindow* splitter1 = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	splitter1->SetSashGravity( 1 );
 
-	wxSplitterWindow* m_splitter2 = new wxSplitterWindow( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	wxSplitterWindow* splitter2 = new wxSplitterWindow( splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-    wxImageList* il = new wxImageList(16,15);
-    il->Add(wxBitmap(home_xpm));
-    il->Add(wxBitmap(repview_xpm));
-    il->Add(wxBitmap(htmsidep_xpm));
-    il->Add(wxBitmap(listview_xpm));
+    wxImageList* imageList = new wxImageList(16,15);
+    imageList->Add(wxBitmap(home_xpm));
+    imageList->Add(wxBitmap(repview_xpm));
+    imageList->Add(wxBitmap(htmsidep_xpm));
+    imageList->Add(wxBitmap(listview_xpm));
 
-    m_accordion3 = new wxAccordion(m_splitter2);
-    m_accordion3->AssignImageList(il);
+    m_accordion3 = new wxAccordion(splitter2);
+    m_accordion3->AssignImageList(imageList);
     m_accordion3->SetAccordionPadding(0);
 
-    m_accordion3->SetCollapsedColour1( wxColour(129,160,53) );
-    m_accordion3->SetCollapsedColour2( wxColour(129,160,53) );
-    m_accordion3->AddCollapsedGradientStop( wxColour(217,240,160), 0.25f);
-    m_accordion3->AddCollapsedGradientStop( wxColour(171,200,100), 0.70f);
-    m_accordion3->SetCollapsedBorderColour( wxColour(57,80,0) );
-    m_accordion3->SetCollapsedTextColour( wxColour(57,80,0) );
+    m_accordion3->GetCollapsedStyle().SetColour1( wxColour(129,160,53) );
+    m_accordion3->GetCollapsedStyle().SetColour2( wxColour(129,160,53) );
+    m_accordion3->GetCollapsedStyle().AddGradientStop( wxColour(217,240,160), 0.25f);
+    m_accordion3->GetCollapsedStyle().AddGradientStop( wxColour(171,200,100), 0.70f);
+    m_accordion3->GetCollapsedStyle().SetBorderColour( wxColour(57,80,0) );
+    m_accordion3->GetCollapsedStyle().SetTextColour( wxColour(57,80,0) );
 
-    m_accordion3->SetExpandedColour1( wxColour(170,167,57) );
-    m_accordion3->SetExpandedColour2( wxColour(170,167,57) );
-    m_accordion3->AddExpandedGradientStop( wxColour(255,253,170), 0.25f);
-    m_accordion3->AddExpandedGradientStop( wxColour(212,210,106), 0.75f);
-    m_accordion3->SetExpandedBorderColour( wxColour(85,83,0) );
-    m_accordion3->SetExpandedTextColour( wxColour(85,83,0) );
+    m_accordion3->GetExpandedStyle().SetColour1( wxColour(170,167,57) );
+    m_accordion3->GetExpandedStyle().SetColour2( wxColour(170,167,57) );
+    m_accordion3->GetExpandedStyle().AddGradientStop( wxColour(255,253,170), 0.25f);
+    m_accordion3->GetExpandedStyle().AddGradientStop( wxColour(212,210,106), 0.75f);
+    m_accordion3->GetExpandedStyle().SetBorderColour( wxColour(85,83,0) );
+    m_accordion3->GetExpandedStyle().SetTextColour( wxColour(85,83,0) );
 
     m_accordion3->SetExpandButton( wxBitmap(expand03_xpm) );
     m_accordion3->SetCollapseButton( wxBitmap(collapse03_xpm) );
     m_accordion3->SetButtonMargin( wxSize(8,0) );
 
-    m_accordion3->AddPage( new wxPanel(m_accordion3), "Page 1", true,  0 );
+    m_accordion3->AddPage( new wxPanel(m_accordion3), "Page 1", false,  0 );
     m_accordion3->AddPage( new wxPanel(m_accordion3), "Page 2", false, 1 );
-    m_accordion3->AddPage( new wxPanel(m_accordion3), "Page 3", false, 2 );
+    m_accordion3->AddPage( new wxPanel(m_accordion3), "Page 3", true, 2 );
     m_accordion3->AddPage( new wxPanel(m_accordion3), "Page 4", false, 3 );
 
-    wxHtmlWindow* m_htmlWin = new wxHtmlWindow( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
-    m_htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
+    wxHtmlWindow* htmlWin = new wxHtmlWindow( splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
     wxString s = ""
         "<p>In this sample, the caption bar’s gradient stops have been used to create a double transition effect.  The caption bar’s icons are also shown.</p>"
         "<p>When you left click on the accordion, a hit test will be performed, and the result will be logged in the text control below.  You can use the first check box below to block mouse clicks from reaching the accordion after the hit test is performed.  You can use the other 2 check boxes to toggle the caption bar’s icons and buttons.</p>";
         ;
-    setHTMLwin( m_htmlWin, s, m_accordion3->GetBackgroundColour() );
+    setHTMLwin( htmlWin, s, m_accordion3->GetBackgroundColour() );
 
-	m_splitter2->SplitVertically( m_accordion3, m_htmlWin, GetSize().GetWidth()*.25 );
+	splitter2->SplitVertically( m_accordion3, htmlWin, GetSize().GetWidth()*.25 );
 
-    wxPanel* m_panel1 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    wxPanel* panel1 = new wxPanel( splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1 = new wxBoxSizer( wxVERTICAL );
 
-	wxStaticLine* m_staticline = new wxStaticLine( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer1->Add( m_staticline, 0, wxEXPAND, 5 );
+	bSizer1->Add( new wxStaticLine( panel1), 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer2 = new wxBoxSizer( wxHORIZONTAL );
 	wxBoxSizer* bSizer3 = new wxBoxSizer( wxVERTICAL );
 
-	blockMouseCheckBox =  new wxCheckBox( m_panel1, wxID_ANY, wxT("Block mouse clicks"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( blockMouseCheckBox, 0, wxALL, 5 );
+	m_blockMouseCheckBox =  new wxCheckBox( panel1, wxID_ANY, wxT("Block mouse clicks"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer3->Add( m_blockMouseCheckBox, 0, wxALL, 5 );
 
-	wxCheckBox* m_checkBox2 = new wxCheckBox( m_panel1, id_SHOWICONSCHECK, wxT("Show icons"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox2->SetValue(true);
-	bSizer3->Add( m_checkBox2, 0, wxALL, 5 );
+	wxCheckBox* checkBox2 = new wxCheckBox( panel1, id_SHOWICONSCHECK, wxT("Show icons"), wxDefaultPosition, wxDefaultSize, 0 );
+	checkBox2->SetValue(true);
+	bSizer3->Add( checkBox2, 0, wxALL, 5 );
 
-	wxCheckBox* m_checkBox3 = new wxCheckBox( m_panel1, id_SHOWBUTTONSCHECK, wxT("Show buttons"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox3->SetValue(true);
-	bSizer3->Add( m_checkBox3, 0, wxALL, 5 );
+	wxCheckBox* checkBox3 = new wxCheckBox( panel1, id_SHOWBUTTONSCHECK, wxT("Show buttons"), wxDefaultPosition, wxDefaultSize, 0 );
+	checkBox3->SetValue(true);
+	bSizer3->Add( checkBox3, 0, wxALL, 5 );
 
 	bSizer2->Add( bSizer3, 0, wxRIGHT, 5 );
 
-	m_log3 = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxNO_BORDER );
+	m_log3 = new wxTextCtrl( panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxNO_BORDER );
 	bSizer2->Add( m_log3, 1, wxEXPAND, 5 );
 
     bSizer1->Add( bSizer2, 1, wxEXPAND, 5 );
 
-	m_panel1->SetSizer( bSizer1 );
-	m_panel1->Layout();
+	panel1->SetSizer( bSizer1 );
+	panel1->Layout();
 
     int splitPos =
         m_notebook->GetPage(0)->GetSize().GetHeight()
         - bSizer1->GetMinSize().GetHeight()
-        - m_splitter1->GetSashSize()
+        - splitter1->GetSashSize()
         + 1;
 
-	m_splitter1->SplitHorizontally( m_splitter2, m_panel1, splitPos );
-	m_splitter1->SetMinimumPaneSize( bSizer1->GetMinSize().GetHeight() );
-	m_notebook->AddPage( m_splitter1, wxT("Sample 3"), false );
+	splitter1->SplitHorizontally( splitter2, panel1, splitPos );
+	splitter1->SetMinimumPaneSize( bSizer1->GetMinSize().GetHeight() );
+	m_notebook->AddPage( splitter1, wxT("Sample 3"), false );
 
     m_accordion3->Bind( wxEVT_LEFT_UP,     &ExtendedSampleFrame::onAccordion3MouseLeftUp, this );
     m_accordion3->Bind( wxEVT_LEFT_DCLICK, &ExtendedSampleFrame::onAccordion3MouseLeftDC, this );
@@ -598,8 +596,8 @@ void ExtendedSampleFrame::addSample3()
     m_accordion3->GetPage(2)->Bind( wxEVT_LEFT_UP, &ExtendedSampleFrame::onAccordion3PageMouseLeftUp, this );
     m_accordion3->GetPage(3)->Bind( wxEVT_LEFT_UP, &ExtendedSampleFrame::onAccordion3PageMouseLeftUp, this );
 
-	m_checkBox2->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED,  &ExtendedSampleFrame::onChecks , this );
-	m_checkBox3->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED,  &ExtendedSampleFrame::onChecks , this );
+	checkBox2->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED,  &ExtendedSampleFrame::onChecks , this );
+	checkBox3->Bind( wxEVT_COMMAND_CHECKBOX_CLICKED,  &ExtendedSampleFrame::onChecks , this );
 }
 
 void ExtendedSampleFrame::onAccordion3MouseLeftUp( wxMouseEvent& event )
@@ -694,7 +692,7 @@ void ExtendedSampleFrame::onAccordion3MouseLeftUp( wxMouseEvent& event )
     (*m_log3) << "\n";
 
 
-    if( !blockMouseCheckBox->IsChecked() )
+    if( !m_blockMouseCheckBox->IsChecked() )
     {
         event.Skip();
     }
@@ -702,7 +700,7 @@ void ExtendedSampleFrame::onAccordion3MouseLeftUp( wxMouseEvent& event )
 
 void ExtendedSampleFrame::onAccordion3MouseLeftDC( wxMouseEvent& event )
 {
-    if( !blockMouseCheckBox->IsChecked() )
+    if( !m_blockMouseCheckBox->IsChecked() )
     {
         event.Skip();
     }
@@ -761,83 +759,74 @@ void ExtendedSampleFrame::onChecks(wxCommandEvent& event)
 
 void ExtendedSampleFrame::addSample4()
 {
-	wxSplitterWindow* m_splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-    wxAccordion* m_accordion = new wxAccordion( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_SINGLE_FOLD );
+    wxAccordion* accordion = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_SINGLE_FOLD );
 
-    m_accordion->SetAccordionPadding(2);
-    m_accordion->SetCollapsedBGBitmap( wxBitmap(back04_xpm) );
-    m_accordion->SetCollapsedBorderColour(wxTransparentColour);
-    m_accordion->SetCollapsedTextColour( wxColour(64,0,128) );
-    m_accordion->SetCollapsedFont( GetFont().MakeBold() );
+    accordion->SetAccordionPadding(2);
+    accordion->SetUseHighlighting(true);
 
-    m_accordion->SetExpandedBGBitmap( wxBitmap(back04_xpm) );
-    m_accordion->SetExpandedBorderColour(wxTransparentColour);
-    m_accordion->SetExpandedTextColour( wxColour(64,0,128) );
-    m_accordion->SetExpandedFont( GetFont().MakeBold() );
+    accordion->GetCollapsedStyle().SetBGBitmap( wxBitmap(back04_xpm) );
+    accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
+    accordion->GetCollapsedStyle().SetTextColour( wxColour(64,0,128) );
+    accordion->GetCollapsedStyle().SetFont( GetFont().MakeBold() );
+    accordion->SetExpandedStyle( accordion->GetCollapsedStyle() );
 
-    m_accordion->SetUseHighlighting(true);
-    m_accordion->SetCollapsedHLBGBitmap( wxBitmap(back04hl_xpm) );
-    m_accordion->SetCollapsedHLBorderColour(wxTransparentColour);
-    m_accordion->SetCollapsedHLTextColour( *wxWHITE );
-    m_accordion->SetCollapsedHLFont( GetFont().MakeBold() );
+    accordion->GetCollapsedHLStyle().SetBGBitmap( wxBitmap(back04hl_xpm) );
+    accordion->GetCollapsedHLStyle().SetBorderColour(wxTransparentColour);
+    accordion->GetCollapsedHLStyle().SetTextColour( *wxWHITE );
+    accordion->GetCollapsedHLStyle().SetFont( GetFont().MakeBold() );
+    accordion->SetExpandedHLStyle( accordion->GetCollapsedHLStyle() );
 
-    m_accordion->SetExpandedHLBGBitmap( wxBitmap(back04hl_xpm) );
-    m_accordion->SetExpandedHLBorderColour(wxTransparentColour);
-    m_accordion->SetExpandedHLFont( GetFont().MakeBold() );
+    accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 1",false);
+    accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 2",false);
+    accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 3",false);
+    accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 4",true);
 
-    m_accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 1",false);
-    m_accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 2",false);
-    m_accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 3",false);
-    m_accordion->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 4",true);
-
-    wxHtmlWindow* m_htmlWin = new wxHtmlWindow( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
-    m_htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
+    wxHtmlWindow* htmlWin = new wxHtmlWindow( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
     wxString s = ""
         "<p>In this sample, an image file is used for the caption bar background.</p>"
         "<p>This sample also uses highlighting so that the style changes when the mouse is over a caption bar.</p>"
         "<p>And finally, this sample demonstrates the wxACCORDION_SINGLE_FOLD style.  When a page is expanded, all other pages are collapsed. </p>"
         ;
-    setHTMLwin( m_htmlWin, s, m_accordion->GetBackgroundColour() );
+    setHTMLwin( htmlWin, s, accordion->GetBackgroundColour() );
 
-	m_splitter->SplitVertically( m_accordion, m_htmlWin, GetSize().GetWidth()*.25 );
+	splitter->SplitVertically( accordion, htmlWin, GetSize().GetWidth()*.25 );
 
-	m_notebook->AddPage( m_splitter, wxT("Sample 4"), false );
+	m_notebook->AddPage( splitter, wxT("Sample 4"), false );
 }
 
 void ExtendedSampleFrame::addSample5()
 {
-	wxSplitterWindow* m_splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-    m_accordion5 = new wxAccordion( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_SINGLE_FOLD );
+    m_accordion5 = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_SINGLE_FOLD );
 
     m_accordion5->SetCaptionGradientAngle(90);
-    m_accordion5->SetCollapsedColour1( wxColour(64,128,128) );
-    m_accordion5->SetCollapsedColour2( wxColour(157,185,235) );
-    m_accordion5->SetCollapsedBorderColour(wxTransparentColour);
-    m_accordion5->SetCollapsedTextColour( *wxWHITE );
-    m_accordion5->SetExpandedColour1( wxColour(64,128,128) );
-    m_accordion5->SetExpandedColour2( wxColour(157,185,235) );
-    m_accordion5->SetExpandedBorderColour(wxTransparentColour);
-    m_accordion5->SetExpandedTextColour( *wxWHITE );
+    m_accordion5->GetCollapsedStyle().SetColour1( wxColour(64,128,128) );
+    m_accordion5->GetCollapsedStyle().SetColour2( wxColour(157,185,235) );
+    m_accordion5->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
+    m_accordion5->GetCollapsedStyle().SetTextColour( *wxWHITE );
+    m_accordion5->SetExpandedStyle( m_accordion5->GetCollapsedStyle() );
 
     m_accordion5->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 1",true);
     m_accordion5->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 2",false);
     m_accordion5->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 3",false);
     m_accordion5->AddPage( new wxTextCtrl(this,wxID_ANY),"Page 4",false);
 
-    wxHtmlWindow* m_htmlWin = new wxHtmlWindow( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
-    m_htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
+    wxHtmlWindow* htmlWin = new wxHtmlWindow( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
     wxString s = ""
         "<p>In this sample, the gradient angle was set to  90 degrees so that the gradient runs from left to right instead of top to bottom.</p>"
         "<p>This sample also tracks mouse cursor movements and opens a page whenever the mouse moves over a caption bar.  This type of accordion is sometimes called a “roll-over accordion”.</p>"
         ;
-    setHTMLwin( m_htmlWin, s, m_accordion5->GetBackgroundColour() );
+    setHTMLwin( htmlWin, s, m_accordion5->GetBackgroundColour() );
 
-	m_splitter->SplitVertically( m_accordion5, m_htmlWin, GetSize().GetWidth()*.25 );
+	splitter->SplitVertically( m_accordion5, htmlWin, GetSize().GetWidth()*.25 );
 
-	m_notebook->AddPage( m_splitter, wxT("Sample 5"), false );
-	lastFound=wxNOT_FOUND;
+	m_notebook->AddPage( splitter, wxT("Sample 5"), false );
+	m_lastFound=wxNOT_FOUND;
 
     m_accordion5->Bind(wxEVT_ACCORDION_COLLAPSING, &ExtendedSampleFrame::block, this );
     m_accordion5->Bind(wxEVT_ACCORDION_EXPANDING, &ExtendedSampleFrame::block, this );
@@ -848,56 +837,59 @@ void ExtendedSampleFrame::onAccordion5Mouse( wxMouseEvent& event )
 {
     int result = m_accordion5->HitTest( wxPoint( event.GetX(), event.GetY() ) );
 
-    if( result!=wxNOT_FOUND && result!=lastFound )
+    if( result!=wxNOT_FOUND && result!=m_lastFound )
     {
-        m_accordion5->Collapse(lastFound);
+        m_accordion5->Collapse(m_lastFound);
         m_accordion5->Expand(result);
-        lastFound=result;
+        m_lastFound=result;
     }
 }
 
 void ExtendedSampleFrame::addSample6()
 {
-	wxSplitterWindow* m_splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE );
-	m_splitter->SetBackgroundStyle(wxBG_STYLE_PAINT);
+	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE );
+	splitter->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-    wxAccordion* m_accordion = new wxAccordion( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_BUTTON_LEFT|wxACCORDION_COLLAPSE_TO_BOTTOM );
-    m_accordion->SetBackgroundColour( *wxWHITE );
+    wxAccordion* accordion = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_BUTTON_LEFT|wxACCORDION_COLLAPSE_TO_BOTTOM );
+    accordion->SetBackgroundColour( *wxWHITE );
 
-    m_accordion->SetAccordionPadding(1);
-    m_accordion->SetMinCaptionHeight(28);
-    m_accordion->SetCaptionRadius(10);
-    m_accordion->SetCaptionGradientAngle(2);
-    m_accordion->SetExpandButton( wxBitmap(expand06_xpm) );
-    m_accordion->SetCollapseButton( wxBitmap(collapse06_xpm) );
-    m_accordion->SetCollapsedColour1( wxColour(182,9,0) );
-    m_accordion->SetCollapsedColour2( wxColour(160,8,0) );
-    m_accordion->AddCollapsedGradientStop( wxColour(182,9,0), 0.49f);
-    m_accordion->AddCollapsedGradientStop( wxColour(160,8,0), 0.51f);
-    m_accordion->SetCollapsedBorderColour( wxColour(142,10,0) );
-    m_accordion->SetCollapsedTextColour( wxColour(255,255,255) );
-    m_accordion->SetCollapsedFont( GetFont().Bold() );
-    m_accordion->SetExpandedColour1( wxColour(255,255,255) );
-    m_accordion->SetExpandedColour2( wxColour(254,254,254) );
-    m_accordion->SetExpandedBorderColour( wxColour(142,10,0) );
-    m_accordion->SetExpandedTextColour( wxColour(142,10,0) );
-    m_accordion->SetExpandedFont( GetFont().Bold() );
-    m_accordion->SetPageRadius(10);
-    m_accordion->SetPageColour1( wxColour(254,248,230) );
-    m_accordion->SetPageColour2( wxColour(254,238,189) );
-    m_accordion->SetPageBorderColour( wxColour(142,10,0) );
+    accordion->SetAccordionPadding(1);
+    accordion->SetMinCaptionHeight(28);
+    accordion->SetCaptionRadius(10);
+    accordion->SetCaptionGradientAngle(2);
+    accordion->SetExpandButton( wxBitmap(expand06_xpm) );
+    accordion->SetCollapseButton( wxBitmap(collapse06_xpm) );
 
-    m_accordion->AddPage( new wxTextCtrl(m_accordion,wxID_ANY),"Page 1",false);
-    m_accordion->AddPage( new wxButton( m_accordion, wxID_ANY, wxT("A Button") ), "Page 2 (Fixed Width)", false);
-    m_accordion->AddPage( new wxButton( m_accordion, wxID_ANY, wxT("A Button") ), "Page 3 (Fixed Height)", false);
-    m_accordion->AddPage( new wxButton( m_accordion, wxID_ANY, wxT("A Button") ), "Page 4 (Fixed Size)", false);
+    accordion->GetCollapsedStyle().SetColour1( wxColour(182,9,0) );
+    accordion->GetCollapsedStyle().SetColour2( wxColour(160,8,0) );
+    accordion->GetCollapsedStyle().AddGradientStop( wxColour(182,9,0), 0.49f);
+    accordion->GetCollapsedStyle().AddGradientStop( wxColour(160,8,0), 0.51f);
+    accordion->GetCollapsedStyle().SetBorderColour( wxColour(142,10,0) );
+    accordion->GetCollapsedStyle().SetTextColour( wxColour(255,255,255) );
+    accordion->GetCollapsedStyle().SetFont( GetFont().Bold() );
 
-    m_accordion->SetFixedWidth(1);
-    m_accordion->SetFixedHeight(2);
-    m_accordion->SetFixedSize(3);
+    accordion->GetExpandedStyle().SetColour1( wxColour(255,255,255) );
+    accordion->GetExpandedStyle().SetColour2( wxColour(254,254,254) );
+    accordion->GetExpandedStyle().SetBorderColour( wxColour(142,10,0) );
+    accordion->GetExpandedStyle().SetTextColour( wxColour(142,10,0) );
+    accordion->GetExpandedStyle().SetFont( GetFont().Bold() );
 
-    wxHtmlWindow* m_htmlWin = new wxHtmlWindow( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
-    m_htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
+    accordion->SetPageRadius(10);
+    accordion->GetPageStyle().SetColour1( wxColour(254,248,230) );
+    accordion->GetPageStyle().SetColour2( wxColour(254,238,189) );
+    accordion->GetPageStyle().SetBorderColour( wxColour(142,10,0) );
+
+    accordion->AddPage( new wxTextCtrl(accordion,wxID_ANY),"Page 1",false);
+    accordion->AddPage( new wxButton( accordion, wxID_ANY, wxT("A Button") ), "Page 2 (Fixed Width)", false);
+    accordion->AddPage( new wxButton( accordion, wxID_ANY, wxT("A Button") ), "Page 3 (Fixed Height)", false);
+    accordion->AddPage( new wxButton( accordion, wxID_ANY, wxT("A Button") ), "Page 4 (Fixed Size)", false);
+
+    accordion->SetFixedWidth(1);
+    accordion->SetFixedHeight(2);
+    accordion->SetFixedSize(3);
+
+    wxHtmlWindow* htmlWin = new wxHtmlWindow( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
     wxString s = ""
         "<p>In this sample:</p>"
         "<ul>"
@@ -910,132 +902,128 @@ void ExtendedSampleFrame::addSample6()
         "<li>Panels 2, 3, and 4 demonstrate setting a panel to have fixed width, height, and size respectively.  This can be used when the window added to the accordion is not meant to expand in one or both directions. </li>"
         "</ul>"
         ;
-    setHTMLwin( m_htmlWin, s, m_accordion->GetBackgroundColour() );
+    setHTMLwin( htmlWin, s, accordion->GetBackgroundColour() );
 
-	m_splitter->SplitVertically( m_accordion, m_htmlWin, GetSize().GetWidth()*.25 );
-	m_notebook->AddPage( m_splitter, wxT("Sample 6"), false );
+	splitter->SplitVertically( accordion, htmlWin, GetSize().GetWidth()*.25 );
+	m_notebook->AddPage( splitter, wxT("Sample 6"), false );
 
-    m_splitter->Bind(wxEVT_PAINT,&ExtendedSampleFrame::onSplitterPaint,this);
-    m_splitter->Bind(wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED,&ExtendedSampleFrame::onSplitterSash,this);
+    splitter->Bind(wxEVT_PAINT,&ExtendedSampleFrame::onSplitterPaint,this);
+    splitter->Bind(wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED,&ExtendedSampleFrame::onSplitterSash,this);
 }
 
 void ExtendedSampleFrame::addSample7()
 {
-	wxSplitterWindow* m_splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE );
-	m_splitter->SetBackgroundStyle(wxBG_STYLE_PAINT);
+	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE );
+	splitter->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-    wxPanel* m_panel = new wxPanel( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panel->SetBackgroundColour( *wxBLACK );
+    wxPanel* panel = new wxPanel( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	panel->SetBackgroundColour( *wxBLACK );
 
 	wxBoxSizer* bSizerH = new wxBoxSizer( wxHORIZONTAL );
 	wxBoxSizer* bSizerV = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticText* m_staticText = new wxStaticText( m_panel, wxID_ANY, wxT("My Accordion"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText->SetFont( GetFont().MakeBold() );
-	m_staticText->SetForegroundColour( *wxWHITE );
-    bSizerV->Add( m_staticText, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
+    wxStaticText* staticText = new wxStaticText( panel, wxID_ANY, wxT("My Accordion") );
+	staticText->SetFont( GetFont().MakeBold() );
+	staticText->SetForegroundColour( *wxWHITE );
+    bSizerV->Add( staticText, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 
     wxDelegateRendererNative rn = wxRendererNative::Get();
     wxSize sz = rn.GetCheckBoxSize(NULL);
 
-    wxImageList* m_ImageList = new wxImageList(sz.GetWidth(), sz.GetHeight());
+    wxImageList* imageList = new wxImageList(sz.GetWidth(), sz.GetHeight());
     wxBitmap unchecked  = wxBitmap(sz);
     wxBitmap checked  = wxBitmap(sz);
 
     wxMemoryDC temp_dc;
     temp_dc.SelectObject(unchecked);
-    rn.DrawCheckBox(m_panel, temp_dc, wxRect(0,0,sz.GetWidth(),sz.GetHeight()),0 );
+    rn.DrawCheckBox(panel, temp_dc, wxRect(0,0,sz.GetWidth(),sz.GetHeight()),0 );
     temp_dc.SelectObject(checked);
-    rn.DrawCheckBox(m_panel, temp_dc, wxRect(0,0,sz.GetWidth(),sz.GetHeight()),wxCONTROL_CHECKED );
+    rn.DrawCheckBox(panel, temp_dc, wxRect(0,0,sz.GetWidth(),sz.GetHeight()),wxCONTROL_CHECKED );
     temp_dc.SelectObject(wxNullBitmap);
 
-    m_ImageList->Add( wxBitmap(unchecked) );
-    m_ImageList->Add( wxBitmap(checked) );
+    imageList->Add( wxBitmap(unchecked) );
+    imageList->Add( wxBitmap(checked) );
 
-    wxAccordion* m_accordion = new wxAccordion( m_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_FLOAT_TO_TOP );
-    m_accordion->AssignImageList(m_ImageList);
-    m_accordion->SetAccordionPadding(1);
-    m_accordion->SetDisabledBrightness(150);
+    wxAccordion* accordion = new wxAccordion( panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_FLOAT_TO_TOP );
+    accordion->AssignImageList(imageList);
+    accordion->SetAccordionPadding(1);
+    accordion->SetDisabledBrightness(150);
 
-    m_accordion->SetCollapsedColour1( wxColour(50,50,50) );
-    m_accordion->SetCollapsedColour2( wxColour(50,50,50) );
-    m_accordion->SetCollapsedBorderColour( wxTransparentColor );
-    m_accordion->SetCollapsedTextColour( *wxWHITE );
+    accordion->GetCollapsedStyle().SetColour1( wxColour(50,50,50) );
+    accordion->GetCollapsedStyle().SetColour2( wxColour(50,50,50) );
+    accordion->GetCollapsedStyle().SetBorderColour( wxTransparentColor );
+    accordion->GetCollapsedStyle().SetTextColour( *wxWHITE );
+    accordion->SetExpandedStyle(accordion->GetCollapsedStyle());
 
-    m_accordion->SetExpandedColour1( wxColour(50,50,50) );
-    m_accordion->SetExpandedColour2( wxColour(50,50,50) );
-    m_accordion->SetExpandedBorderColour( wxTransparentColor );
-    m_accordion->SetExpandedTextColour( *wxWHITE );
+    accordion->GetPageStyle().SetColour1( *wxBLACK );
+    accordion->GetPageStyle().SetColour2( *wxBLACK );
+    accordion->GetPageStyle().SetBorderColour( wxTransparentColor );
 
-    m_accordion->SetPageColour1( *wxBLACK );
-    m_accordion->SetPageColour2( *wxBLACK );
-    m_accordion->SetPageBorderColour( wxTransparentColor );
+    accordion->SetCollapseButton( wxBitmap(collapse07_xpm) );
+    accordion->SetExpandButton( wxBitmap(expand07_xpm) );
 
-    m_accordion->SetCollapseButton( wxBitmap(collapse07_xpm) );
-    m_accordion->SetExpandButton( wxBitmap(expand07_xpm) );
+    wxTextCtrl* textCtrl;
+    textCtrl = new wxTextCtrl( accordion, wxID_ANY );
+	textCtrl->SetForegroundColour( *wxWHITE );
+	textCtrl->SetBackgroundColour( *wxBLACK );
+    accordion->AddPage( textCtrl, "Page 1", false, 1);
 
-    wxTextCtrl* m_textCtrl;
-    m_textCtrl = new wxTextCtrl( m_accordion, wxID_ANY );
-	m_textCtrl->SetForegroundColour( *wxWHITE );
-	m_textCtrl->SetBackgroundColour( *wxBLACK );
-    m_accordion->AddPage( m_textCtrl, "Page 1", false, 1);
+    textCtrl = new wxTextCtrl( accordion, wxID_ANY );
+	textCtrl->SetForegroundColour( *wxWHITE );
+	textCtrl->SetBackgroundColour( *wxBLACK  );
+    accordion->AddPage( textCtrl, "Page 2", false, 1);
 
-    m_textCtrl = new wxTextCtrl( m_accordion, wxID_ANY );
-	m_textCtrl->SetForegroundColour( *wxWHITE );
-	m_textCtrl->SetBackgroundColour( *wxBLACK  );
-    m_accordion->AddPage( m_textCtrl, "Page 2", false, 1);
+    textCtrl = new wxTextCtrl( accordion, wxID_ANY );
+	textCtrl->SetForegroundColour( *wxWHITE );
+	textCtrl->SetBackgroundColour( *wxBLACK  );
+    accordion->AddPage( textCtrl, "Page 3", false, 1);
 
-    m_textCtrl = new wxTextCtrl( m_accordion, wxID_ANY );
-	m_textCtrl->SetForegroundColour( *wxWHITE );
-	m_textCtrl->SetBackgroundColour( *wxBLACK  );
-    m_accordion->AddPage( m_textCtrl, "Page 3", false, 1);
-
-    bSizerV->Add( m_accordion, 1, wxEXPAND, 5 );
+    bSizerV->Add( accordion, 1, wxEXPAND, 5 );
     bSizerH->Add( bSizerV, 1, wxEXPAND, 5 );
 
-    wxPanel* m_RightBorder = new wxPanel( m_panel, wxID_ANY, wxDefaultPosition, wxSize( 1,-1 ), wxTAB_TRAVERSAL );
-	m_RightBorder->SetBackgroundColour( wxColour( 71, 71, 71 ) );
-    bSizerH->Add( m_RightBorder, 0, wxEXPAND, 5 );
-    m_panel->SetSizer( bSizerH );
-	m_panel->Layout();
+    wxPanel* rightBorder = new wxPanel( panel, wxID_ANY, wxDefaultPosition, wxSize( 1,-1 ), wxTAB_TRAVERSAL );
+	rightBorder->SetBackgroundColour( wxColour( 71, 71, 71 ) );
+    bSizerH->Add( rightBorder, 0, wxEXPAND, 5 );
+    panel->SetSizer( bSizerH );
+	panel->Layout();
 
-    wxHtmlWindow* m_htmlWin = new wxHtmlWindow( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
-    m_htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
+    wxHtmlWindow* htmlWin = new wxHtmlWindow( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    htmlWin->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
     wxString s = ""
         "<p>This sample shows an accordion styled to look like a control on the android platform.  </p>"
         "<p>This sample also demonstrates the wxACCORDION_FLOAT_TO_TOP style.  When a page is expanded, it is moved towards the top of the accordion. </p>"
         "<p>This accordion also uses the caption bar's icons to simulate check boxes.  Clicking on a check box will toggle the panel between enabled and disabled states. </p>"
         ;
-    setHTMLwin( m_htmlWin, s, m_accordion->GetBackgroundColour(), *wxWHITE );
+    setHTMLwin( htmlWin, s, accordion->GetBackgroundColour(), *wxWHITE );
 
-	m_splitter->SplitVertically( m_panel, m_htmlWin, GetSize().GetWidth()*.25 );
-	m_notebook->AddPage( m_splitter, wxT("Sample 7"), false );
+	splitter->SplitVertically( panel, htmlWin, GetSize().GetWidth()*.25 );
+	m_notebook->AddPage( splitter, wxT("Sample 7"), false );
 
-    m_accordion->Bind( wxEVT_LEFT_UP, &ExtendedSampleFrame::onAccordion7MouseLeftUp, this );
-    m_splitter->Bind(wxEVT_PAINT,&ExtendedSampleFrame::onSplitterPaint,this);
-    m_splitter->Bind(wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED,&ExtendedSampleFrame::onSplitterSash,this);
+    accordion->Bind( wxEVT_LEFT_UP, &ExtendedSampleFrame::onAccordion7MouseLeftUp, this );
+    splitter->Bind(wxEVT_PAINT,&ExtendedSampleFrame::onSplitterPaint,this);
+    splitter->Bind(wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED,&ExtendedSampleFrame::onSplitterSash,this);
 }
 
 void ExtendedSampleFrame::onAccordion7MouseLeftUp( wxMouseEvent& event )
 {
-    if( wxAccordion* m_accordion = wxDynamicCast( event.GetEventObject(), wxAccordion) )
+    if( wxAccordion* accordion = wxDynamicCast( event.GetEventObject(), wxAccordion) )
     {
         long flags(0);
-        int res = m_accordion->HitTest(wxPoint(event.GetX(),event.GetY()),&flags);;
+        int res = accordion->HitTest(wxPoint(event.GetX(),event.GetY()),&flags);;
 
         if(flags & wxACCORDION_HITTEST_ONCAPTIONICON)
         {
-            int ic = m_accordion->GetPageImage(res);
+            int ic = accordion->GetPageImage(res);
 
             if(ic==0)
             {
-                m_accordion->SetPageImage(res,1);
-                m_accordion->Enable(res);
+                accordion->SetPageImage(res,1);
+                accordion->Enable(res);
             }
             else
             {
-                m_accordion->SetPageImage(res,0);
-                m_accordion->Disable(res);
+                accordion->SetPageImage(res,0);
+                accordion->Disable(res);
             }
         }
         else
@@ -1045,56 +1033,49 @@ void ExtendedSampleFrame::onAccordion7MouseLeftUp( wxMouseEvent& event )
     }
 }
 
-void styleSubAccordion( wxAccordion* m_accordion, int level, bool useImageList)
+void styleSubAccordion( wxAccordion* accordion, int level, bool useImageList)
 {
-    wxImageList* il = new wxImageList(13,13);
+    wxImageList* imageList = new wxImageList(13,13);
 
     if(useImageList)
     {
-        il->Add(wxBitmap(subempty_xpm));
-        il->Add(wxBitmap(subcollapse_xpm));
-        il->Add(wxBitmap(subexpand_xpm));
+        imageList->Add(wxBitmap(subempty_xpm));
+        imageList->Add(wxBitmap(subcollapse_xpm));
+        imageList->Add(wxBitmap(subexpand_xpm));
     }
 
-    m_accordion->AssignImageList(il);
-    m_accordion->SetIconMargin( wxSize(5 +13*(level-1),0) );
+    accordion->AssignImageList(imageList);
+    accordion->SetIconMargin( wxSize(5 +13*(level-1),0) );
 
-    m_accordion->SetPagePadding(0);
-    m_accordion->SetAccordionPadding(0);
+    accordion->SetPagePadding(0);
+    accordion->SetAccordionPadding(0);
 
-    m_accordion->SetUseHighlighting(true);
-    m_accordion->SetCollapsedColour1( wxColour(255,255,255) );
-    m_accordion->SetCollapsedColour2( wxColour(255,255,255) );
-    m_accordion->SetCollapsedBorderColour(wxTransparentColour);
-    m_accordion->SetCollapsedTextColour( wxColour(59,59,59) );
-    m_accordion->SetCollapsedHLColour1( wxColour(59,184,204) );
-    m_accordion->SetCollapsedHLColour2( wxColour(59,184,204) );
-    m_accordion->AddCollapsedHLGradientStop( wxColour(59,183,235), 0.01f);
-    m_accordion->AddCollapsedHLGradientStop( wxColour(59,183,235), 0.99f);
-    m_accordion->SetCollapsedHLBorderColour(wxTransparentColour);
-    m_accordion->SetCollapsedHLTextColour( wxColour(59,59,59) );
-    m_accordion->SetExpandedColour1( wxColour(255,255,255) );
-    m_accordion->SetExpandedColour2( wxColour(255,255,255) );
-    m_accordion->SetExpandedBorderColour(wxTransparentColour);
-    m_accordion->SetExpandedTextColour( wxColour(59,59,59) );
-    m_accordion->SetExpandedHLColour1( wxColour(59,184,204) );
-    m_accordion->SetExpandedHLColour2( wxColour(59,184,204) );
-    m_accordion->AddExpandedHLGradientStop( wxColour(59,183,235), 0.01f);
-    m_accordion->AddExpandedHLGradientStop( wxColour(59,183,235), 0.99f);
-    m_accordion->SetExpandedHLBorderColour(wxTransparentColour);
-    m_accordion->SetExpandedHLTextColour( wxColour(59,59,59) );
+    accordion->SetUseHighlighting(true);
+    accordion->GetCollapsedStyle().SetColour1( wxColour(255,255,255) );
+    accordion->GetCollapsedStyle().SetColour2( wxColour(255,255,255) );
+    accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
+    accordion->GetCollapsedStyle().SetTextColour( wxColour(59,59,59) );
+    accordion->SetExpandedStyle(accordion->GetCollapsedStyle());
 
-    m_accordion->SetName("subaccordion");
+    accordion->GetCollapsedHLStyle().SetColour1( wxColour(59,184,204) );
+    accordion->GetCollapsedHLStyle().SetColour2( wxColour(59,184,204) );
+    accordion->GetCollapsedHLStyle().AddGradientStop( wxColour(59,183,235), 0.01f);
+    accordion->GetCollapsedHLStyle().AddGradientStop( wxColour(59,183,235), 0.99f);
+    accordion->GetCollapsedHLStyle().SetBorderColour(wxTransparentColour);
+    accordion->GetCollapsedHLStyle().SetTextColour( wxColour(59,59,59) );
+    accordion->SetExpandedHLStyle(accordion->GetCollapsedHLStyle());
+
+    accordion->SetName("subaccordion");
 }
 
-void setSizes( wxAccordion* m_accordion)
+void setSizes( wxAccordion* accordion)
 {
     wxAccordion *curAccordion,*childAccordion;
     std::stack<wxAccordion*> myStack;
     bool canSetHeight(true);
     int height(0);
 
-    myStack.push(m_accordion);
+    myStack.push(accordion);
 
     while( !myStack.empty() )
     {
@@ -1129,7 +1110,7 @@ void setSizes( wxAccordion* m_accordion)
     }
 }
 
-void setHTMLwin8(wxHtmlWindow* m_htmlWin, const wxString& s2, const wxColour& c )
+void setHTMLwin8(wxHtmlWindow* htmlWin, const wxString& s2, const wxColour& c )
 {
     wxString s = ""
     "<p>This sample demonstrates how an accordion might be used more as a content selector than as a control container. </p>"
@@ -1143,93 +1124,93 @@ void setHTMLwin8(wxHtmlWindow* m_htmlWin, const wxString& s2, const wxColour& c 
         s <<"</p>";
     };
 
-   setHTMLwin( m_htmlWin, s, c );
+   setHTMLwin( htmlWin, s, c );
 }
 
 void ExtendedSampleFrame::addSample8()
 {
-	wxSplitterWindow* m_splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE );
-	m_splitter->SetBackgroundStyle(wxBG_STYLE_PAINT);
+	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE );
+	splitter->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-	sample8LeftPanel = new wxPanel( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	sample8LeftPanel->SetBackgroundColour( wxColour( 240, 240, 240 ) );
+	m_leftPanel8 = new wxPanel( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_leftPanel8->SetBackgroundColour( wxColour( 240, 240, 240 ) );
 
 	wxBoxSizer* bSizer = new wxBoxSizer( wxVERTICAL );
 
-	wxPanel* m_border = new wxPanel( sample8LeftPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_border->SetBackgroundColour( wxColour( 128, 128, 128 ) );
+	wxPanel* borderPanel = new wxPanel( m_leftPanel8 );
+	borderPanel->SetBackgroundColour( wxColour( 128, 128, 128 ) );
 
 	wxBoxSizer* borderSizer = new wxBoxSizer( wxHORIZONTAL );
 
-	wxAccordion* m_accordion = new wxAccordion(m_border);
+	wxAccordion* accordion = new wxAccordion(borderPanel);
 
-    m_accordion->SetPagePadding(0);
-    m_accordion->SetAccordionPadding(0);
-    m_accordion->SetCollapseButton(collapse08_xpm);
-    m_accordion->SetExpandButton(expand08_xpm);
-    m_accordion->SetButtonMargin( wxSize(5,0) );
-    m_accordion->SetAccordionPadding(0);
-    m_accordion->SetOnlyToggleWithButton(false);
-    m_accordion->SetCollapsedColour1( wxColour(115,115,115) );
-    m_accordion->SetCollapsedColour2( wxColour(82,82,82) );
-    m_accordion->SetCollapsedBorderColour(wxTransparentColour);
-    m_accordion->SetCollapsedTextColour( wxColour(255,255,255) );
-    m_accordion->SetExpandedColour1( wxColour(115,115,115) );
-    m_accordion->SetExpandedColour2( wxColour(82,82,82) );
-    m_accordion->SetExpandedBorderColour(wxTransparentColour);
+    accordion->SetPagePadding(0);
+    accordion->SetAccordionPadding(0);
+    accordion->SetCollapseButton(collapse08_xpm);
+    accordion->SetExpandButton(expand08_xpm);
+    accordion->SetButtonMargin( wxSize(5,0) );
+    accordion->SetAccordionPadding(0);
+    accordion->SetOnlyToggleWithButton(false);
+    accordion->GetCollapsedStyle().SetColour1( wxColour(115,115,115) );
+    accordion->GetCollapsedStyle().SetColour2( wxColour(82,82,82) );
+    accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
+    accordion->GetCollapsedStyle().SetTextColour( wxColour(255,255,255) );
+    accordion->GetExpandedStyle().SetColour1( wxColour(115,115,115) );
+    accordion->GetExpandedStyle().SetColour2( wxColour(82,82,82) );
+    accordion->GetExpandedStyle().SetBorderColour(wxTransparentColour);
 
-	wxAccordion* m_subaccordion1 = new wxAccordion(m_accordion);
-	styleSubAccordion( m_subaccordion1, 1, true );
+	wxAccordion* subaccordion1 = new wxAccordion(accordion);
+	styleSubAccordion( subaccordion1, 1, true );
 
-	wxAccordion* m_subaccordion2 = new wxAccordion(m_accordion);
-	styleSubAccordion( m_subaccordion2, 1, false );
+	wxAccordion* subaccordion2 = new wxAccordion(accordion);
+	styleSubAccordion( subaccordion2, 1, false );
 
-	wxAccordion* m_subaccordion3 = new wxAccordion(m_accordion);
-	styleSubAccordion( m_subaccordion3, 2, false );
+	wxAccordion* subaccordion3 = new wxAccordion(accordion);
+	styleSubAccordion( subaccordion3, 2, false );
 
-    m_subaccordion3->AddPage( new wxPanel( m_subaccordion3, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ), "Subitem 1-1-1",false,0);
-    m_subaccordion3->AddPage( new wxPanel( m_subaccordion3, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ), "Subitem 1-1-2",false,0);
+    subaccordion3->AddPage( new wxPanel( subaccordion3, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ), "Subitem 1-1-1",false,0);
+    subaccordion3->AddPage( new wxPanel( subaccordion3, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ), "Subitem 1-1-2",false,0);
 
-    m_subaccordion2->AddPage( new wxPanel( m_subaccordion2, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ),"Subitem 2-1",false,0);
-    m_subaccordion2->AddPage( new wxPanel( m_subaccordion2, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ), "Subitem 2-2",false,0);
+    subaccordion2->AddPage( new wxPanel( subaccordion2, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ),"Subitem 2-1",false,0);
+    subaccordion2->AddPage( new wxPanel( subaccordion2, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ), "Subitem 2-2",false,0);
 
-    m_subaccordion1->AddPage( m_subaccordion3 ,"Subitem 1-1",false,2);
-    m_subaccordion1->AddPage( new wxPanel( m_subaccordion1, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ),"Subitem 1-2",false,0);
+    subaccordion1->AddPage( subaccordion3 ,"Subitem 1-1",false,2);
+    subaccordion1->AddPage( new wxPanel( subaccordion1, wxID_ANY, wxDefaultPosition, wxSize( -1,0 ), wxTAB_TRAVERSAL ),"Subitem 1-2",false,0);
 
-    m_accordion->AddPage(m_subaccordion1,"Item 1",true);
-    m_accordion->AddPage(m_subaccordion2,"Item 2",true);
+    accordion->AddPage(subaccordion1,"Item 1",true);
+    accordion->AddPage(subaccordion2,"Item 2",true);
 
-    m_subaccordion3->SetFixedHeight(0);
-    m_subaccordion3->SetFixedHeight(1);
-    m_subaccordion1->SetFixedHeight(0);
-    m_subaccordion1->SetFixedHeight(1);
-    m_subaccordion2->SetFixedHeight(0);
-    m_subaccordion2->SetFixedHeight(1);
-    m_accordion->SetFixedHeight(0);
-    m_accordion->SetFixedHeight(1);
+    subaccordion3->SetFixedHeight(0);
+    subaccordion3->SetFixedHeight(1);
+    subaccordion1->SetFixedHeight(0);
+    subaccordion1->SetFixedHeight(1);
+    subaccordion2->SetFixedHeight(0);
+    subaccordion2->SetFixedHeight(1);
+    accordion->SetFixedHeight(0);
+    accordion->SetFixedHeight(1);
 
-    setSizes( m_accordion);
+    setSizes( accordion);
 
-	borderSizer->Add( m_accordion, 1, wxEXPAND|wxALL, 1 );
-	m_border->SetSizer( borderSizer );
-	m_border->Layout();
-	borderSizer->Fit( m_border );
+	borderSizer->Add( accordion, 1, wxEXPAND|wxALL, 1 );
+	borderPanel->SetSizer( borderSizer );
+	borderPanel->Layout();
+	borderSizer->Fit( borderPanel );
 
-	bSizer->Add( m_border, 0, wxALL|wxEXPAND, 5 );
-	sample8LeftPanel->SetSizer( bSizer );
-	sample8LeftPanel->Layout();
+	bSizer->Add( borderPanel, 0, wxALL|wxEXPAND, 5 );
+	m_leftPanel8->SetSizer( bSizer );
+	m_leftPanel8->Layout();
 
-    m_htmlWin8 = new wxHtmlWindow( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
+    m_htmlWin8 = new wxHtmlWindow( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_NEVER );
     m_htmlWin8->SetStandardFonts(GetFont().GetPointSize(), GetFont().GetFaceName(), GetFont().GetFaceName());
-    setHTMLwin8( m_htmlWin8, "" , sample8LeftPanel->GetBackgroundColour() );
+    setHTMLwin8( m_htmlWin8, "" , m_leftPanel8->GetBackgroundColour() );
 
-	m_splitter->SplitVertically( sample8LeftPanel, m_htmlWin8, GetSize().GetWidth()*.25 );
-	m_notebook->AddPage( m_splitter, wxT("Sample 8"), false );
+	splitter->SplitVertically( m_leftPanel8, m_htmlWin8, GetSize().GetWidth()*.25 );
+	m_notebook->AddPage( splitter, wxT("Sample 8"), false );
 
-    m_splitter->Bind( wxEVT_PAINT, &ExtendedSampleFrame::onSplitterPaint, this );
-    m_splitter->Bind( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, &ExtendedSampleFrame::onSplitterSash, this );
-    m_accordion->Bind( wxEVT_ACCORDION_COLLAPSED, &ExtendedSampleFrame::onAccordion8, this );
-    m_accordion->Bind( wxEVT_ACCORDION_EXPANDED, &ExtendedSampleFrame::onAccordion8, this );
+    splitter->Bind( wxEVT_PAINT, &ExtendedSampleFrame::onSplitterPaint, this );
+    splitter->Bind( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, &ExtendedSampleFrame::onSplitterSash, this );
+    accordion->Bind( wxEVT_ACCORDION_COLLAPSED, &ExtendedSampleFrame::onAccordion8, this );
+    accordion->Bind( wxEVT_ACCORDION_EXPANDED, &ExtendedSampleFrame::onAccordion8, this );
 }
 
 void ExtendedSampleFrame::onAccordion8(wxBookCtrlEvent& event)
@@ -1271,7 +1252,7 @@ void ExtendedSampleFrame::onAccordion8(wxBookCtrlEvent& event)
                 parent=parent->GetParent();
             }
 
-            sample8LeftPanel->Layout();
+            m_leftPanel8->Layout();
             message << (collapsed?" was collapsed.":" was expanded.");
         }
         else
@@ -1279,6 +1260,6 @@ void ExtendedSampleFrame::onAccordion8(wxBookCtrlEvent& event)
             message << " was selected.";
         }
 
-        setHTMLwin8( m_htmlWin8, message, sample8LeftPanel->GetBackgroundColour() );
+        setHTMLwin8( m_htmlWin8, message, m_leftPanel8->GetBackgroundColour() );
     }
 }
