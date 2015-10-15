@@ -1,21 +1,19 @@
-/***************************************************************
- * Name:      SimpleSample.cpp
- * Purpose:   wxAccordion Simple Sample
- * Author:    ()
- * Created:   2015-10-10
- * Copyright: ()
- * License:   wxWindows licence
- **************************************************************/
+/////////////////////////////////////////////////////////////////////////////
+// Name:        simplesample.cpp
+// Purpose:     wxAccordion Simple Sample
+// Author:      ()
+// Created:     2015-10-10
+// Copyright:   ()
+// Licence:     wxWindows licence
+/////////////////////////////////////////////////////////////////////////////
 
-#ifdef WX_PRECOMP
-#include "wx_pch.h"
-#endif
+#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif
 
-#include <wx/accordion/accordion.h>
+#ifndef WX_PRECOMP
 #include <wx/app.h>
 #include <wx/frame.h>
 #include <wx/sizer.h>
@@ -24,6 +22,9 @@
 #include <wx/button.h>
 #include <wx/listbox.h>
 #include <wx/radiobut.h>
+#endif
+
+#include <wx/accordion/accordion.h>
 
 class SimpleSampleApp : public wxApp
 {
@@ -65,15 +66,18 @@ SimpleSampleFrame::SimpleSampleFrame( wxWindow* parent, wxWindowID id, const wxS
 
 	m_accordion->SetAccordionPadding(1);
 	m_accordion->SetCaptionRadius(3);
-	m_accordion->SetExpandedBottomBorder(false);
+	m_accordion->SetCaptionBorderStyle(wxAC_BORDERS_NO_BOTTOM_WHEN_EXPANDED);
+
 	m_accordion->GetCollapsedStyle().SetColour1( wxColour(46,25,164) );
 	m_accordion->GetCollapsedStyle().SetColour2( wxColour(12,22,144) );
 	m_accordion->GetCollapsedStyle().SetBorderColour( wxColour(40,10,134) );
 	m_accordion->GetCollapsedStyle().SetTextColour( wxColour(225,219,255) );
+
     m_accordion->GetExpandedStyle().SetColour1( wxColour(248,246,253) );
     m_accordion->GetExpandedStyle().SetColour2( wxColour(246,244,250) );
     m_accordion->GetExpandedStyle().SetBorderColour( wxColour(12,22,144) );
     m_accordion->GetExpandedStyle().SetTextColour( wxColour(40,10,134) );
+
 	m_accordion->SetPageRadius(3);
 	m_accordion->GetPageStyle().SetBorderColour( wxColour(12,22,144) );
 
@@ -113,7 +117,6 @@ SimpleSampleFrame::SimpleSampleFrame( wxWindow* parent, wxWindowID id, const wxS
 	wxBoxSizer* bSizer3 = new wxBoxSizer( wxVERTICAL );
 	bSizer3->Add( m_accordion, 1, wxALL|wxEXPAND, 5 );
 	panel1->SetSizer( bSizer3 );
-
 	wxBoxSizer* bSizer4 = new wxBoxSizer( wxVERTICAL );
 	bSizer4->Add( panel1, 1, wxEXPAND, 5 );
 	this->SetSizer( bSizer4 );

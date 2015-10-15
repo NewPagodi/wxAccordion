@@ -1,14 +1,14 @@
-/***************************************************************
- * Name:      accordion.h
- * Purpose:   wxAccordion class interface
- * Author:    ()
- * Created:   2015-10-10
- * Copyright: ()
- * License:   wxWindows licence
- **************************************************************/
+/////////////////////////////////////////////////////////////////////////////
+// Name:        accordion.h
+// Purpose:     wxAccordion class interface
+// Author:      ()
+// Created:     2015-10-10
+// Copyright:   ()
+// Licence:     wxWindows licence
+/////////////////////////////////////////////////////////////////////////////
 
-#ifndef WXACCORDION_H_INCLUDED
-#define WXACCORDION_H_INCLUDED
+#ifndef _WX_ACCORDION_ACCORDION_H_
+#define _WX_ACCORDION_ACCORDION_H_
 
 #ifdef WXUSING_ACCORDION_SOURCE
     #define WXDLLIMPEXP_ACCORDION
@@ -22,19 +22,39 @@
 
 #include <wx/bookctrl.h>
 #include <wx/graphics.h>
-#include <wx/panel.h>
 
-// ----------------------------------------------------------------------------
-// wxAccordion flags
-// ----------------------------------------------------------------------------
-enum wxAccordionOption
+// wxAccordion style flags
+enum
 {
-    wxACCORDION_BUTTON_LEFT        = 1 << 0,
-    wxACCORDION_SINGLE_FOLD        = 1 << 1,
-    wxACCORDION_COLLAPSE_TO_BOTTOM = 1 << 2,
-    wxACCORDION_FLOAT_TO_TOP       = 1 << 3,
+    wxAC_DEFAULT_STYLE      = 0,
+    wxAC_BUTTON_LEFT        = 1 << 0,
+    wxAC_SINGLE_FOLD        = 1 << 1,
+    wxAC_COLLAPSE_TO_BOTTOM = 1 << 2,
+    wxAC_FLOAT_TO_TOP       = 1 << 3
+};
 
-    wxACCORDION_DEFAULT_STYLE    = 0
+enum wxAccordionToggleStyle
+{
+    wxAC_TOGGLE_ONLY_ON_BUTTON_CLICKS,  ///< Toggle only if the click was on the button.  This is the default behaviour.
+    wxAC_TOGGLE_ON_ANY_CLICK            ///< Toggle on any click even in a button is visible.
+};
+
+enum wxAccordionBorderStyle
+{
+    wxAC_BORDERS_FULL,                     ///< The caption bars are always drawn with all borders.  This is the default behaviour.
+    wxAC_BORDERS_NO_BOTTOM_WHEN_EXPANDED   ///< When a page is expanded, the bottom border of the caption bar is not shown.
+};
+
+enum wxAccordionHighlighting
+{
+    wxAC_HIGHLIGHTING_NONE,         ///< No highlighting is done.
+    wxAC_HIGHLIGHTING_MOUSEOVER     ///< A caption bar changes to a highlighted state when the mouse is over it.
+};
+
+enum wxAccordionDisabledState
+{
+    wxAC_DISABLED_STATE_DEFAULT,   ///< A disables caption bar is drawn as a grayed version of the collapsed state.
+    wxAC_DISABLED_STATE_CUSTOM     ///< The user can specify style options for the disabled caption bar as with all the other states.
 };
 
 // values for the `flags' parameter of wxAccordion::HitTest()
@@ -47,8 +67,6 @@ static const int wxACCORDION_HITTEST_ONCAPTIONBUTTON = 1 << 5;
 static const int wxACCORDION_HITTEST_ONPAGE          = 1 << 6;
 static const int wxACCORDION_HITTEST_ONPAGEBORDER    = 1 << 7;
 static const int wxACCORDION_HITTEST_INPAGEPADDING   = 1 << 8;
-
-class wxAccordionFold;
 
 class WXDLLIMPEXP_ACCORDION wxAccordionStyle
 {
@@ -85,6 +103,8 @@ class WXDLLIMPEXP_ACCORDION wxAccordionStyle
         bool m_isPageStyle;
 };
 
+class wxAccordionFold;
+class wxPanel;
 
 class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
 {
@@ -143,47 +163,47 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
         ///@}
 
 
-        //Style item getters/setters
         ///@{ \name Accordion style get/set functions
-            int      GetAccordionPadding()        const;
-            wxBitmap GetAccordionBGBitmap()       const;
-            bool     GetOnlyToggleWithButton()    const;
+            int                    GetAccordionPadding()  const;
+            wxBitmap               GetAccordionBGBitmap() const;
+            wxAccordionToggleStyle GetToggleStyle()       const;
 
-            void     SetAccordionPadding(int m);
-            void     SetAccordionBGBitmap(const wxBitmap&);
-            void     SetOnlyToggleWithButton(bool b);
+            void SetAccordionPadding(int m);
+            void SetAccordionBGBitmap(const wxBitmap&);
+            void SetToggleStyle(wxAccordionToggleStyle toggleStyle);
         ///@}
 
+
         ///@{ \name Caption bar style get/set functions
-            double   GetCaptionRadius()           const;
-            double   GetCaptionGradientAngle()    const;
-            bool     GetExpandedBottomBorder()    const;
-            int      GetMinCaptionHeight()        const;
-            wxSize   GetIconMargin()              const;
-            wxSize   GetTextMargin()              const;
-            wxSize   GetButtonMargin()            const;
-            wxBitmap GetCollapseButton()          const;
-            wxBitmap GetExpandButton()            const;
-            bool     GetUseHighlighting()         const;
-            bool     GetCustomDisabledState()     const;
-            int      GetDisabledBrightness()      const;
-            wxAccordionStyle& GetCollapsedStyle();
-            wxAccordionStyle& GetExpandedStyle();
-            wxAccordionStyle& GetCollapsedHLStyle();
-            wxAccordionStyle& GetExpandedHLStyle();
-            wxAccordionStyle& GetDisabledStyle();
+            double                   GetCaptionRadius()        const;
+            double                   GetCaptionGradientAngle() const;
+            wxAccordionBorderStyle   GetCaptionBorderStyle()   const;
+            int                      GetMinCaptionHeight()     const;
+            wxSize                   GetIconMargin()           const;
+            wxSize                   GetTextMargin()           const;
+            wxSize                   GetButtonMargin()         const;
+            wxBitmap                 GetCollapseButton()       const;
+            wxBitmap                 GetExpandButton()         const;
+            wxAccordionHighlighting  GetHighlighting()         const;
+            wxAccordionDisabledState GetDisabledState()        const;
+            int                      GetDisabledBrightness()   const;
+            wxAccordionStyle&        GetCollapsedStyle();
+            wxAccordionStyle&        GetExpandedStyle();
+            wxAccordionStyle&        GetCollapsedHLStyle();
+            wxAccordionStyle&        GetExpandedHLStyle();
+            wxAccordionStyle&        GetDisabledStyle();
 
             void SetCaptionRadius(double d);
             void SetCaptionGradientAngle(double a);
-            void SetExpandedBottomBorder(bool b);
+            void SetCaptionBorderStyle(wxAccordionBorderStyle borderStyle);
             void SetMinCaptionHeight(int m);
             void SetIconMargin(const wxSize& p);
             void SetTextMargin(const wxSize& p);
             void SetButtonMargin(const wxSize& p);
             void SetCollapseButton(const wxBitmap& b);
             void SetExpandButton(const wxBitmap& b);
-            void SetUseHighlighting(bool b);
-            void SetCustomDisabledState(bool b);
+            void SetHighlighting(wxAccordionHighlighting highlighting);
+            void SetDisabledState(wxAccordionDisabledState state);
             void SetDisabledBrightness(int b);
             void SetCollapsedStyle(const wxAccordionStyle&);
             void SetExpandedStyle(const wxAccordionStyle&);
@@ -192,9 +212,10 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
             void SetDisabledStyle(const wxAccordionStyle&);
         ///@}
 
+
         ///@{ \name Page style get/set functions
-            double GetPageRadius() const;
-            int GetPagePadding() const;
+            double            GetPageRadius()  const;
+            int               GetPagePadding() const;
             wxAccordionStyle& GetPageStyle();
 
             void SetPageRadius(double d);
@@ -233,36 +254,35 @@ class WXDLLIMPEXP_ACCORDION wxAccordion:public wxBookCtrlBase
         wxPanel* m_lastBorder;
 
         //computed:
-        int captionBarHeight;
-        wxRect buttonRect;
-        wxRect iconRect;
-        wxPoint collapsedTextPoint;
-        wxPoint expandedTextPoint;
-        wxPoint collapsedHLTextPoint;
-        wxPoint expandedHLTextPoint;
-        wxPoint disabledTextPoint;
-        int textWidth;
-        wxBitmap captionBarCollapsed;
-        wxBitmap captionBarExpanded;
-        wxBitmap captionBarCollapsedHL;
-        wxBitmap captionBarExpandedHL;
-        wxBitmap captionBarDisabled;
+        int m_captionBarHeight;
+        wxRect m_buttonRect;
+        wxRect m_iconRect;
+        wxPoint m_collapsedTextPoint;
+        wxPoint m_expandedTextPoint;
+        wxPoint m_collapsedHLTextPoint;
+        wxPoint m_expandedHLTextPoint;
+        wxPoint m_disabledTextPoint;
+        int m_textWidth;
+        wxBitmap m_captionBarCollapsed;
+        wxBitmap m_captionBarExpanded;
+        wxBitmap m_captionBarCollapsedHL;
+        wxBitmap m_captionBarExpandedHL;
+        wxBitmap m_captionBarDisabled;
 
         //style items:
         int m_accordionPadding;
-        bool m_onlyToggleWithButton;
-
+        wxAccordionToggleStyle m_toggleStyle;
         double m_captionBarRadius;
         double m_gradientAngle;
-        bool m_hasBottomBorderWhenExpanded;
+        wxAccordionBorderStyle m_captionBorderStyle;
         int m_minCaptionHeight;
         wxSize m_iconMargin;
         wxSize m_textMargin;
         wxSize m_buttonMargin;
         wxBitmap m_collapseButton;
         wxBitmap m_expandButton;
-        bool m_customDisabledState;
-        bool m_useHighlighting;
+        wxAccordionDisabledState m_disabledState;
+        wxAccordionHighlighting m_highlighting;
         int  m_disabledBrightness;
 
         int m_pagePadding;
@@ -294,4 +314,6 @@ wxDECLARE_EXPORTED_EVENT(WXDLLIMPEXP_ACCORDION, wxEVT_ACCORDION_EXPANDING, wxBoo
 #define EVT_ACCORDION_EXPANDING(winid, fn) \
     wx__DECLARE_EVT1(wxEVT_ACCORDION_EXPANDING, winid, wxBookCtrlEventHandler(fn))
 
-#endif // WXACCORDION_H_INCLUDED
+/// \file accordion.h The include file for the wxAccordion class.
+
+#endif // _WX_ACCORDION_ACCORDION_H_

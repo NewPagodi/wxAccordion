@@ -1,36 +1,38 @@
-/***************************************************************
- * Name:      Builder.cpp
- * Purpose:   wxAccordion Sample
- * Author:    ()
- * Created:   2015-10-10
- * Copyright: ()
- * License:   wxWindows licence
- **************************************************************/
+/////////////////////////////////////////////////////////////////////////////
+// Name:        builder.cpp
+// Purpose:     wxAccordion Sample
+// Author:      ()
+// Created:     2015-10-10
+// Copyright:   ()
+// Licence:     wxWindows licence
+/////////////////////////////////////////////////////////////////////////////
 
-#ifdef WX_PRECOMP
-#include "wx_pch.h"
-#endif
+#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif
+
+#ifndef WX_PRECOMP
+#include <wx/app.h>
+#include <wx/frame.h>
+#include <wx/sizer.h>
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
+#include <wx/stattext.h>
+#include <wx/checkbox.h>
+#include <wx/dcmemory.h>
+#endif
 
 #include <wx/accordion/accordion.h>
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/property.h>
 #include <wx/propgrid/advprops.h>
 #include <wx/html/htmlwin.h>
-#include <wx/app.h>
-#include <wx/frame.h>
-#include <wx/sizer.h>
-#include <wx/menu.h>
-#include <wx/msgdlg.h>
 #include <wx/splitter.h>
-#include <wx/stattext.h>
 #include <wx/clrpicker.h>
 #include <wx/spinctrl.h>
-#include <wx/checkbox.h>
-#include <wx/dcmemory.h>
+
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -204,22 +206,6 @@ void addBitmapString(wxString& s, const wxString& method, wxPGProperty* p)
         s << s2;
         s << "\",wxBITMAP_TYPE_ANY) );\n";
     }
-}
-
-void addBoolString(wxString& s, const wxString& method, bool b)
-{
-    s << "m_accordion->";
-    s << method;
-    s << "(";
-    if(b)
-    {
-        s << "true";
-    }
-    else
-    {
-        s << "false";
-    }
-    s << ");\n";
 }
 
 void addIntString(wxString& s, const wxString& method, int i)
@@ -926,28 +912,28 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
 
         bool first(true);
 
-        if(style & wxACCORDION_BUTTON_LEFT)
+        if(style & wxAC_BUTTON_LEFT)
         {
             first =false;
-            s << "wxACCORDION_BUTTON_LEFT";
+            s << "wxAC_BUTTON_LEFT";
         }
-        if(style & wxACCORDION_SINGLE_FOLD)
+        if(style & wxAC_SINGLE_FOLD)
         {
             if(first) first =false;
             else s << "|";
-            s << "wxACCORDION_SINGLE_FOLD";
+            s << "wxAC_SINGLE_FOLD";
         }
-        if(style & wxACCORDION_COLLAPSE_TO_BOTTOM)
+        if(style & wxAC_COLLAPSE_TO_BOTTOM)
         {
             if(first) first =false;
             else s << "|";
-            s << "wxACCORDION_COLLAPSE_TO_BOTTOM";
+            s << "wxAC_COLLAPSE_TO_BOTTOM";
         }
-        if(style & wxACCORDION_FLOAT_TO_TOP)
+        if(style & wxAC_FLOAT_TO_TOP)
         {
             if(first) first =false;
             else s << "|";
-            s << "wxACCORDION_FLOAT_TO_TOP";
+            s << "wxAC_FLOAT_TO_TOP";
         }
 
         s << " );\n";
@@ -958,9 +944,17 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
         addIntString( s, "SetAccordionPadding", m_accordion->GetAccordionPadding() );
     }
 
-    if( temp->GetOnlyToggleWithButton() != m_accordion->GetOnlyToggleWithButton() )
+    if( temp->GetToggleStyle() != m_accordion->GetToggleStyle() )
     {
-        addBoolString( s, "SetOnlyToggleWithButton", m_accordion->GetOnlyToggleWithButton() );
+        s << "m_accordion->SetToggleStyle( ";
+        if( m_accordion->GetToggleStyle()==wxAC_TOGGLE_ONLY_ON_BUTTON_CLICKS )
+        {
+            s << "wxAC_TOGGLE_ONLY_ON_BUTTON_CLICKS );\n";
+        }
+        else
+        {
+            s << "wxAC_TOGGLE_ON_ANY_CLICK );\n";
+        }
     }
 
     if( temp->GetBackgroundColour() != m_accordion->GetBackgroundColour() )
@@ -988,19 +982,48 @@ void BuilderFrame::onGenerate(wxCommandEvent& event)
         addIntString( s, "SetCaptionGradientAngle", m_accordion->GetCaptionGradientAngle() );
     }
 
+    if( temp->GetCaptionBorderStyle() != m_accordion->GetCaptionBorderStyle() )
+    {
+        s << "m_accordion->SetCaptionBorderStyle( ";
+        if( m_accordion->GetCaptionBorderStyle()==wxAC_BORDERS_FULL )
+        {
+            s << "wxAC_BORDERS_FULL );\n";
+        }
+        else
+        {
+            s << "wxAC_BORDERS_NO_BOTTOM_WHEN_EXPANDED );\n";
+        }
+    }
+
     if( temp->GetTextMargin() != m_accordion->GetTextMargin() )
     {
         addSizeString( s, "SetTextMargin", m_accordion->GetTextMargin() );
     }
 
-    if( temp->GetUseHighlighting() != m_accordion->GetUseHighlighting() )
+    if( temp->GetHighlighting() != m_accordion->GetHighlighting() )
     {
-        addBoolString( s, "SetUseHighlighting", m_accordion->GetUseHighlighting() );
+        s << "m_accordion->SetHighlighting( ";
+        if( m_accordion->GetHighlighting()==wxAC_HIGHLIGHTING_MOUSEOVER )
+        {
+            s << "wxAC_HIGHLIGHTING_MOUSEOVER );\n";
+        }
+        else
+        {
+            s << "wxAC_HIGHLIGHTING_NONE );\n";
+        }
     }
 
-    if( temp->GetCustomDisabledState() != m_accordion->GetCustomDisabledState() )
+    if( temp->GetDisabledState() != m_accordion->GetDisabledState() )
     {
-        addBoolString( s, "SetCustomDisabledState", m_accordion->GetCustomDisabledState() );
+        s << "m_accordion->SetDisabledState( ";
+        if( m_accordion->GetDisabledState()==wxAC_DISABLED_STATE_DEFAULT )
+        {
+            s << "wxAC_DISABLED_STATE_DEFAULT );\n";
+        }
+        else
+        {
+            s << "wxAC_DISABLED_STATE_CUSTOM );\n";
+        }
     }
 
     if( temp->GetDisabledBrightness() != m_accordion->GetDisabledBrightness() )
@@ -1345,7 +1368,7 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
     }
     else if( p == m_pgAccordionOnlyToggleWithButton )
     {
-        m_accordion->SetOnlyToggleWithButton( p->GetValue().GetBool() );
+        m_accordion->SetToggleStyle( p->GetValue().GetBool()?wxAC_TOGGLE_ONLY_ON_BUTTON_CLICKS:wxAC_TOGGLE_ON_ANY_CLICK );
     }
     else if( p == m_pgAccordionBGProp )
     {
@@ -1393,7 +1416,7 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
     }
     else if( p == m_pgCaptionExpandedBtmBrdr )
     {
-        m_accordion->SetExpandedBottomBorder( p->GetValue().GetBool() );
+        m_accordion->SetCaptionBorderStyle( p->GetValue().GetBool()?wxAC_BORDERS_FULL:wxAC_BORDERS_NO_BOTTOM_WHEN_EXPANDED );
         m_accordion->Refresh();
     }
     else if( p == m_pgCaptionTextPadding )
@@ -1409,7 +1432,7 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgColHLCapBarCat->Hide(!b);
         m_pgExpHLCapBarCat->Hide(!b);
 
-        m_accordion->SetUseHighlighting(b);
+        m_accordion->SetHighlighting(b?wxAC_HIGHLIGHTING_MOUSEOVER:wxAC_HIGHLIGHTING_NONE);
         m_accordion->Refresh();
     }
     else if( p == m_pgCaptionCustomDisabled )
@@ -1419,7 +1442,7 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
         m_pgDisCapBarCat->Hide(!b);
         m_pgCaptionTDisabledBrightness->Enable(b);
 
-        m_accordion->SetCustomDisabledState(b);
+        m_accordion->SetDisabledState(b?wxAC_DISABLED_STATE_CUSTOM:wxAC_DISABLED_STATE_DEFAULT);
         m_accordion->Refresh();
     }
     else if( p == m_pgCaptionTDisabledBrightness )
@@ -1502,7 +1525,6 @@ void BuilderFrame::onPropertyGridChanged( wxPropertyGridEvent& event )
     else if( p == m_pgIconColour )
     {
         setImageList(m_accordion,wxSizeRefFromVariant(p->GetParent()->Item(2)->GetValue()),p->GetValue().GetAny().As<wxColour>());
-        //m_accordion->Layout();
         m_accordion->Refresh();
     }
     else if( p == m_pgIconSize )
@@ -2009,10 +2031,10 @@ void BuilderFrame::buildGrid()
     cases.Add("COLLAPSE_TO_BOTTOM");
     cases.Add("FLOAT_TO_TOP");
 
-    cases_values.Add(wxACCORDION_BUTTON_LEFT);
-    cases_values.Add(wxACCORDION_SINGLE_FOLD);
-    cases_values.Add(wxACCORDION_COLLAPSE_TO_BOTTOM);
-    cases_values.Add(wxACCORDION_FLOAT_TO_TOP);
+    cases_values.Add(wxAC_BUTTON_LEFT);
+    cases_values.Add(wxAC_SINGLE_FOLD);
+    cases_values.Add(wxAC_COLLAPSE_TO_BOTTOM);
+    cases_values.Add(wxAC_FLOAT_TO_TOP);
 
     //m_pgAccordionCat
 	m_pgAccordionCat = m_propertyGrid->Append( new wxPropertyCategory( wxT("Accordion"), wxT("Accordion") ) );
@@ -2026,7 +2048,9 @@ void BuilderFrame::buildGrid()
 	m_pgAccordionPadding->SetAttribute(  wxT("MotionSpin"), true );
 	m_pgAccordionPadding->SetAttribute(  wxPG_ATTR_MIN, (long)0);
 
-	m_pgAccordionOnlyToggleWithButton = m_propertyGrid->Append( new wxBoolProperty( wxT("Only Toggle With Button"), wxPG_LABEL,m_accordion->GetOnlyToggleWithButton() ) );
+	//I'm using a bool property instead of an enum because if you use an enum, the
+	//program will crash when the grid is reset.
+	m_pgAccordionOnlyToggleWithButton = m_propertyGrid->Append( new wxBoolProperty( wxT("Only Toggle With Button"), wxPG_LABEL,m_accordion->GetToggleStyle()==wxAC_TOGGLE_ONLY_ON_BUTTON_CLICKS ) );
 	m_pgAccordionOnlyToggleWithButton->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
 	m_pgAccordionBGProp = m_propertyGrid->Append( new wxColourProperty( wxT("Background"), wxPG_LABEL ,m_accordion->GetBackgroundColour() ) );
@@ -2057,15 +2081,15 @@ void BuilderFrame::buildGrid()
     m_pgCaptionGradientAngle->SetAttribute(  wxT("Step"), (long)1 );
 	m_pgCaptionGradientAngle->SetAttribute(  wxT("MotionSpin"), true );
 
-    m_pgCaptionExpandedBtmBrdr = m_propertyGrid->Append( new wxBoolProperty( wxT("Expanded Bottom Border"), wxPG_LABEL, m_accordion->GetExpandedBottomBorder() ) );
+    m_pgCaptionExpandedBtmBrdr = m_propertyGrid->Append( new wxBoolProperty( wxT("Expanded Bottom Border"), wxPG_LABEL, m_accordion->GetCaptionBorderStyle()==wxAC_BORDERS_FULL ) );
     m_pgCaptionExpandedBtmBrdr->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
     m_pgCaptionTextPadding = m_propertyGrid->Append( new wxSizeProperty("Text Margin",wxPG_LABEL,m_accordion->GetTextMargin()) );
 
-    m_pgCaptionUseHighlighting = m_propertyGrid->Append( new wxBoolProperty("Use Highlighting",wxPG_LABEL,m_accordion->GetUseHighlighting()) );
+    m_pgCaptionUseHighlighting = m_propertyGrid->Append( new wxBoolProperty("Use Highlighting",wxPG_LABEL,m_accordion->GetHighlighting()==wxAC_HIGHLIGHTING_MOUSEOVER) );
     m_pgCaptionUseHighlighting->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-    m_pgCaptionCustomDisabled = m_propertyGrid->Append( new wxBoolProperty("Custom Disabled State",wxPG_LABEL,m_accordion->GetCustomDisabledState()) );
+    m_pgCaptionCustomDisabled = m_propertyGrid->Append( new wxBoolProperty("Custom Disabled State",wxPG_LABEL,m_accordion->GetDisabledState()==wxAC_DISABLED_STATE_CUSTOM) );
     m_pgCaptionCustomDisabled->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
     m_pgCaptionTDisabledBrightness = m_propertyGrid->Append( new wxIntProperty( wxT("Disabled Brightness"), wxPG_LABEL ,static_cast<int>(m_accordion->GetDisabledBrightness()) ) );
@@ -2074,7 +2098,7 @@ void BuilderFrame::buildGrid()
 	m_pgCaptionTDisabledBrightness->SetAttribute(  wxT("MotionSpin"), true );
 	m_pgCaptionTDisabledBrightness->SetAttribute(  wxPG_ATTR_MIN, (long)0);
     m_pgCaptionTDisabledBrightness->SetAttribute(  wxPG_ATTR_MAX, (long)255);
-    m_pgCaptionTDisabledBrightness->Enable(!m_accordion->GetCustomDisabledState());
+    m_pgCaptionTDisabledBrightness->Enable(m_accordion->GetDisabledState()!=wxAC_DISABLED_STATE_CUSTOM);
 
     //m_pgButtonCat
 	m_pgButtonCat = m_propertyGrid->AppendIn( m_pgCaptionBarCat,new wxPropertyCategory( wxT("Buttons"), wxPG_LABEL ) );
@@ -2171,7 +2195,7 @@ void BuilderFrame::buildGrid()
     m_pgColHLCapBarFont->Item(0)->SetAttribute(  wxPG_ATTR_MAX, (long)72);
     m_pgColHLCapBarFont->Item(4)->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-    if(!m_accordion->GetUseHighlighting())
+    if(m_accordion->GetHighlighting()!=wxAC_HIGHLIGHTING_MOUSEOVER)
     {
         m_pgColHLCapBarCat->Hide(true);
     }
@@ -2240,7 +2264,7 @@ void BuilderFrame::buildGrid()
     m_pgExpHLCapBarFont->Item(0)->SetAttribute(  wxPG_ATTR_MAX, (long)72);
     m_pgExpHLCapBarFont->Item(4)->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-    if(!m_accordion->GetUseHighlighting())
+    if(m_accordion->GetHighlighting()!=wxAC_HIGHLIGHTING_MOUSEOVER)
     {
         m_pgExpHLCapBarCat->Hide(true);
     }
@@ -2277,7 +2301,7 @@ void BuilderFrame::buildGrid()
     m_pgDisCapBarFont->Item(0)->SetAttribute(  wxPG_ATTR_MAX, (long)72);
     m_pgDisCapBarFont->Item(4)->SetAttribute (wxPG_BOOL_USE_CHECKBOX,true );
 
-    if(!m_accordion->GetCustomDisabledState())
+    if(m_accordion->GetDisabledState()!=wxAC_DISABLED_STATE_CUSTOM)
     {
         m_pgDisCapBarCat->Hide(true);
     }

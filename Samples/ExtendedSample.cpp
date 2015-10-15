@@ -1,43 +1,45 @@
-/***************************************************************
- * Name:      ExtendedSample.cpp
- * Purpose:   wxAccordion Extended Sample
- * Author:    ()
- * Created:   2015-10-10
- * Copyright: ()
- * License:   wxWindows licence
- **************************************************************/
+/////////////////////////////////////////////////////////////////////////////
+// Name:        extendedsample.cpp
+// Purpose:     wxAccordion Extended Sample
+// Author:      ()
+// Created:     2015-10-10
+// Copyright:   ()
+// Licence:     wxWindows licence
+/////////////////////////////////////////////////////////////////////////////
 
-#ifdef WX_PRECOMP
-#include "wx_pch.h"
-#endif
+#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif
 
-#include <wx/accordion/accordion.h>
-#include <wx/html/htmlwin.h>
+#ifndef WX_PRECOMP
 #include <wx/app.h>
 #include <wx/frame.h>
 #include <wx/msgdlg.h>
 #include <wx/menu.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
-#include <wx/splitter.h>
-#include <wx/statline.h>
 #include <wx/stattext.h>
-#include <wx/spinctrl.h>
 #include <wx/button.h>
-#include <wx/clrpicker.h>
-#include <wx/fontpicker.h>
 #include <wx/choice.h>
 #include <wx/slider.h>
 #include <wx/radiobut.h>
 #include <wx/checkbox.h>
 #include <wx/textctrl.h>
 #include <wx/dcclient.h>
-#include <wx/renderer.h>
 #include <wx/dcmemory.h>
+#endif
+
+#include <wx/accordion/accordion.h>
+#include <wx/html/htmlwin.h>
+#include <wx/splitter.h>
+#include <wx/statline.h>
+#include <wx/spinctrl.h>
+#include <wx/clrpicker.h>
+#include <wx/fontpicker.h>
+#include <wx/renderer.h>
+
 #include <stack>
 
 #include "bitmaps/home.xpm"
@@ -761,10 +763,10 @@ void ExtendedSampleFrame::addSample4()
 {
 	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-    wxAccordion* accordion = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_SINGLE_FOLD );
+    wxAccordion* accordion = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAC_SINGLE_FOLD );
 
     accordion->SetAccordionPadding(2);
-    accordion->SetUseHighlighting(true);
+    accordion->SetHighlighting(wxAC_HIGHLIGHTING_MOUSEOVER);
 
     accordion->GetCollapsedStyle().SetBGBitmap( wxBitmap(back04_xpm) );
     accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
@@ -801,7 +803,7 @@ void ExtendedSampleFrame::addSample5()
 {
 	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
-    m_accordion5 = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_SINGLE_FOLD );
+    m_accordion5 = new wxAccordion( splitter );
 
     m_accordion5->SetCaptionGradientAngle(90);
     m_accordion5->GetCollapsedStyle().SetColour1( wxColour(64,128,128) );
@@ -850,7 +852,7 @@ void ExtendedSampleFrame::addSample6()
 	wxSplitterWindow* splitter = new wxSplitterWindow( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE );
 	splitter->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-    wxAccordion* accordion = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_BUTTON_LEFT|wxACCORDION_COLLAPSE_TO_BOTTOM );
+    wxAccordion* accordion = new wxAccordion( splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAC_BUTTON_LEFT|wxAC_COLLAPSE_TO_BOTTOM );
     accordion->SetBackgroundColour( *wxWHITE );
 
     accordion->SetAccordionPadding(1);
@@ -944,7 +946,7 @@ void ExtendedSampleFrame::addSample7()
     imageList->Add( wxBitmap(unchecked) );
     imageList->Add( wxBitmap(checked) );
 
-    wxAccordion* accordion = new wxAccordion( panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxACCORDION_FLOAT_TO_TOP );
+    wxAccordion* accordion = new wxAccordion( panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAC_FLOAT_TO_TOP );
     accordion->AssignImageList(imageList);
     accordion->SetAccordionPadding(1);
     accordion->SetDisabledBrightness(150);
@@ -1050,7 +1052,7 @@ void styleSubAccordion( wxAccordion* accordion, int level, bool useImageList)
     accordion->SetPagePadding(0);
     accordion->SetAccordionPadding(0);
 
-    accordion->SetUseHighlighting(true);
+    accordion->SetHighlighting(wxAC_HIGHLIGHTING_MOUSEOVER);
     accordion->GetCollapsedStyle().SetColour1( wxColour(255,255,255) );
     accordion->GetCollapsedStyle().SetColour2( wxColour(255,255,255) );
     accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
@@ -1150,7 +1152,7 @@ void ExtendedSampleFrame::addSample8()
     accordion->SetExpandButton(expand08_xpm);
     accordion->SetButtonMargin( wxSize(5,0) );
     accordion->SetAccordionPadding(0);
-    accordion->SetOnlyToggleWithButton(false);
+    accordion->SetToggleStyle(wxAC_TOGGLE_ON_ANY_CLICK);
     accordion->GetCollapsedStyle().SetColour1( wxColour(115,115,115) );
     accordion->GetCollapsedStyle().SetColour2( wxColour(82,82,82) );
     accordion->GetCollapsedStyle().SetBorderColour(wxTransparentColour);
