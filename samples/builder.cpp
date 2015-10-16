@@ -33,6 +33,9 @@
 #include <wx/clrpicker.h>
 #include <wx/spinctrl.h>
 
+#ifndef wxHAS_IMAGES_IN_RESOURCES
+    #include "bitmaps/sample.xpm"
+#endif
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -543,13 +546,13 @@ bool BuilderApp::OnInit()
     wxInitAllImageHandlers();
 
     BuilderFrame* frame = new BuilderFrame(0L);
-    frame->SetIcon(wxICON(aaaa));
+    frame->SetIcon(wxICON(sample));
     frame->Show();
 
     return true;
 }
 
-IMPLEMENT_APP(BuilderApp);
+wxIMPLEMENT_APP(BuilderApp);
 
 
 // -----------------------------------------------------------------------

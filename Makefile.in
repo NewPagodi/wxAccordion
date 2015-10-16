@@ -80,7 +80,7 @@ BUILDER_OBJECTS =  \
 @COND_WX_DEBUG_0@WXLIBPOSTFIX = u
 @COND_WX_DEBUG_1@WXLIBPOSTFIX = ud
 COND_SHARED_0___accordion_lib___depname = \
-	$(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT)
+	$(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT)
 @COND_SHARED_0@__accordion_lib___depname = $(COND_SHARED_0___accordion_lib___depname)
 @COND_SHARED_0@__install_accordion_lib___depname = install_accordion_lib
 @COND_SHARED_0@__uninstall_accordion_lib___depname = \
@@ -90,19 +90,19 @@ COND_SHARED_0___accordion_lib___depname = \
 @COND_SHARED_0@__uninstall_accordion_lib_headers___depname = \
 @COND_SHARED_0@	uninstall_accordion_lib_headers
 COND_SHARED_1___accordion_dll___depname = \
-	$(srcdir)/lib/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
+	$(srcdir)/lib/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
 @COND_SHARED_1@__accordion_dll___depname = $(COND_SHARED_1___accordion_dll___depname)
 @COND_SHARED_1@__install_accordion_dll___depname = install_accordion_dll
 @COND_SHARED_1@__uninstall_accordion_dll___depname = \
 @COND_SHARED_1@	uninstall_accordion_dll
 COND_PLATFORM_MACOSX_1___accordion_dll___macinstnamecmd = -install_name \
-	$(libdir)/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2)
+	$(libdir)/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2)
 @COND_PLATFORM_MACOSX_1@__accordion_dll___macinstnamecmd = $(COND_PLATFORM_MACOSX_1___accordion_dll___macinstnamecmd)
 COND_PLATFORM_OS2_1___accordion_dll___importlib = -import \
-	$(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
+	$(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
 @COND_PLATFORM_OS2_1@__accordion_dll___importlib = $(COND_PLATFORM_OS2_1___accordion_dll___importlib)
 COND_WINDOWS_IMPLIB_1___accordion_dll___importlib = \
-	-Wl,--out-implib=$(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
+	-Wl,--out-implib=$(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
 @COND_WINDOWS_IMPLIB_1@__accordion_dll___importlib = $(COND_WINDOWS_IMPLIB_1___accordion_dll___importlib)
 @COND_PLATFORM_MACOSX_0_USE_SOVERSION_1@__accordion_dll___targetsuf2 \
 @COND_PLATFORM_MACOSX_0_USE_SOVERSION_1@	= .$(SO_SUFFIX).0
@@ -120,51 +120,51 @@ COND_WINDOWS_IMPLIB_1___accordion_dll___importlib = \
 @COND_USE_SOVERCYGWIN_1_USE_SOVERSION_1@	= -0.$(SO_SUFFIX)
 @COND_USE_SOVERSION_0@__accordion_dll___targetsuf3 = .$(SO_SUFFIX)
 COND_USE_SOVERLINUX_1___accordion_dll___soname_flags = \
-	$(SONAME_FLAG)$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2)
+	$(SONAME_FLAG)$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2)
 @COND_USE_SOVERLINUX_1@__accordion_dll___soname_flags = $(COND_USE_SOVERLINUX_1___accordion_dll___soname_flags)
 COND_USE_SOVERSOLARIS_1___accordion_dll___soname_flags = \
-	$(SONAME_FLAG)$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
+	$(SONAME_FLAG)$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
 @COND_USE_SOVERSOLARIS_1@__accordion_dll___soname_flags = $(COND_USE_SOVERSOLARIS_1___accordion_dll___soname_flags)
 COND_USE_SOTWOSYMLINKS_1___accordion_dll___so_symlinks_cmd = (cd \
 	$(srcdir)/lib/; rm -f \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) \
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
 	$(LN_S) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
 	$(LN_S) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2) \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX))
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2) \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX))
 @COND_USE_SOTWOSYMLINKS_1@__accordion_dll___so_symlinks_cmd = $(COND_USE_SOTWOSYMLINKS_1___accordion_dll___so_symlinks_cmd)
 COND_USE_SOVERSOLARIS_1___accordion_dll___so_symlinks_cmd = (cd \
 	$(srcdir)/lib/; rm -f \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX); \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX); \
 	$(LN_S) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX))
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX))
 @COND_USE_SOVERSOLARIS_1@__accordion_dll___so_symlinks_cmd = $(COND_USE_SOVERSOLARIS_1___accordion_dll___so_symlinks_cmd)
 COND_USE_SOTWOSYMLINKS_1___accordion_dll___so_symlinks_inst_cmd = rm -f \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) \
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
 	$(LN_S) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2); \
 	$(LN_S) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2) \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2) \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
 @COND_USE_SOTWOSYMLINKS_1@__accordion_dll___so_symlinks_inst_cmd = $(COND_USE_SOTWOSYMLINKS_1___accordion_dll___so_symlinks_inst_cmd)
 COND_USE_SOVERSOLARIS_1___accordion_dll___so_symlinks_inst_cmd = rm -f \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX); \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX); \
 	$(LN_S) \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX);
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX);
 @COND_USE_SOVERSOLARIS_1@__accordion_dll___so_symlinks_inst_cmd = $(COND_USE_SOVERSOLARIS_1___accordion_dll___so_symlinks_inst_cmd)
 COND_USE_SOTWOSYMLINKS_1___accordion_dll___so_symlinks_uninst_cmd = rm -f \
-	$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2) \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
+	$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2) \
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
 @COND_USE_SOTWOSYMLINKS_1@__accordion_dll___so_symlinks_uninst_cmd = $(COND_USE_SOTWOSYMLINKS_1___accordion_dll___so_symlinks_uninst_cmd)
 COND_USE_SOVERSOLARIS_1___accordion_dll___so_symlinks_uninst_cmd = rm -f \
-	$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
+	$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
 @COND_USE_SOVERSOLARIS_1@__accordion_dll___so_symlinks_uninst_cmd = $(COND_USE_SOVERSOLARIS_1___accordion_dll___so_symlinks_uninst_cmd)
 @COND_SHARED_1@__install_accordion_dll_headers___depname = \
 @COND_SHARED_1@	install_accordion_dll_headers
@@ -200,10 +200,10 @@ COND_PLATFORM_OS2_1___Builder___os2_emxbindcmd = $(NM) builder$(EXEEXT) | if \
 @COND_SHARED_0@__COMPONENT_LIB_LIBR = -L$(srcdir)/lib
 @COND_SHARED_1@__COMPONENT_LIB_LIBR = -L$(srcdir)/lib
 COND_SHARED_0___COMPONENT_LIB_LIBR_6 = \
-	-lwxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)
+	-lwx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)
 @COND_SHARED_0@__COMPONENT_LIB_LIBR_6 = $(COND_SHARED_0___COMPONENT_LIB_LIBR_6)
 COND_SHARED_1___COMPONENT_LIB_LIBR_6 = \
-	-lwxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)
+	-lwx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)
 @COND_SHARED_1@__COMPONENT_LIB_LIBR_6 = $(COND_SHARED_1___COMPONENT_LIB_LIBR_6)
 @COND_WX_DEBUG_0@__NDEBUG_p = -DNDEBUG
 @COND_WX_DEBUG_1@__NDEBUG_p = 
@@ -219,15 +219,15 @@ install: $(__install_accordion_lib___depname) $(__install_accordion_lib_headers_
 uninstall: $(__uninstall_accordion_lib___depname) $(__uninstall_accordion_lib_headers___depname) $(__uninstall_accordion_dll___depname) $(__uninstall_accordion_dll_headers___depname)
 
 install-strip: install
-	$(STRIP) $(DESTDIR)$(libdir)/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
+	$(STRIP) $(DESTDIR)$(libdir)/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
 
 clean: 
 	rm -rf ./.deps ./.pch
 	rm -f ./*.o
-	rm -f $(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT)
-	rm -f $(srcdir)/lib/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
-	rm -f $(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
-	rm -f $(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) $(srcdir)/lib/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2)
+	rm -f $(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT)
+	rm -f $(srcdir)/lib/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
+	rm -f $(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
+	rm -f $(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) $(srcdir)/lib/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf2)
 	rm -f simplesample$(EXEEXT)
 	rm -f extendedsample$(EXEEXT)
 	rm -f builder$(EXEEXT)
@@ -235,17 +235,17 @@ clean:
 distclean: clean
 	rm -f config.cache config.log config.status bk-deps bk-make-pch shared-ld-sh Makefile
 
-@COND_SHARED_0@$(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT): $(ACCORDION_LIB_OBJECTS)
+@COND_SHARED_0@$(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT): $(ACCORDION_LIB_OBJECTS)
 @COND_SHARED_0@	rm -f $@
 @COND_SHARED_0@	$(AR) $(AROPTIONS) $@ $(ACCORDION_LIB_OBJECTS)
 @COND_SHARED_0@	$(RANLIB) $@
 
 @COND_SHARED_0@install_accordion_lib: $(__accordion_lib___depname)
 @COND_SHARED_0@	$(INSTALL_DIR) $(DESTDIR)$(libdir)
-@COND_SHARED_0@	$(INSTALL_DATA) $(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT) $(DESTDIR)$(libdir)
+@COND_SHARED_0@	$(INSTALL_DATA) $(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT) $(DESTDIR)$(libdir)
 
 @COND_SHARED_0@uninstall_accordion_lib: 
-@COND_SHARED_0@	rm -f $(DESTDIR)$(libdir)/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT)
+@COND_SHARED_0@	rm -f $(DESTDIR)$(libdir)/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(LIBEXT)
 
 @COND_SHARED_0@install_accordion_lib_headers: 
 @COND_SHARED_0@	$(INSTALL_DIR) $(DESTDIR)$(prefix)
@@ -261,20 +261,20 @@ distclean: clean
 @COND_SHARED_0@	rm -f $(DESTDIR)$(prefix)/$$f; \
 @COND_SHARED_0@	done
 
-@COND_SHARED_1@$(srcdir)/lib/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3): $(ACCORDION_DLL_OBJECTS)
+@COND_SHARED_1@$(srcdir)/lib/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3): $(ACCORDION_DLL_OBJECTS)
 @COND_SHARED_1@	$(SHARED_LD_CXX) $@ $(ACCORDION_DLL_OBJECTS)  -L$(srcdir)/lib $(__accordion_dll___macinstnamecmd) $(__accordion_dll___importlib) $(__accordion_dll___soname_flags) $(LDFLAGS)  $(WX_LIBS) $(LIBS)
 @COND_SHARED_1@	
 @COND_SHARED_1@	$(__accordion_dll___so_symlinks_cmd)
 
 @COND_SHARED_1@install_accordion_dll: $(__accordion_dll___depname)
 @COND_SHARED_1@	$(INSTALL_DIR) $(DESTDIR)$(libdir)
-@COND_SHARED_1@	$(INSTALL_DATA) $(srcdir)/lib/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) $(DESTDIR)$(libdir)
-@COND_SHARED_1@	$(INSTALL_PROGRAM) $(srcdir)/lib/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) $(DESTDIR)$(libdir)
+@COND_SHARED_1@	$(INSTALL_DATA) $(srcdir)/lib/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX) $(DESTDIR)$(libdir)
+@COND_SHARED_1@	$(INSTALL_PROGRAM) $(srcdir)/lib/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3) $(DESTDIR)$(libdir)
 @COND_SHARED_1@	(cd $(DESTDIR)$(libdir) ; $(__accordion_dll___so_symlinks_inst_cmd))
 
 @COND_SHARED_1@uninstall_accordion_dll: 
-@COND_SHARED_1@	rm -f $(DESTDIR)$(libdir)/$(LIBPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
-@COND_SHARED_1@	rm -f $(DESTDIR)$(libdir)/$(DLLPREFIX)wxcode_$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
+@COND_SHARED_1@	rm -f $(DESTDIR)$(libdir)/$(LIBPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).$(DLLIMP_SUFFIX)
+@COND_SHARED_1@	rm -f $(DESTDIR)$(libdir)/$(DLLPREFIX)wx$(WX_PORT)$(WXLIBPOSTFIX)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)$(__accordion_dll___targetsuf3)
 @COND_SHARED_1@	(cd $(DESTDIR)$(libdir) ; $(__accordion_dll___so_symlinks_uninst_cmd))
 
 @COND_SHARED_1@install_accordion_dll_headers: 

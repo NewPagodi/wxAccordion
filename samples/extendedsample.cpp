@@ -62,6 +62,10 @@
 #include "bitmaps/subcollapse.xpm"
 #include "bitmaps/subempty.xpm"
 
+#ifndef wxHAS_IMAGES_IN_RESOURCES
+    #include "bitmaps/sample.xpm"
+#endif
+
 ///////////////////////////////////////////////////////////////////////////
 
 #define id_MENUQUIT 1000
@@ -143,13 +147,13 @@ class ExtendedSampleFrame : public wxFrame
 bool ExtendedSampleApp::OnInit()
 {
     ExtendedSampleFrame* frame = new ExtendedSampleFrame(0L);
-    frame->SetIcon(wxICON(aaaa));
+    frame->SetIcon(wxICON(sample));
     frame->Show();
 
     return true;
 }
 
-IMPLEMENT_APP(ExtendedSampleApp);
+wxIMPLEMENT_APP(ExtendedSampleApp);
 
 
 ExtendedSampleFrame::ExtendedSampleFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )

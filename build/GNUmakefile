@@ -76,24 +76,28 @@ WX_CONFIG_FLAGS = $(WX_CONFIG_DEBUG_FLAG) $(WX_CONFIG_UNICODE_FLAG) \
 	$(WX_CONFIG_SHARED_FLAG) --toolkit=$(WX_PORT) \
 	--version=$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)
 ACCORDION_LIB_CXXFLAGS = $(VAR) $(VAR_5) -W -Wall -I../include $(__NDEBUG_p) \
-	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
+	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` -fno-rtti $(CPPFLAGS) \
+	$(CXXFLAGS)
 ACCORDION_LIB_OBJECTS =  \
 	gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/accordion_lib_accordion.o
 ACCORDION_DLL_CXXFLAGS = $(VAR) $(VAR_5) -W -Wall -I../include \
 	-DWXMAKINGDLL_ACCORDION $(__NDEBUG_p) -fPIC -DPIC `$(WX_CONFIG) --cxxflags \
-	$(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
+	$(WX_CONFIG_FLAGS)` -fno-rtti $(CPPFLAGS) $(CXXFLAGS)
 ACCORDION_DLL_OBJECTS =  \
 	gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/accordion_dll_accordion.o
 SIMPLE_SAMPLE_CXXFLAGS = $(VAR) $(VAR_5) -W -Wall -I../include $(__NDEBUG_p) \
-	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
+	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` -fno-rtti $(CPPFLAGS) \
+	$(CXXFLAGS)
 SIMPLE_SAMPLE_OBJECTS =  \
 	gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/Simple_Sample_simplesample.o
 EXTENDED_SAMPLE_CXXFLAGS = $(VAR) $(VAR_5) -W -Wall -I../include $(__NDEBUG_p) \
-	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
+	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` -fno-rtti $(CPPFLAGS) \
+	$(CXXFLAGS)
 EXTENDED_SAMPLE_OBJECTS =  \
 	gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/Extended_Sample_ExtendedSample.o
 BUILDER_CXXFLAGS = $(VAR) $(VAR_5) -W -Wall -I../include $(__NDEBUG_p) \
-	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) $(CXXFLAGS)
+	`$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` -fno-rtti $(CPPFLAGS) \
+	$(CXXFLAGS)
 BUILDER_OBJECTS =  \
 	gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/Builder_builder.o
 
@@ -125,7 +129,7 @@ _BUILDDIR_SHARED_SUFFIX = _dll
 endif
 ifeq ($(SHARED),0)
 __accordion_lib___depname = \
-	../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
+	../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
 endif
 ifeq ($(SHARED),0)
 __install_accordion_lib___depname = install_accordion_lib
@@ -148,7 +152,7 @@ __uninstall_accordion_lib_headers___depname = \
 endif
 ifeq ($(SHARED),1)
 __accordion_dll___depname = \
-	../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
+	../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
 endif
 ifeq ($(SHARED),1)
 __install_accordion_dll___depname = install_accordion_dll
@@ -183,11 +187,11 @@ __COMPONENT_LIB_DEP = $(__accordion_dll___depname)
 endif
 ifeq ($(SHARED),0)
 __COMPONENT_LIB_LIBR = \
-	../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
+	../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
 endif
 ifeq ($(SHARED),1)
 __COMPONENT_LIB_LIBR = \
-	../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
+	../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
 endif
 ifeq ($(WX_DEBUG),0)
 __NDEBUG_p = -DNDEBUG
@@ -218,9 +222,9 @@ uninstall: $(__uninstall_accordion_lib___depname) $(__uninstall_accordion_lib_he
 clean: 
 	rm -f gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/*.o
 	rm -f gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/*.d
-	rm -f ../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
-	rm -f ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
-	rm -f ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
+	rm -f ../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
+	rm -f ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
+	rm -f ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
 	rm -f gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/simplesample
 	rm -f gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/extendedsample
 	rm -f gcc$(WX_PORT)$(_BUILDDIR_SHARED_SUFFIX)/builder
@@ -229,7 +233,7 @@ test_for_selected_wxbuild:
 	@$(WX_CONFIG) $(WX_CONFIG_FLAGS)
 
 ifeq ($(SHARED),0)
-../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a: make_dir_accordion_lib  $(ACCORDION_LIB_OBJECTS)
+../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a: make_dir_accordion_lib  $(ACCORDION_LIB_OBJECTS)
 	rm -f $@
 	$(AR) rcu $@ $(ACCORDION_LIB_OBJECTS)
 	$(RANLIB) $@
@@ -238,12 +242,12 @@ endif
 ifeq ($(SHARED),0)
 install_accordion_lib: $(__accordion_lib___depname)
 	$(INSTALL) -d $(DESTDIR)$(prefix)/lib
-	$(INSTALL) -m 644 ../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a $(DESTDIR)$(prefix)/lib
+	$(INSTALL) -m 644 ../lib/gcc_$(__accordion_lib__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a $(DESTDIR)$(prefix)/lib
 endif
 
 ifeq ($(SHARED),0)
 uninstall_accordion_lib: 
-	rm -f $(DESTDIR)$(prefix)/lib/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
+	rm -f $(DESTDIR)$(prefix)/lib/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).a
 endif
 
 make_dir_accordion_lib: 
@@ -268,21 +272,21 @@ uninstall_accordion_lib_headers:
 endif
 
 ifeq ($(SHARED),1)
-../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so: make_dir_accordion_dll  $(ACCORDION_DLL_OBJECTS)
-	$(CXX) $(LINK_DLL_FLAGS) -fPIC -o $@ $(ACCORDION_DLL_OBJECTS)  $(VAR_5) -L../lib $(LDFLAGS)  `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs richtext,aui,qa,dbgrid,gl,odbc,xrc,html,media,adv,net,xml,core,base`
+../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so: make_dir_accordion_dll  $(ACCORDION_DLL_OBJECTS)
+	$(CXX) $(LINK_DLL_FLAGS) -fPIC -o $@ $(ACCORDION_DLL_OBJECTS)  $(VAR_5) -L../lib $(LDFLAGS)  `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs core,base`
 endif
 
 ifeq ($(SHARED),1)
 install_accordion_dll: $(__accordion_dll___depname)
 	$(INSTALL) -d $(DESTDIR)$(prefix)/lib
-	$(INSTALL) -m 644 ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so $(DESTDIR)$(prefix)/lib
-	install -c ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so $(DESTDIR)$(prefix)/lib
+	$(INSTALL) -m 644 ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so $(DESTDIR)$(prefix)/lib
+	install -c ../lib/gcc_$(__accordion_dll__DIRNAME_SHARED_SUFFIX)/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so $(DESTDIR)$(prefix)/lib
 endif
 
 ifeq ($(SHARED),1)
 uninstall_accordion_dll: 
-	rm -f $(DESTDIR)$(prefix)/lib/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
-	rm -f $(DESTDIR)$(prefix)/lib/libwxcode_$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
+	rm -f $(DESTDIR)$(prefix)/lib/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
+	rm -f $(DESTDIR)$(prefix)/lib/libwx$(WX_PORT)_accordion-$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR).so
 endif
 
 make_dir_accordion_dll: 

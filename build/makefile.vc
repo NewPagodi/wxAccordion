@@ -60,16 +60,16 @@ ACCORDION_LIB_CXXFLAGS = /MD$(VAR_13) /DWIN32 $(____WX_SHARED) /D_UNICODE \
 	$(__WXDEBUG_DEFINE_p) /D__WXMSW__ \
 	/I$(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /I$(WX_DIR)\include $(VAR) \
 	$(VAR_10) $(VAR_12) \
-	/Fd..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb \
-	/W4 /I..\include $(__NDEBUG_p) /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
+	/Fd..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb \
+	/W4 /I..\include $(__NDEBUG_p) /EHsc $(CPPFLAGS) $(CXXFLAGS)
 ACCORDION_LIB_OBJECTS =  \
 	vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\accordion_lib_accordion.obj
 ACCORDION_DLL_CXXFLAGS = /MD$(VAR_13) /DWIN32 $(____WX_SHARED) /D_UNICODE \
 	$(__WXDEBUG_DEFINE_p) /D__WXMSW__ \
 	/I$(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /I$(WX_DIR)\include $(VAR) \
 	$(VAR_10) $(VAR_12) \
-	/Fd..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb \
-	/W4 /I..\include /DWXMAKINGDLL_ACCORDION $(__NDEBUG_p) /GR /EHsc $(CPPFLAGS) \
+	/Fd..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb \
+	/W4 /I..\include /DWXMAKINGDLL_ACCORDION $(__NDEBUG_p) /EHsc $(CPPFLAGS) \
 	$(CXXFLAGS)
 ACCORDION_DLL_OBJECTS =  \
 	vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\accordion_dll_accordion.obj
@@ -78,7 +78,7 @@ SIMPLE_SAMPLE_CXXFLAGS = /MD$(VAR_13) /DWIN32 $(____WX_SHARED) /D_UNICODE \
 	/I$(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /I$(WX_DIR)\include $(VAR) \
 	$(VAR_10) $(VAR_12) \
 	/Fdvcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.pdb /W4 \
-	/I..\include /D_WINDOWS $(__NDEBUG_p) /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
+	/I..\include /D_WINDOWS $(__NDEBUG_p) /EHsc $(CPPFLAGS) $(CXXFLAGS)
 SIMPLE_SAMPLE_OBJECTS =  \
 	vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Simple_Sample_simplesample.obj
 SIMPLE_SAMPLE_RESOURCES =  \
@@ -88,7 +88,7 @@ EXTENDED_SAMPLE_CXXFLAGS = /MD$(VAR_13) /DWIN32 $(____WX_SHARED) /D_UNICODE \
 	/I$(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /I$(WX_DIR)\include $(VAR) \
 	$(VAR_10) $(VAR_12) \
 	/Fdvcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\extendedsample.pdb /W4 \
-	/I..\include /D_WINDOWS $(__NDEBUG_p) /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
+	/I..\include /D_WINDOWS $(__NDEBUG_p) /EHsc $(CPPFLAGS) $(CXXFLAGS)
 EXTENDED_SAMPLE_OBJECTS =  \
 	vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Extended_Sample_ExtendedSample.obj
 EXTENDED_SAMPLE_RESOURCES =  \
@@ -98,7 +98,7 @@ BUILDER_CXXFLAGS = /MD$(VAR_13) /DWIN32 $(____WX_SHARED) /D_UNICODE \
 	/I$(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /I$(WX_DIR)\include $(VAR) \
 	$(VAR_10) $(VAR_12) \
 	/Fdvcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\builder.pdb /W4 \
-	/I..\include /D_WINDOWS $(__NDEBUG_p) /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
+	/I..\include /D_WINDOWS $(__NDEBUG_p) /EHsc $(CPPFLAGS) $(CXXFLAGS)
 BUILDER_OBJECTS =  \
 	vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Builder_builder.obj
 BUILDER_RESOURCES =  \
@@ -117,68 +117,41 @@ _BUILDDIR_SHARED_SUFFIX = _dll
 !endif
 !if "$(SHARED)" == "0"
 __accordion_lib___depname = \
-	..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
+	..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
 !endif
 !if "$(SHARED)" == "1"
 __accordion_dll___depname = \
-	..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll
+	..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll
 !endif
 !if "$(WX_DEBUG)" == "0"
-____accordion_dll__DEBUGINFO_21 = 
+____accordion_dll__DEBUGINFO_20 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____accordion_dll__DEBUGINFO_21 = $(VAR_14)
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_RICHTEXT_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_richtext.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_AUI_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_aui.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_QA_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_qa.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_DBGRID_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_dbgrid.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_GL_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_gl.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_ODBC_NAME_p = wxbase$(WX_VERSION)$(WXLIBPOSTFIX)_odbc.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_XRC_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_xrc.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_MEDIA_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_media.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_NET_NAME_p = wxbase$(WX_VERSION)$(WXLIBPOSTFIX)_net.lib
-!endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_XML_NAME_p = wxbase$(WX_VERSION)$(WXLIBPOSTFIX)_xml.lib
+____accordion_dll__DEBUGINFO_20 = $(VAR_14)
 !endif
 !if "$(WX_DEBUG)" == "0"
-____Simple_Sample__DEBUGINFO_32 = 
+____Simple_Sample__DEBUGINFO_31 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____Simple_Sample__DEBUGINFO_32 = $(VAR_14)
+____Simple_Sample__DEBUGINFO_31 = $(VAR_14)
 !endif
 !if "$(WX_DEBUG)" == "0"
-____Extended_Sample__DEBUGINFO_45 = 
+____Extended_Sample__DEBUGINFO_44 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____Extended_Sample__DEBUGINFO_45 = $(VAR_14)
+____Extended_Sample__DEBUGINFO_44 = $(VAR_14)
 !endif
 !if "$(WX_DEBUG)" == "0"
-____Builder__DEBUGINFO_58 = 
+____Builder__DEBUGINFO_57 = 
 !endif
 !if "$(WX_DEBUG)" == "1"
-____Builder__DEBUGINFO_58 = $(VAR_14)
+____Builder__DEBUGINFO_57 = $(VAR_14)
 !endif
 !if "$(WX_MONOLITHIC)" == "0"
 __WXLIB_PROPGRID_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_propgrid.lib
+!endif
+!if "$(WX_MONOLITHIC)" == "0"
+__WXLIB_ADV_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_adv.lib
 !endif
 !if "$(SHARED)" == "0"
 ____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES = lib
@@ -192,9 +165,6 @@ ____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES = lib
 !if "$(WX_SHARED)" == "1"
 ____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES = dll
 !endif
-!if "$(WX_MONOLITHIC)" == "0"
-__WXLIB_ADV_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_adv.lib
-!endif
 !if "$(WX_SHARED)" == "0"
 ____WX_SHARED = 
 !endif
@@ -202,10 +172,10 @@ ____WX_SHARED =
 ____WX_SHARED = /DWXUSINGDLL
 !endif
 !if "$(WX_SHARED)" == "0"
-____WX_SHARED_1 = 
+____WX_SHARED_2 = 
 !endif
 !if "$(WX_SHARED)" == "1"
-____WX_SHARED_1 = /d WXUSINGDLL
+____WX_SHARED_2 = /d WXUSINGDLL
 !endif
 !if "$(WX_DEBUG)" == "1"
 __WXDEBUG_DEFINE_p = /D__WXDEBUG__
@@ -263,11 +233,11 @@ __COMPONENT_LIB_DEP = $(__accordion_dll___depname)
 !endif
 !if "$(SHARED)" == "0"
 __COMPONENT_LIB_LIBR = \
-	..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
+	..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
 !endif
 !if "$(SHARED)" == "1"
 __COMPONENT_LIB_LIBR = \
-	..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
+	..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
 !endif
 !if "$(WX_MONOLITHIC)" == "0"
 __WXLIB_HTML_NAME_p = wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_html.lib
@@ -319,11 +289,11 @@ clean:
 	-if exist vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\*.obj del vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\*.obj
 	-if exist vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\*.res del vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\*.res
 	-if exist vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\*.pch del vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\*.pch
-	-if exist ..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib del ..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
-	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll
-	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.ilk del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.ilk
-	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb
-	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
+	-if exist ..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib del ..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
+	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll
+	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.ilk del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.ilk
+	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb
+	-if exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib del ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
 	-if exist vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.exe del vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.exe
 	-if exist vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.ilk del vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.ilk
 	-if exist vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.pdb del vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.pdb
@@ -347,7 +317,7 @@ test_for_selected_wxbuild:
 	exit 1
 
 !if "$(SHARED)" == "0"
-..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib: make_dir_accordion_lib  $(ACCORDION_LIB_OBJECTS)
+..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib: make_dir_accordion_lib  $(ACCORDION_LIB_OBJECTS)
 	if exist $@ del $@
 	link /LIB /NOLOGO /OUT:$@ @<<
 	$(ACCORDION_LIB_OBJECTS)
@@ -358,9 +328,9 @@ make_dir_accordion_lib:
 	if not exist ..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES) mkdir ..\lib\vc_$(____accordion_lib__DIRNAME_SHARED_SUFFIX_FILENAMES)
 
 !if "$(SHARED)" == "1"
-..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll: make_dir_accordion_dll  $(ACCORDION_DLL_OBJECTS)
-	link /DLL /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb" $(____accordion_dll__DEBUGINFO_21) /LIBPATH:..$(WXLIBPATH) $(LDFLAGS) @<<
-	$(ACCORDION_DLL_OBJECTS)   $(__WXLIB_RICHTEXT_NAME_p) $(__WXLIB_AUI_NAME_p) $(__WXLIB_QA_NAME_p) $(__WXLIB_DBGRID_NAME_p) $(__WXLIB_GL_NAME_p) $(__WXLIB_ODBC_NAME_p) $(__WXLIB_XRC_NAME_p) $(__WXLIB_HTML_NAME_p) $(__WXLIB_MEDIA_NAME_p) $(__WXLIB_ADV_NAME_p) $(__WXLIB_NET_NAME_p) $(__WXLIB_XML_NAME_p) $(__WXLIB_CORE_NAME_p) $(__WXLIB_BASE_NAME_p) wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib oleacc.lib /IMPLIB:..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxcode_msw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
+..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.dll: make_dir_accordion_dll  $(ACCORDION_DLL_OBJECTS)
+	link /DLL /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.pdb" $(____accordion_dll__DEBUGINFO_20) /LIBPATH:..$(WXLIBPATH) $(LDFLAGS) @<<
+	$(ACCORDION_DLL_OBJECTS)   $(__WXLIB_CORE_NAME_p) $(__WXLIB_BASE_NAME_p) wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib oleacc.lib /IMPLIB:..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)\wxmsw$(WX_VERSION)$(WXLIBPOSTFIX)_accordion.lib
 <<
 !endif
 
@@ -368,17 +338,17 @@ make_dir_accordion_dll:
 	if not exist ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES) mkdir ..\lib\vc_$(____accordion_dll__DIRNAME_SHARED_SUFFIX_FILENAMES)
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.exe: $(SIMPLE_SAMPLE_OBJECTS) $(__COMPONENT_LIB_DEP) vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Simple_Sample_resource.res
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.pdb" $(____Simple_Sample__DEBUGINFO_32) /LIBPATH:..$(WXLIBPATH) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
+	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\simplesample.pdb" $(____Simple_Sample__DEBUGINFO_31) /LIBPATH:..$(WXLIBPATH) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
 	$(SIMPLE_SAMPLE_OBJECTS) $(SIMPLE_SAMPLE_RESOURCES)  $(__COMPONENT_LIB_LIBR) $(__WXLIB_CORE_NAME_p) $(__WXLIB_BASE_NAME_p) wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib oleacc.lib
 <<
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\extendedsample.exe: $(EXTENDED_SAMPLE_OBJECTS) $(__COMPONENT_LIB_DEP) vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Extended_Sample_resource.res
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\extendedsample.pdb" $(____Extended_Sample__DEBUGINFO_45) /LIBPATH:..$(WXLIBPATH) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
+	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\extendedsample.pdb" $(____Extended_Sample__DEBUGINFO_44) /LIBPATH:..$(WXLIBPATH) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
 	$(EXTENDED_SAMPLE_OBJECTS) $(EXTENDED_SAMPLE_RESOURCES)  $(__COMPONENT_LIB_LIBR) $(__WXLIB_HTML_NAME_p) $(__WXLIB_CORE_NAME_p) $(__WXLIB_BASE_NAME_p) wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib oleacc.lib
 <<
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\builder.exe: $(BUILDER_OBJECTS) $(__COMPONENT_LIB_DEP) vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Builder_resource.res
-	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\builder.pdb" $(____Builder__DEBUGINFO_58) /LIBPATH:..$(WXLIBPATH) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
+	link /NOLOGO /OUT:$@  /LIBPATH:$(WX_DIR)$(WXLIBPATH) $(VAR_11) /pdb:"vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\builder.pdb" $(____Builder__DEBUGINFO_57) /LIBPATH:..$(WXLIBPATH) /SUBSYSTEM:WINDOWS $(LDFLAGS) @<<
 	$(BUILDER_OBJECTS) $(BUILDER_RESOURCES)  $(__COMPONENT_LIB_LIBR) $(__WXLIB_PROPGRID_NAME_p) $(__WXLIB_ADV_NAME_p) $(__WXLIB_HTML_NAME_p) $(__WXLIB_CORE_NAME_p) $(__WXLIB_BASE_NAME_p) wxtiff$(WX3RDPARTYLIBPOSTFIX).lib wxjpeg$(WX3RDPARTYLIBPOSTFIX).lib wxpng$(WX3RDPARTYLIBPOSTFIX).lib wxzlib$(WX3RDPARTYLIBPOSTFIX).lib wxregex$(WXLIBPOSTFIX).lib wxexpat$(WX3RDPARTYLIBPOSTFIX).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib oleacc.lib
 <<
 
@@ -392,17 +362,17 @@ vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Simple_Sample_simplesample.obj: .
 	$(CXX) /c /nologo /TP /Fo$@ $(SIMPLE_SAMPLE_CXXFLAGS) ..\samples\simplesample.cpp
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Simple_Sample_resource.res: ..\samples\resource.rc
-	rc /fo$@  /d WIN32 $(____WX_SHARED_1) /d _UNICODE $(__WXDEBUG_DEFINE_p_2) /d __WXMSW__ /i $(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(p_1) /i ..\include /d _WINDOWS $(__NDEBUG_p_2) ..\samples\resource.rc
+	rc /fo$@  /d WIN32 $(____WX_SHARED_2) /d _UNICODE $(__WXDEBUG_DEFINE_p_2) /d __WXMSW__ /i $(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(p_1) /i ..\include /d _WINDOWS $(__NDEBUG_p_2) ..\samples\resource.rc
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Extended_Sample_ExtendedSample.obj: ..\samples\ExtendedSample.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(EXTENDED_SAMPLE_CXXFLAGS) ..\samples\ExtendedSample.cpp
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Extended_Sample_resource.res: ..\samples\resource.rc
-	rc /fo$@  /d WIN32 $(____WX_SHARED_1) /d _UNICODE $(__WXDEBUG_DEFINE_p_2) /d __WXMSW__ /i $(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(p_1) /i ..\include /d _WINDOWS $(__NDEBUG_p_2) ..\samples\resource.rc
+	rc /fo$@  /d WIN32 $(____WX_SHARED_2) /d _UNICODE $(__WXDEBUG_DEFINE_p_2) /d __WXMSW__ /i $(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(p_1) /i ..\include /d _WINDOWS $(__NDEBUG_p_2) ..\samples\resource.rc
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Builder_builder.obj: ..\samples\builder.cpp
 	$(CXX) /c /nologo /TP /Fo$@ $(BUILDER_CXXFLAGS) ..\samples\builder.cpp
 
 vcmsw$(WXLIBPOSTFIX)$(_BUILDDIR_SHARED_SUFFIX)\Builder_resource.res: ..\samples\resource.rc
-	rc /fo$@  /d WIN32 $(____WX_SHARED_1) /d _UNICODE $(__WXDEBUG_DEFINE_p_2) /d __WXMSW__ /i $(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(p_1) /i ..\include /d _WINDOWS $(__NDEBUG_p_2) ..\samples\resource.rc
+	rc /fo$@  /d WIN32 $(____WX_SHARED_2) /d _UNICODE $(__WXDEBUG_DEFINE_p_2) /d __WXMSW__ /i $(WX_DIR)$(WXLIBPATH)\msw$(WXLIBPOSTFIX) /i $(WX_DIR)\include $(p_1) /i ..\include /d _WINDOWS $(__NDEBUG_p_2) ..\samples\resource.rc
 

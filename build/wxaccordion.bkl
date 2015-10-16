@@ -101,6 +101,7 @@
              use <include> tag to add additional compiler include paths.
         -->
 		<define>$(NDEBUG)</define>
+		<cxx-rtti>off</cxx-rtti>
 		
     </lib>
 	
@@ -109,22 +110,11 @@
              Note : the linking order may be important for static objects
                     to be initialized correctly and even more important for
                     some linkers like GNU's linker. -->
-        <wx-lib>richtext</wx-lib>
-        <wx-lib>aui</wx-lib>
-        <wx-lib>qa</wx-lib>
-        <wx-lib>dbgrid</wx-lib>
-        <wx-lib>gl</wx-lib>
-        <wx-lib>odbc</wx-lib>
-        <wx-lib>xrc</wx-lib>
-        <wx-lib>html</wx-lib>
-        <wx-lib>media</wx-lib>
-        <wx-lib>adv</wx-lib>
-        <wx-lib>net</wx-lib>
-        <wx-lib>xml</wx-lib>
         <wx-lib>core</wx-lib>
         <wx-lib>base</wx-lib> <!-- base must be last wx-lib -->
 		
 		<define>$(NDEBUG)</define>
+		<cxx-rtti>off</cxx-rtti>
 		
     </dll>
 
@@ -150,6 +140,7 @@
     <wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
 	<define>$(NDEBUG)</define>
+	<cxx-rtti>off</cxx-rtti>
   </template>
 
   <wxcode-sample id="Simple_Sample" template="simple_sample">
@@ -165,6 +156,7 @@
 	<wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
 	<define>$(NDEBUG)</define>
+	<cxx-rtti>off</cxx-rtti>
   </template>
 
   <wxcode-sample id="Extended_Sample" template="extended_sample">
@@ -182,6 +174,7 @@
     <wx-lib>core</wx-lib>
     <wx-lib>base</wx-lib>
 	<define>$(NDEBUG)</define>
+	<cxx-rtti>off</cxx-rtti>
   </template>
 
   <wxcode-sample id="Builder" template="builder_sample">

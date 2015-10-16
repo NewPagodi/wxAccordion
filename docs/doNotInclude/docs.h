@@ -14,12 +14,9 @@ Although this class can't provide all the freedom a programmer would have for bu
 
 I've included enough headers with this documentation to generate wxAccordion's entire inheritance hierarchy.  The copyright for those headers obviously belong the wxWidgets project and their respective writers. 
 
-The original idea for this control and some of the names for the style options came from the excellent <a href="http://wxcode.sourceforge.net/showcomp.php?name=foldbar" title="The Wikipedia article on the accordion graphical control element.">foldbar</a> library currently hosted on wxCode. 
+The original idea for this control and some of the names for the style options came from the excellent <a href="http://wxcode.sourceforge.net/showcomp.php?name=foldbar" title="The foldbar control">foldbar</a> library currently hosted on wxCode. 
 
-
-
-
-
+The build files for this project were created using a slightly modified version of the bakefiles from the <a href="http://wxcode.sourceforge.net/" title="wxCode">wxCode</a> project.
  */
  
 /// \class wxAccordion accordion.h <wx/accordion/accordion.h>

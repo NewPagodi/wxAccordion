@@ -55,9 +55,9 @@
 				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -76,7 +76,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30u_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -134,9 +134,9 @@
 				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;_UNICODE;__WXMSW__;WXMAKINGDLL_ACCORDION;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -156,14 +156,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="wxmsw30u_richtext.lib wxmsw30u_aui.lib wxmsw30u_qa.lib wxmsw30u_dbgrid.lib wxmsw30u_gl.lib wxbase30u_odbc.lib wxmsw30u_xrc.lib wxmsw30u_html.lib wxmsw30u_media.lib wxmsw30u_adv.lib wxbase30u_net.lib wxbase30u_xml.lib wxmsw30u_core.lib wxbase30u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_lib\wxcode_msw30u_accordion.dll"
+				AdditionalDependencies="wxmsw30u_core.lib wxbase30u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30u_accordion.dll"
 				LinkIncremental="1"
-				ImportLibrary="..\lib\vc_lib\wxcode_msw30u_accordion.lib"
+				ImportLibrary="..\lib\vc_lib\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_lib;..\lib\vc_lib"
 				GenerateManifest="true"
-				ProgramDatabaseFile="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -221,9 +221,9 @@
 				PreprocessorDefinitions="WIN32;_LIB;_UNICODE;__WXMSW__;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -242,7 +242,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30u_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -300,9 +300,9 @@
 				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;_UNICODE;__WXMSW__;WXMAKINGDLL_ACCORDION;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -323,13 +323,13 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=""
 				AdditionalDependencies="wxmsw30u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_lib\wxcode_msw30u_accordion.dll"
+				OutputFile="..\lib\vc_lib\wxmsw30u_accordion.dll"
 				LinkIncremental="1"
-				ImportLibrary="..\lib\vc_lib\wxcode_msw30u_accordion.lib"
+				ImportLibrary="..\lib\vc_lib\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_lib;..\lib\vc_lib"
 				GenerateManifest="true"
-				ProgramDatabaseFile="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -389,9 +389,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -410,7 +410,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30ud_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -470,9 +470,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -492,15 +492,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="wxmsw30ud_richtext.lib wxmsw30ud_aui.lib wxmsw30ud_qa.lib wxmsw30ud_dbgrid.lib wxmsw30ud_gl.lib wxbase30ud_odbc.lib wxmsw30ud_xrc.lib wxmsw30ud_html.lib wxmsw30ud_media.lib wxmsw30ud_adv.lib wxbase30ud_net.lib wxbase30ud_xml.lib wxmsw30ud_core.lib wxbase30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_lib\wxcode_msw30ud_accordion.dll"
+				AdditionalDependencies="wxmsw30ud_core.lib wxbase30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30ud_accordion.dll"
 				LinkIncremental="2"
-				ImportLibrary="..\lib\vc_lib\wxcode_msw30ud_accordion.lib"
+				ImportLibrary="..\lib\vc_lib\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_lib;..\lib\vc_lib"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -560,9 +560,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -581,7 +581,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30ud_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -641,9 +641,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -664,14 +664,14 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=""
 				AdditionalDependencies="wxmsw30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_lib\wxcode_msw30ud_accordion.dll"
+				OutputFile="..\lib\vc_lib\wxmsw30ud_accordion.dll"
 				LinkIncremental="2"
-				ImportLibrary="..\lib\vc_lib\wxcode_msw30ud_accordion.lib"
+				ImportLibrary="..\lib\vc_lib\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_lib;..\lib\vc_lib"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -729,9 +729,9 @@
 				PreprocessorDefinitions="WIN32;_LIB;WXUSINGDLL;_UNICODE;__WXMSW__;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -750,7 +750,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30u_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -808,9 +808,9 @@
 				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;WXUSINGDLL;_UNICODE;__WXMSW__;WXMAKINGDLL_ACCORDION;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_dll\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_dll\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -830,14 +830,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="wxmsw30u_richtext.lib wxmsw30u_aui.lib wxmsw30u_qa.lib wxmsw30u_dbgrid.lib wxmsw30u_gl.lib wxbase30u_odbc.lib wxmsw30u_xrc.lib wxmsw30u_html.lib wxmsw30u_media.lib wxmsw30u_adv.lib wxbase30u_net.lib wxbase30u_xml.lib wxmsw30u_core.lib wxbase30u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_dll\wxcode_msw30u_accordion.dll"
+				AdditionalDependencies="wxmsw30u_core.lib wxbase30u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
+				OutputFile="..\lib\vc_dll\wxmsw30u_accordion.dll"
 				LinkIncremental="1"
-				ImportLibrary="..\lib\vc_dll\wxcode_msw30u_accordion.lib"
+				ImportLibrary="..\lib\vc_dll\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_dll;..\lib\vc_dll"
 				GenerateManifest="true"
-				ProgramDatabaseFile="..\lib\vc_dll\wxcode_msw30u_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_dll\wxmsw30u_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -895,9 +895,9 @@
 				PreprocessorDefinitions="WIN32;_LIB;WXUSINGDLL;_UNICODE;__WXMSW__;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -916,7 +916,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30u_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -974,9 +974,9 @@
 				PreprocessorDefinitions="WIN32;_USRDLL;DLL_EXPORTS;WXUSINGDLL;_UNICODE;__WXMSW__;WXMAKINGDLL_ACCORDION;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswu_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_dll\wxcode_msw30u_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_dll\wxmsw30u_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
@@ -997,13 +997,13 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=""
 				AdditionalDependencies="wxmsw30u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_dll\wxcode_msw30u_accordion.dll"
+				OutputFile="..\lib\vc_dll\wxmsw30u_accordion.dll"
 				LinkIncremental="1"
-				ImportLibrary="..\lib\vc_dll\wxcode_msw30u_accordion.lib"
+				ImportLibrary="..\lib\vc_dll\wxmsw30u_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_dll;..\lib\vc_dll"
 				GenerateManifest="true"
-				ProgramDatabaseFile="..\lib\vc_dll\wxcode_msw30u_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_dll\wxmsw30u_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -1063,9 +1063,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -1084,7 +1084,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30ud_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -1144,9 +1144,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_dll\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_dll\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -1166,15 +1166,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=""
-				AdditionalDependencies="wxmsw30ud_richtext.lib wxmsw30ud_aui.lib wxmsw30ud_qa.lib wxmsw30ud_dbgrid.lib wxmsw30ud_gl.lib wxbase30ud_odbc.lib wxmsw30ud_xrc.lib wxmsw30ud_html.lib wxmsw30ud_media.lib wxmsw30ud_adv.lib wxbase30ud_net.lib wxbase30ud_xml.lib wxmsw30ud_core.lib wxbase30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_dll\wxcode_msw30ud_accordion.dll"
+				AdditionalDependencies="wxmsw30ud_core.lib wxbase30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
+				OutputFile="..\lib\vc_dll\wxmsw30ud_accordion.dll"
 				LinkIncremental="2"
-				ImportLibrary="..\lib\vc_dll\wxcode_msw30ud_accordion.lib"
+				ImportLibrary="..\lib\vc_dll\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_dll;..\lib\vc_dll"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\lib\vc_dll\wxcode_msw30ud_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_dll\wxmsw30ud_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -1234,9 +1234,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_lib\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_lib\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -1255,7 +1255,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\vc_lib\wxcode_msw30ud_accordion.lib"
+				OutputFile="..\lib\vc_lib\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -1315,9 +1315,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
-				RuntimeTypeInfo="true"
+				RuntimeTypeInfo="false"
 				ObjectFile="vcmswud_dll\accordion\"
-				ProgramDataBaseFileName="..\lib\vc_dll\wxcode_msw30ud_accordion.pdb"
+				ProgramDataBaseFileName="..\lib\vc_dll\wxmsw30ud_accordion.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -1338,14 +1338,14 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=""
 				AdditionalDependencies="wxmsw30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib"
-				OutputFile="..\lib\vc_dll\wxcode_msw30ud_accordion.dll"
+				OutputFile="..\lib\vc_dll\wxmsw30ud_accordion.dll"
 				LinkIncremental="2"
-				ImportLibrary="..\lib\vc_dll\wxcode_msw30ud_accordion.lib"
+				ImportLibrary="..\lib\vc_dll\wxmsw30ud_accordion.lib"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(WXWIN)\lib\vc_dll;..\lib\vc_dll"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\lib\vc_dll\wxcode_msw30ud_accordion.pdb"
+				ProgramDatabaseFile="..\lib\vc_dll\wxmsw30ud_accordion.pdb"
 				TargetMachine="1"
 			/>
 			<Tool

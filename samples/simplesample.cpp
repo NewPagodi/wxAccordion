@@ -26,6 +26,10 @@
 
 #include <wx/accordion/accordion.h>
 
+#ifndef wxHAS_IMAGES_IN_RESOURCES
+    #include "bitmaps/sample.xpm"
+#endif
+
 class SimpleSampleApp : public wxApp
 {
     public:
@@ -46,13 +50,13 @@ class SimpleSampleFrame : public wxFrame
 bool SimpleSampleApp::OnInit()
 {
     SimpleSampleFrame* frame = new SimpleSampleFrame(0L);
-    frame->SetIcon(wxICON(aaaa));
+    frame->SetIcon(wxICON(sample));
     frame->Show();
 
     return true;
 }
 
-IMPLEMENT_APP(SimpleSampleApp);
+wxIMPLEMENT_APP(SimpleSampleApp);
 
 SimpleSampleFrame::SimpleSampleFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
