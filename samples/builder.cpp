@@ -421,9 +421,9 @@ class BuilderFrame : public wxFrame
 		~BuilderFrame();
 
 	private:
-	    void OnAbout( wxCommandEvent& event ){wxMessageBox( wxT("the wxAccordion builder application."), wxT("Welcome to...") );}
-	    void OnClose( wxCloseEvent& event ) { Destroy(); }
-        void OnQuit( wxCommandEvent& event ){ Destroy(); }
+	    void OnAbout( wxCommandEvent& ){wxMessageBox( wxT("the wxAccordion builder application."), wxT("Welcome to...") );}
+	    void OnClose( wxCloseEvent& ) { Destroy(); }
+        void OnQuit( wxCommandEvent& ){ Destroy(); }
         void onAddStop(wxCommandEvent& event);
         void onClearStops(wxCommandEvent& event);
         void onCheckBox(wxCommandEvent& event);
@@ -704,7 +704,7 @@ BuilderFrame::~BuilderFrame()
 {
 }
 
-void BuilderFrame::onAddStop(wxCommandEvent& event)
+void BuilderFrame::onAddStop( wxCommandEvent& WXUNUSED(event) )
 {
     wxColour c = m_colourPicker->GetColour();
     long pos = m_spinCtrl->GetValue();
@@ -759,7 +759,7 @@ void BuilderFrame::onAddStop(wxCommandEvent& event)
     adjustStopBounds(stopProp);
 }
 
-void BuilderFrame::onClearStops(wxCommandEvent& event)
+void BuilderFrame::onClearStops( wxCommandEvent& WXUNUSED(event) )
 {
     wxPGProperty* stopProp;
     int listItem = m_listBox->GetSelection();
@@ -853,7 +853,7 @@ void BuilderFrame::onCheckBox(wxCommandEvent& event)
     }
 }
 
-void BuilderFrame::onReset(wxCommandEvent& event)
+void BuilderFrame::onReset( wxCommandEvent& WXUNUSED(event) )
 {
     Freeze();
 
@@ -894,7 +894,7 @@ void BuilderFrame::onReset(wxCommandEvent& event)
     Thaw();
 }
 
-void BuilderFrame::onGenerate(wxCommandEvent& event)
+void BuilderFrame::onGenerate( wxCommandEvent& WXUNUSED(event) )
 {
     wxAccordion* temp = new wxAccordion(m_splitter);
 
