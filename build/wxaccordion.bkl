@@ -1,0 +1,193 @@
+<?xml version="1.0" ?>
+
+<!-- RCS-ID: $Id: mycomp.bkl 1321 2010-05-08 19:21:58Z frm $ -->
+
+<!--
+    =========================================================================
+    How to customize this file for a particular component.
+
+    The wxCode presets are designed to accomodate a component that has:
+        - source and header files that are meant to be compiled into 1 library
+          (as a static lib when WX_SHARED=='0' and as a DLL when WX_SHARED=='1')
+        - one or more sample programs that will make use of the library
+    Nonetheless it can still be used for components with more than one library.
+
+    Step-by-step guide to adapt this bakefile to a component which builds as
+    a library and has one or more samples as described above:
+
+    1.) Replace the contents of the "set-comp-name" tag with the name of your
+        component, eg. wxCode/component/MYCOMPONENT_NAME.
+        Example : for wxCode/components/wxscintilla use just 'wxscintilla' with no
+                  quotes.
+
+    2.) Replace the name of the lib to be generated MYCOMPONENT_NAME_lib and
+        MYCOMPONENT_NAME_dll with the actual name of your component,
+        eg. wxscintilla_lib and wxscintilla_dll.
+
+    3.) Adjust the MSVC6PRJ_MERGED_TARGETS variable with the same values
+        you've set previously. eg. wxscintilla=wxscintilla_lib+wxscintilla_dll
+
+    4.) Remove or add libs to link the library to. Use <wx-lib>name</wx-lib> for
+        libraries from wxWidgets and they will be appropriately pre and postfixed
+        based on the build settings (eg. debug, unicode, etc.).
+
+        Use <library>libID</library> for other libraries declared into this bakefile
+        (e.g. your component's library: <library>wxscintilla_lib</library>)
+
+        Finally, use <sys-lib>name</sys-lib> for other libraries coming from 3rd party
+        packages. Note that shared libraries (<dll>) need to link to other libraries, 
+        but static libraries (<lib>) do not.
+
+    5.) Replace the MYSAMPLE_NAME with the name you want the compiled executable
+        to have. Add or remove libraries and include paths as you did for the
+        library.
+
+    6.) Periodically check to see if the wxCode bakefiles have been updated,
+        including the template MYCOMP.bkl that this is derived from
+        and regenerate your build files.
+
+    ==========================================================================
+-->
+
+<makefile>
+
+  <set var="USE_UNSTABLE_VERSION">1</set>
+  <set var="WX_UNICODE">1</set>
+  <set var="WX_VERSION_DEFAULT">30</set>
+
+    <!-- the following line tells Bakefile that this component uses the wxCode presets
+         (internally wxCode presets use in turn the wxWidgets presets)
+    -->
+    <include file="presets/wxcode.bkl"/>
+
+    <!-- sets the name of the folder which contains this component and thus
+         should always be in lowercase, wxCode/component/MYCOMPONENT_NAME 
+    -->
+    <set-comp-name>accordion</set-comp-name>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Library settings                                                  -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- NOTE: you won't need to specify a list of source and headers files
+               for this component: wxcode.bkl (included above) will automatically
+               look into the 'src' and 'include/wx' folders of your component to
+               build such lists and set the COMP_SRC and COMP_HDR variables,
+               which will then be used as sources / headers for the <lib> and <dll>
+               targets below.
+
+               In case however you don't have the sources/headers in those
+               folders, you'll want to 'manually' set the list. E.g. use
+
+                <set var="COMP_SRC">$(fileList('my_src_dir/*.cpp'))</set>
+                <set var="COMP_HDR">$(fileList('my_header_dir/*.h'))</set>
+
+               if you have the sources in wxCode/components/yourcomp/my_src_dir
+               and the headers in wxCode/components/yourcomp/my_header_dir
+
+               This is because the folders you reference are always referred to 
+               the root of your component and must always be relative paths.
+    -->
+
+  <set var="NDEBUG">
+    <if cond="WX_DEBUG=='1'"></if>
+    <if cond="WX_DEBUG=='0'">NDEBUG</if>
+  </set>
+	
+	
+    <lib id="accordion_lib" template="wxcode-lib" cond="SHARED=='0'">
+        <!-- here you can use any standard Bakefile tag. E.g. you may want to
+             use <include> tag to add additional compiler include paths.
+        -->
+		<define>$(NDEBUG)</define>
+		
+    </lib>
+	
+    <dll id="accordion_dll" template="wxcode-dll" cond="SHARED=='1'">
+        <!-- Remove the libraries which are not required by your project.
+             Note : the linking order may be important for static objects
+                    to be initialized correctly and even more important for
+                    some linkers like GNU's linker. -->
+        <wx-lib>richtext</wx-lib>
+        <wx-lib>aui</wx-lib>
+        <wx-lib>qa</wx-lib>
+        <wx-lib>dbgrid</wx-lib>
+        <wx-lib>gl</wx-lib>
+        <wx-lib>odbc</wx-lib>
+        <wx-lib>xrc</wx-lib>
+        <wx-lib>html</wx-lib>
+        <wx-lib>media</wx-lib>
+        <wx-lib>adv</wx-lib>
+        <wx-lib>net</wx-lib>
+        <wx-lib>xml</wx-lib>
+        <wx-lib>core</wx-lib>
+        <wx-lib>base</wx-lib> <!-- base must be last wx-lib -->
+		
+		<define>$(NDEBUG)</define>
+		
+    </dll>
+
+    <!-- This makes the MSVC6 project files much nicer... -->
+    <set var="MSVC6PRJ_MERGED_TARGETS">
+        accordion=accordion_lib+accordion_dll
+    </set>
+
+    <set var="COMPONENT_LIB">
+    <if cond="FORMAT_SUPPORTS_CONDITIONS=='1' and SHARED=='0'">accordion_lib</if>
+    <if cond="FORMAT_SUPPORTS_CONDITIONS=='1' and SHARED=='1'">accordion_dll</if>
+    <if cond="FORMAT_SUPPORTS_CONDITIONS=='0'">accordion_lib</if>
+  </set>
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Sample(s) settings                                                -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <template id="simple_sample">
+    <app-type>gui</app-type>
+    <sources>samples/simplesample.cpp</sources>
+	<library>$(COMPONENT_LIB)</library>
+    <wx-lib>core</wx-lib>
+    <wx-lib>base</wx-lib>
+	<define>$(NDEBUG)</define>
+  </template>
+
+  <wxcode-sample id="Simple_Sample" template="simple_sample">
+    <exename>simplesample</exename>
+    <win32-res>samples/resource.rc</win32-res>
+  </wxcode-sample>
+
+  <template id="extended_sample">
+    <app-type>gui</app-type>
+    <sources>samples/ExtendedSample.cpp</sources>
+	<library>$(COMPONENT_LIB)</library>
+    <wx-lib>html</wx-lib>
+	<wx-lib>core</wx-lib>
+    <wx-lib>base</wx-lib>
+	<define>$(NDEBUG)</define>
+  </template>
+
+  <wxcode-sample id="Extended_Sample" template="extended_sample">
+    <exename>extendedsample</exename>
+    <win32-res>samples/resource.rc</win32-res>
+  </wxcode-sample>
+  
+  <template id="builder_sample">
+    <app-type>gui</app-type>
+    <sources>samples/builder.cpp</sources>
+	<library>$(COMPONENT_LIB)</library>
+	<wx-lib>propgrid</wx-lib>
+	<wx-lib>adv</wx-lib>
+	<wx-lib>html</wx-lib>
+    <wx-lib>core</wx-lib>
+    <wx-lib>base</wx-lib>
+	<define>$(NDEBUG)</define>
+  </template>
+
+  <wxcode-sample id="Builder" template="builder_sample">
+    <exename>builder</exename>
+    <win32-res>samples/resource.rc</win32-res>
+  </wxcode-sample>
+	
+	
+</makefile>

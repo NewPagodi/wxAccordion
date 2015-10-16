@@ -173,7 +173,7 @@ void wxAccordionFold::onMouse( wxMouseEvent& event )
     m_accordion->ProcessWindowEvent(event);
 }
 
-void wxAccordionFold::onMouseLeave( wxMouseEvent& event )
+void wxAccordionFold::onMouseLeave( wxMouseEvent& WXUNUSED(event) )
 {
     if(m_useHighlighting)
     {
@@ -221,7 +221,7 @@ void wxAccordionFold::onMouseMotion( wxMouseEvent& event )
     m_accordion->ProcessWindowEvent(event);
 }
 
-void wxAccordionFold::onPaint( wxPaintEvent& event )
+void wxAccordionFold::onPaint( wxPaintEvent& WXUNUSED(event) )
 {
     if( m_accordion->changesWereMade() )
     {
@@ -521,7 +521,7 @@ wxAccordion::wxAccordion()
 wxAccordion::wxAccordion( wxWindow* parent, wxWindowID id , const wxPoint& pos , const wxSize& size , long style, const wxString &name )
 {
     Init();
-    Create(parent, id, pos, size, style);
+    Create(parent, id, pos, size, style, name);
 }
 
 /// \brief Destructor.
@@ -656,7 +656,7 @@ void wxAccordion::InitAccordion(long style)
     Bind( wxEVT_LEFT_DCLICK, &wxAccordion::onLeftDClick, this );
 }
 
-void wxAccordion::onPaintBorder( wxPaintEvent& event )
+void wxAccordion::onPaintBorder( wxPaintEvent& WXUNUSED(event) )
 {
     wxAutoBufferedPaintDC myDC(m_lastBorder);
     myDC.Clear();
@@ -666,7 +666,7 @@ void wxAccordion::onPaintBorder( wxPaintEvent& event )
     myDC.DrawLine(m_captionBarRadius,0,width-m_captionBarRadius,0);
 }
 
-void wxAccordion::onPaint( wxPaintEvent& event )
+void wxAccordion::onPaint( wxPaintEvent& WXUNUSED(event) )
 {
     wxAutoBufferedPaintDC myDC(this);
 
@@ -1283,7 +1283,7 @@ void wxAccordion::computeCaptionInfo()
         x2=ac;
         y2=bg-cf;
     }
-    else if( alpha == 180)
+    else //alpha == 180 (up to floating point error)
     {
         x1=0;
         y1=height;
@@ -1746,7 +1746,7 @@ void wxAccordion::adjustForStyle( long style )
     {
         for(size_t i=0;i<GetPageCount();i++)
         {
-            if(i!=m_selection)
+            if( static_cast<int>(i)!=m_selection )
             {
                 getFold(i)->Collapse();
             }
@@ -1918,7 +1918,7 @@ wxWindow* wxAccordion::DoRemovePage(size_t page)
         //But then again, I'm not sure what could be done if they don't match.
         win->Reparent(this);
         fold->Destroy();
-        if(page==m_selection)
+        if( static_cast<int>(page)==m_selection )
         {
             m_selection=wxNOT_FOUND;
         }

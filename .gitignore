@@ -1,6 +1,10 @@
 /notes.txt
+/build/mod
+/build/original
 /buildcb
+/buildcb2
 /docs/logo.xcf
 /docs/html
 /lib/*
 !/lib/folder.txt
+
