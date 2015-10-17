@@ -326,11 +326,17 @@ void wxAccordionFold::onPaint( wxPaintEvent& WXUNUSED(event) )
 
     if(m_isCollapsed)
     {
-        myDC.DrawBitmap(m_accordion->m_expandButton,m_accordion->m_buttonRect.GetTopLeft() ,true);
+        if ( m_accordion->m_expandButton.IsOk() )
+        {
+            myDC.DrawBitmap(m_accordion->m_expandButton,m_accordion->m_buttonRect.GetTopLeft() ,true);
+        }
     }
     else
     {
-        myDC.DrawBitmap(m_accordion->m_collapseButton,m_accordion->m_buttonRect.GetTopLeft() ,true);
+        if ( m_accordion->m_collapseButton.IsOk() )
+        {
+            myDC.DrawBitmap(m_accordion->m_collapseButton,m_accordion->m_buttonRect.GetTopLeft() ,true);
+        }
 
         //Now we need to draw the page's background.
         //Unfortunately, we can't cache a bitmap like we did for the caption bar and so
@@ -1335,8 +1341,10 @@ void wxAccordion::computeCaptionInfo()
 
         adhocStyle.m_borderColour = m_collapsedStyle.m_borderColour;
         adhocStyle.m_borderColour.MakeDisabled(m_disabledBrightness);
-        adhocStyle.m_background = m_collapsedStyle.m_background.ConvertToDisabled(m_disabledBrightness);
-
+        if ( adhocStyle.m_background.IsOk() )
+        {
+            adhocStyle.m_background = m_collapsedStyle.m_background.ConvertToDisabled(m_disabledBrightness);
+        }
         buildBitmap(    m_captionBarDisabled, false, 0, width, height, x1, y1, x2, y2,m_captionBarRadius,adhocStyle);
     }
 }
@@ -1428,7 +1436,10 @@ void wxAccordion::buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, in
         memDC.SelectObject(b4);
         memDC.SetBackground(wxBrush(borderColour));
         memDC.Clear();
-        b4.SetMask( new wxMask(b3,wxColour(255,255,255)) );
+        if(b3.IsOk())
+        {
+            b4.SetMask( new wxMask(b3,wxColour(255,255,255)) );
+        }
     }
 
     out=wxBitmap(width, height);
@@ -1464,11 +1475,15 @@ void wxAccordion::buildBitmap(wxBitmap& out, bool bottomBorder, int drawtype, in
         }
     }
 
-    if(borderColour!=wxTransparentColour)
+    if ( borderColour!=wxTransparentColour && b4.IsOk() )
     {
         memDC.DrawBitmap(b4,0,0,true);
     }
-    out.SetMask(new wxMask(b1,wxColour(255,255,255)));
+
+    if ( b1.IsOk() )
+    {
+        out.SetMask(new wxMask(b1,wxColour(255,255,255)));
+    }
 }
 
 /// \brief Sets the accordion page with index n to have the enabled state.
